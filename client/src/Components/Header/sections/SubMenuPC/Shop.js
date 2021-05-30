@@ -10,13 +10,21 @@ const SubMenuList = styled.ul`
   display: flex;
   flex-direction: column;
 
-  /* display: none; */
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+
+  &.DropdownOpen2 {
+    direction: block;
+    opacity: 1;
+    visibility: visible;
+  }
 `;
 
 const SubMenuItem = styled.li`
   white-space: nowrap;
   line-height: 15px;
-  margin: 0.2rem 0rem;
+  padding: 0.2rem 0;
   width: 100%;
   text-align: left;
 `;
@@ -41,9 +49,9 @@ const SLink = styled(Link)`
   }
 `;
 
-const Shop = () => {
+const Shop = ({ DropdownOpen2 }) => {
   return (
-    <SubMenuList>
+    <SubMenuList className={DropdownOpen2 && 'DropdownOpen2'}>
       <SubMenuItem>
         <SLink to='#'>ALL</SLink>
       </SubMenuItem>

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import Lookbook from './SubMenuPC/Lookbook';
 import Shop from './SubMenuPC/Shop';
 import Account from './SubMenuPC/Account';
+import Search from './Search/Search';
 
 const Header = styled.header`
   width: 100%;
@@ -19,6 +20,10 @@ const Header = styled.header`
   font-size: 0.75rem;
   font-weight: 500;
   z-index: 100;
+
+  .menu-hover {
+    position: relative;
+  }
 `;
 
 const LeftMenu = styled.div`
@@ -34,10 +39,6 @@ const LeftMenu = styled.div`
 
     .item {
       margin: 0px 0.8rem;
-    }
-
-    .test {
-      position: relative;
     }
   }
 `;
@@ -68,10 +69,6 @@ const RightMenu = styled.div`
     .item {
       margin: 0px 0.8rem;
     }
-
-    .test {
-      position: relative;
-    }
   }
 `;
 
@@ -96,47 +93,86 @@ const SLink = styled(Link)`
 `;
 
 const HeaderPC = () => {
+  const [IsHovering, setIsHovering] = useState({
+    DropdownOpen1: false,
+    DropdownOpen2: false,
+    DropdownOpen3: false,
+  });
+
+  const [OpenSearch, setOpenSearch] = useState(false);
+
+  // 메뉴에 마우스 가져다댈시 서브메뉴 활성화
+  const onMouseHover = (id) => {
+    setIsHovering({ [id]: true });
+  };
+  // 메뉴에서 마우스 떠날시 서브메뉴 비활성화
+  const onMouseLeave = (id) => {
+    setIsHovering({ [id]: false });
+  };
+
+  // Search 메뉴 클릭시 검색창 활성화
+  const onOpenSearch = () => {
+    setOpenSearch((OpenSearch) => !OpenSearch);
+  };
+
   return (
-    <Header>
-      <LeftMenu>
-        <ul>
-          <li>
-            <SLink to='#'>About</SLink>
-          </li>
-          <li className='item test '>
-            <SLink to='#'>Lookbook</SLink>
-            {/* 서브메뉴 */}
-            <Lookbook />
-          </li>
-          <li className='test '>
-            <SLink to='#'>Shop</SLink>
-            {/* 서브메뉴 */}
-            <Shop />
-          </li>
-        </ul>
-      </LeftMenu>
+    <>
+      <Search onOpenSearch={onOpenSearch} OpenSearch={OpenSearch} />
+      <Header>
+        <LeftMenu>
+          <ul>
+            <li>
+              <SLink to='#'>About</SLink>
+            </li>
+            <li
+              className='item menu-hover'
+              onMouseEnter={() => onMouseHover('DropdownOpen1')}
+              onMouseLeave={() => onMouseLeave('DropdownOpen1')}
+            >
+              <SLink to='#'>Lookbook</SLink>
 
-      <Logo>
-        <Link to='/'>VINTAGE VELLA</Link>
-      </Logo>
+              {/* 서브메뉴 */}
+              <Lookbook DropdownOpen1={IsHovering.DropdownOpen1} />
+            </li>
 
-      <RightMenu>
-        <ul>
-          <li className='test'>
-            <SLink to='#'>Account</SLink>
-            {/* 서브메뉴 */}
-            <Account />
-          </li>
-          <li className='item'>
-            <SLink to='#'>Contact</SLink>
-          </li>
+            <li
+              className='menu-hover'
+              onMouseEnter={() => onMouseHover('DropdownOpen2')}
+              onMouseLeave={() => onMouseLeave('DropdownOpen2')}
+            >
+              <SLink to='#'>Shop</SLink>
+              {/* 서브메뉴 */}
+              <Shop DropdownOpen2={IsHovering.DropdownOpen2} />
+            </li>
+          </ul>
+        </LeftMenu>
 
-          <li>
-            <SLink to='#'>Search</SLink>
-          </li>
-        </ul>
-      </RightMenu>
-    </Header>
+        <Logo>
+          <Link to='/'>VINTAGE VELLA</Link>
+        </Logo>
+
+        <RightMenu>
+          <ul>
+            <li
+              className='menu-hover'
+              onMouseEnter={() => onMouseHover('DropdownOpen3')}
+              onMouseLeave={() => onMouseLeave('DropdownOpen3')}
+            >
+              <SLink to='#'>Account</SLink>
+              {/* 서브메뉴 */}
+              <Account DropdownOpen3={IsHovering.DropdownOpen3} />
+            </li>
+            <li className='item'>
+              <SLink to='#'>Contact</SLink>
+            </li>
+
+            <li onClick={onOpenSearch}>
+              <SLink to='#'>Search</SLink>
+            </li>
+          </ul>
+        </RightMenu>
+      </Header>
+    </>
   );
 };
 

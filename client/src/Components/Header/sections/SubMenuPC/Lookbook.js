@@ -9,16 +9,24 @@ const SubMenuList = styled.ul`
   padding-top: 0.5rem;
   display: flex;
   flex-direction: column;
-  /* display: none; */
+
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+
+  &.DropdownOpen1 {
+    direction: block;
+    opacity: 1;
+    visibility: visible;
+  }
 `;
 
 const SubMenuItem = styled.li`
-  padding: 0px 0;
+  padding: 0.2rem 0;
   /* background-color: rgba(245, 245, 245, 0.95); */
   display: block;
   white-space: nowrap;
   line-height: 15px;
-  margin: 0.2rem 0;
 `;
 
 const SLink = styled(Link)`
@@ -41,9 +49,9 @@ const SLink = styled(Link)`
   }
 `;
 
-const Lookbook = () => {
+const Lookbook = ({ DropdownOpen1 }) => {
   return (
-    <SubMenuList>
+    <SubMenuList className={DropdownOpen1 && 'DropdownOpen1'}>
       <SubMenuItem>
         <SLink to='#'>Release 3</SLink>
       </SubMenuItem>
