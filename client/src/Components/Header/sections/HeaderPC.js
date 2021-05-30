@@ -2,6 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+import Lookbook from './SubMenuPC/Lookbook';
+import Shop from './SubMenuPC/Shop';
+import Account from './SubMenuPC/Account';
+
 const Header = styled.header`
   width: 100%;
   height: 3.5rem;
@@ -20,16 +24,20 @@ const Header = styled.header`
 const LeftMenu = styled.div`
   width: 33.33333333333333%;
   height: 100%;
+  padding-left: 1.2rem;
 
   ul {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
-    padding-left: 1rem;
 
-    li {
-      margin: 0px 8px;
+    .item {
+      margin: 0px 0.8rem;
+    }
+
+    .test {
+      position: relative;
     }
   }
 `;
@@ -48,6 +56,7 @@ const Logo = styled.h1`
 const RightMenu = styled.div`
   width: 33.33333333333333%;
   height: 100%;
+  padding-right: 1.2rem;
 
   ul {
     width: 100%;
@@ -55,10 +64,13 @@ const RightMenu = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding-right: 1rem;
 
-    li {
-      margin: 0px 8px;
+    .item {
+      margin: 0px 0.8rem;
+    }
+
+    .test {
+      position: relative;
     }
   }
 `;
@@ -91,13 +103,15 @@ const HeaderPC = () => {
           <li>
             <SLink to='#'>About</SLink>
           </li>
-          <li>
+          <li className='item test '>
             <SLink to='#'>Lookbook</SLink>
             {/* 서브메뉴 */}
+            <Lookbook />
           </li>
-          <li>
+          <li className='test '>
             <SLink to='#'>Shop</SLink>
             {/* 서브메뉴 */}
+            <Shop />
           </li>
         </ul>
       </LeftMenu>
@@ -108,11 +122,12 @@ const HeaderPC = () => {
 
       <RightMenu>
         <ul>
-          <li>
+          <li className='test'>
             <SLink to='#'>Account</SLink>
             {/* 서브메뉴 */}
+            <Account />
           </li>
-          <li>
+          <li className='item'>
             <SLink to='#'>Contact</SLink>
           </li>
 
