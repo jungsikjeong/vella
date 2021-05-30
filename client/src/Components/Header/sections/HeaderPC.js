@@ -34,16 +34,15 @@ const LeftMenu = styled.div`
   }
 `;
 
-const Logo = styled.div`
+const Logo = styled.h1`
   width: 33.33333333333333%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  h1 {
-    font-size: 1rem;
-  }
+  font-weight: bold;
+  letter-spacing: -0.1rem;
+  font-size: 1.7rem;
 `;
 
 const RightMenu = styled.div`
@@ -104,9 +103,7 @@ const HeaderPC = () => {
       </LeftMenu>
 
       <Logo>
-        <Link to='/'>
-          <h1>VINTAGE VELLA</h1>
-        </Link>
+        <Link to='/'>VINTAGE VELLA</Link>
       </Logo>
 
       <RightMenu>
