@@ -155,11 +155,3 @@ a:hover {
 * {
   box-sizing: border-box;
 }
-
-.error {
-  color: red;
-  background-color: blue;
-  display: inline-block;
-  margin: 0;
-  padding: 0;
-}
