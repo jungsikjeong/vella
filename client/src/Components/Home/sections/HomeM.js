@@ -111,7 +111,6 @@ const HomeM = () => {
           />
         </ImageContainer>
       </Container>
-      <Footer />
     </>
   );
 };

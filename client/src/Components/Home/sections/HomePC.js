@@ -13,7 +13,7 @@ const Container = styled.div`
 
 const MainImage = styled.div`
   width: 100%;
-  /* height: 100vh; */
+  height: 100vh;
 
   img {
     width: 100%;

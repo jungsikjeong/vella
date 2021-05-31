@@ -2,6 +2,7 @@
    v2.0 | 20110126
    License: none (public domain)
 */
+@import 'antd/dist/antd.css';
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,600;1,400&display=swap');
 
 html,
@@ -147,7 +148,18 @@ a {
   text-decoration: none;
   color: #1b1b1b;
 }
+a:hover {
+  color: #1b1b1b;
+}
 
 * {
   box-sizing: border-box;
+}
+
+.error {
+  color: red;
+  background-color: blue;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
 }

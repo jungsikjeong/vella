@@ -10,7 +10,7 @@ import Search from './Search/Search';
 const Header = styled.header`
   width: 100%;
   height: 3.5rem;
-  background-color: #efeeec;
+  background-color: #fff;
   position: fixed;
   top: 0;
   display: flex;

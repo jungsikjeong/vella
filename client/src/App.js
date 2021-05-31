@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Home from './Components/Home/Home';
 import Header from './Components/Header/Header';
+import Join from './Components/Join/Join';
 
 //Redux
 // import { Provider } from 'react-redux';
@@ -25,6 +26,7 @@ const App = () => {
         <Header />
         <Switch>
           <Route exact path='/' component={Home} />
+          <Route exact path='/join' component={Join} />
         </Switch>
       </>
     </Router>

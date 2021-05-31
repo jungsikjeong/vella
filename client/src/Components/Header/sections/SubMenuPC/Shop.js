@@ -1,6 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const ani = keyframes`
+from{
+  top:25px;
+ }
+ to{
+  top:100%;
+ }
+`;
 
 const SubMenuList = styled.ul`
   position: absolute;
@@ -15,6 +24,7 @@ const SubMenuList = styled.ul`
   visibility: hidden;
 
   &.DropdownOpen2 {
+    animation: ${ani} 0.5s;
     direction: block;
     opacity: 1;
     visibility: visible;

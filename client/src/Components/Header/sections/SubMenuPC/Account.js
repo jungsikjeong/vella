@@ -1,6 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const ani = keyframes`
+from{
+  top:25px;
+ }
+ to{
+  top:100%;
+ }
+`;
 
 const SubMenuList = styled.ul`
   position: absolute;
@@ -14,6 +23,7 @@ const SubMenuList = styled.ul`
   visibility: hidden;
 
   &.DropdownOpen3 {
+    animation: ${ani} 0.5s;
     opacity: 1;
     visibility: visible;
   }
@@ -54,7 +64,7 @@ const Account = ({ DropdownOpen3 }) => {
         <SLink to='#'>Login</SLink>
       </SubMenuItem>
       <SubMenuItem>
-        <SLink to='#'>Join us</SLink>
+        <SLink to='/join'>Join us</SLink>
       </SubMenuItem>
     </SubMenuList>
   );
