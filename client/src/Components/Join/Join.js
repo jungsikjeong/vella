@@ -8,6 +8,7 @@ const Container = styled.div`
   @media (min-width: 800px) {
     padding-top: 6.5rem;
   }
+
   position: relative;
   margin: 0 auto;
   width: 100%;
@@ -33,11 +34,18 @@ const Contents = styled.div`
   height: 100%;
 `;
 
+const ButtonWrap = styled.div`
+  margin: 20px auto 50px;
+  text-align: center;
+  width: 100%;
+`;
+
 const SButton = styled(Button)`
-  padding: 0 2rem;
+  padding: 0.5rem 6.5rem;
 
   @media (min-width: 800px) {
-    margin-right: 3.3rem;
+    /* margin-right: 3.3rem; */
+    padding: 0 2rem;
   }
 `;
 
@@ -225,11 +233,13 @@ const Join = () => {
             )}
           </Form.Item>
 
-          <Form.Item {...tailFormItemLayout} style={{ textAlign: 'center' }}>
+          {/* <Form.Item {...tailFormItemLayout} style={{ textAlign: 'center' }}> */}
+          <ButtonWrap>
             <SButton type='primary' htmlType='submit'>
               회원가입
             </SButton>
-          </Form.Item>
+          </ButtonWrap>
+          {/* </Form.Item> */}
         </Form>
       </Contents>
 

@@ -61,7 +61,7 @@ const Account = ({ DropdownOpen3 }) => {
   return (
     <SubMenuList className={DropdownOpen3 && 'DropdownOpen3'}>
       <SubMenuItem>
-        <SLink to='#'>Login</SLink>
+        <SLink to='/login'>Login</SLink>
       </SubMenuItem>
       <SubMenuItem>
         <SLink to='/join'>Join us</SLink>

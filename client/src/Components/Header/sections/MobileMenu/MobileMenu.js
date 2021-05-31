@@ -62,13 +62,19 @@ const MobileMenu = ({ MenuToggle, MenuToggleHandler }) => {
 
       <SIGN_SIGNUP_CART>
         <li>
-          <SLink to='#'>Login</SLink>
+          <SLink to='/login' onClick={MenuToggleHandler}>
+            Login
+          </SLink>
         </li>
         <li>
-          <SLink to='#'>Join us</SLink>
+          <SLink to='/join' onClick={MenuToggleHandler}>
+            Join us
+          </SLink>
         </li>
         <li>
-          <SLink to='#'>Cart</SLink>
+          <SLink to='#' onClick={MenuToggleHandler}>
+            Cart
+          </SLink>
         </li>
       </SIGN_SIGNUP_CART>
 
@@ -77,19 +83,29 @@ const MobileMenu = ({ MenuToggle, MenuToggleHandler }) => {
 
       <NavMenu>
         <li>
-          <SLink to='#'>About</SLink>
+          <SLink to='#' onClick={MenuToggleHandler}>
+            About
+          </SLink>
         </li>
         <li>
-          <SLink to='#'>Lookbooks</SLink>
+          <SLink to='#' onClick={MenuToggleHandler}>
+            Lookbooks
+          </SLink>
         </li>
         <li>
-          <SLink to='#'>Shop</SLink>
+          <SLink to='#' onClick={MenuToggleHandler}>
+            Shop
+          </SLink>
         </li>
         <li>
-          <SLink to='#'>Account</SLink>
+          <SLink to='#' onClick={MenuToggleHandler}>
+            Account
+          </SLink>
         </li>
         <li>
-          <SLink to='#'>Contact</SLink>
+          <SLink to='#' onClick={MenuToggleHandler}>
+            Contact
+          </SLink>
         </li>
       </NavMenu>
     </Container>
