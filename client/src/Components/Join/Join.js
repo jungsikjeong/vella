@@ -41,11 +41,25 @@ const ButtonWrap = styled.div`
 `;
 
 const SButton = styled(Button)`
-  padding: 0.5rem 6.5rem;
+  width: 100%;
+  /* padding: 0.5rem 6.5rem; */
+  background: #fff;
+  border: 1px solid #d5d5d5;
+  height: 1.9rem;
+  color: black;
 
   @media (min-width: 800px) {
-    /* margin-right: 3.3rem; */
-    padding: 0 2rem;
+    border: 1px solid #000;
+    background-color: #000;
+    color: #fff;
+    width: 50%;
+    transition: all 0.2s ease;
+
+    :hover {
+      border: 1px solid #000;
+      background: #fff;
+      color: #000;
+    }
   }
 `;
 
