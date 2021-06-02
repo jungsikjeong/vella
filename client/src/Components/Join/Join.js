@@ -1,6 +1,10 @@
 import React, { useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { Form, Input, Checkbox, Button } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router';
+import { register } from '../../_actions/auth';
 
 import Footer from '../Footer/Footer';
 
@@ -87,6 +91,11 @@ const tailFormItemLayout = {
 };
 
 const Join = () => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  console.log('isAuthenticated:', isAuthenticated);
+
+  const dispatch = useDispatch();
+
   const emailRef = useRef();
   const nicknameRef = useRef();
   const passwordRef = useRef();
@@ -175,9 +184,15 @@ const Join = () => {
       if (!Term) {
         return setTermError(true);
       }
+
+      dispatch(register({ nickname, email, password }));
     },
-    [FormData, email, nickname, password, password2, Term]
+    [dispatch, FormData, email, nickname, password, password2, Term]
   );
+
+  if (isAuthenticated) {
+    return <Redirect to='/' />;
+  }
 
   return (
     <Container>
@@ -260,6 +275,11 @@ const Join = () => {
       <Footer />
     </Container>
   );
+};
+
+Join.propTypes = {
+  isAuthenticated: PropTypes.bool,
+  register: PropTypes.func,
 };
 
 export default Join;
