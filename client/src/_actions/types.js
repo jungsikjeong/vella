@@ -12,3 +12,6 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT = 'LOGOUT';
 
 export const CLEAR_POST = 'CLEAR_POST';
+
+// 모바일..
+export const MENU_TOGGLE = 'MENU_TOGGLE';

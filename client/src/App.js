@@ -5,6 +5,7 @@ import Home from './Components/Home/Home';
 import Header from './Components/Header/Header';
 import Join from './Components/Join/Join';
 import Login from './Components/Login/Login';
+import Overally from './Components/Overally/Overally';
 
 //Redux
 import { Provider } from 'react-redux';
@@ -25,6 +26,7 @@ const App = () => {
       <Router>
         <>
           <Header />
+          <Overally />
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/join' component={Join} />

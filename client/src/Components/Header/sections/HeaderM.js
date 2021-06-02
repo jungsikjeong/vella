@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { FiShoppingBag } from 'react-icons/fi';
 import { FcMenu } from 'react-icons/fc';
 
 import MobileMenu from './MobileMenu/MobileMenu';
+import { menuToggle } from '../../../_actions/toggle';
+import { logout } from '../../../_actions/auth';
 
 const Container = styled.header`
   padding: 0 1rem;
@@ -18,7 +21,7 @@ const Container = styled.header`
   width: 100%;
   height: 2rem;
   background: #fff;
-  z-index: 200;
+  z-index: 999;
 `;
 
 const Logo = styled.div`
@@ -44,11 +47,18 @@ const Menu = styled.div`
 const SLink = styled(Link)``;
 
 const HeaderM = () => {
-  const [MenuToggle, setMenuToggle] = useState(false);
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const MenuToggle = useSelector((state) => state.toggle.MenuToggle);
 
   //  모바일 메뉴 on & off 결정이벤트
   const MenuToggleHandler = () => {
-    setMenuToggle(!MenuToggle);
+    dispatch(menuToggle());
+  };
+
+  const onLogout = () => {
+    MenuToggleHandler();
+    dispatch(logout);
   };
 
   return (
@@ -57,6 +67,8 @@ const HeaderM = () => {
       <MobileMenu
         MenuToggle={MenuToggle}
         MenuToggleHandler={MenuToggleHandler}
+        isAuthenticated={isAuthenticated}
+        onLogout={onLogout}
         onClick={MenuToggleHandler}
       />
 
@@ -73,6 +85,7 @@ const HeaderM = () => {
             <FiShoppingBag className='icons' />
           </SLink>
         </div>
+
         <div style={{ marginLeft: '.4rem' }}>
           {/* 메뉴 아이콘 */}
           <FcMenu className='icons' onClick={MenuToggleHandler} />

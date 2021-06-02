@@ -47,36 +47,61 @@ const NavMenu = styled.ul`
 
 const SLink = styled(Link)`
   color: #222 !important;
-  display: block;
+  display: inline-block;
   padding: 0.9em 1.6em 0.9em 0;
   font-weight: 600;
   font-size: 0.6rem;
 `;
 
-const MobileMenu = ({ MenuToggle, MenuToggleHandler }) => {
+const MobileMenu = ({
+  MenuToggle,
+  MenuToggleHandler,
+  isAuthenticated,
+  onLogout,
+}) => {
   return (
     <Container className={MenuToggle && 'MenuToggle'}>
-      <CloseBtn onClick={MenuToggleHandler}>
-        <GrClose />
+      <CloseBtn>
+        <GrClose onClick={MenuToggleHandler} />
       </CloseBtn>
 
-      <SIGN_SIGNUP_CART>
-        <li>
-          <SLink to='/login' onClick={MenuToggleHandler}>
-            Login
-          </SLink>
-        </li>
-        <li>
-          <SLink to='/join' onClick={MenuToggleHandler}>
-            Join us
-          </SLink>
-        </li>
-        <li>
-          <SLink to='#' onClick={MenuToggleHandler}>
-            Cart
-          </SLink>
-        </li>
-      </SIGN_SIGNUP_CART>
+      {isAuthenticated ? (
+        <SIGN_SIGNUP_CART>
+          <li>
+            <SLink to='#' onClick={onLogout}>
+              Logout
+            </SLink>
+          </li>
+          <li>
+            <SLink to='#' onClick={MenuToggleHandler}>
+              My Profile
+            </SLink>
+          </li>
+          <li>
+            <SLink to='#' onClick={MenuToggleHandler}>
+              Cart
+            </SLink>
+          </li>
+        </SIGN_SIGNUP_CART>
+      ) : (
+        <SIGN_SIGNUP_CART>
+          <li>
+            <SLink to='/login' onClick={MenuToggleHandler}>
+              Login
+            </SLink>
+          </li>
+          <li>
+            <SLink to='/join' onClick={MenuToggleHandler}>
+              Join us
+            </SLink>
+          </li>
+          <li>
+            <SLink to='#' onClick={MenuToggleHandler}>
+              Cart
+            </SLink>
+          </li>
+        </SIGN_SIGNUP_CART>
+      )}
 
       <br />
       <br />
