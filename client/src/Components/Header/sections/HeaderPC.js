@@ -92,7 +92,7 @@ const SLink = styled(Link)`
   }
 `;
 
-const HeaderPC = () => {
+const HeaderPC = ({ isAuthenticated }) => {
   const [IsHovering, setIsHovering] = useState({
     DropdownOpen1: false,
     DropdownOpen2: false,

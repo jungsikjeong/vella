@@ -1,13 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../../../_actions/auth';
 
 const ani = keyframes`
 from{
   top:25px;
- }
- to{
+  opacity: .5;
+}
+to{
   top:100%;
+  opacity: 1;
  }
 `;
 
@@ -58,15 +62,39 @@ const SLink = styled(Link)`
 `;
 
 const Account = ({ DropdownOpen3 }) => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const dispatch = useDispatch();
+
+  const onLogout = () => dispatch(logout());
+
   return (
-    <SubMenuList className={DropdownOpen3 && 'DropdownOpen3'}>
-      <SubMenuItem>
-        <SLink to='/login'>Login</SLink>
-      </SubMenuItem>
-      <SubMenuItem>
-        <SLink to='/join'>Join us</SLink>
-      </SubMenuItem>
-    </SubMenuList>
+    <>
+      {isAuthenticated ? (
+        <SubMenuList
+          className={DropdownOpen3 && 'DropdownOpen3'}
+          style={{ paddingTop: '3.8rem' }}
+        >
+          <SubMenuItem onClick={onLogout}>
+            <SLink to='#'>Logout</SLink>
+          </SubMenuItem>
+          <SubMenuItem>
+            <SLink to='#'>Profile</SLink>
+          </SubMenuItem>
+          <SubMenuItem>
+            <SLink to='#'>Cart</SLink>
+          </SubMenuItem>
+        </SubMenuList>
+      ) : (
+        <SubMenuList className={DropdownOpen3 && 'DropdownOpen3'}>
+          <SubMenuItem>
+            <SLink to='/login'>Login</SLink>
+          </SubMenuItem>
+          <SubMenuItem>
+            <SLink to='/join'>Join us</SLink>
+          </SubMenuItem>
+        </SubMenuList>
+      )}
+    </>
   );
 };
 

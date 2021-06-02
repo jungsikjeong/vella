@@ -1,6 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import { Form, Input, Checkbox, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
@@ -275,11 +274,6 @@ const Join = () => {
       <Footer />
     </Container>
   );
-};
-
-Join.propTypes = {
-  isAuthenticated: PropTypes.bool,
-  register: PropTypes.func,
 };
 
 export default Join;

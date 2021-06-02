@@ -5,9 +5,11 @@ import styled, { keyframes } from 'styled-components';
 const ani = keyframes`
 from{
   top:25px;
- }
- to{
+  opacity: .5;
+}
+to{
   top:100%;
+  opacity: 1;
  }
 `;
 

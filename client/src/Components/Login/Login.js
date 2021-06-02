@@ -1,6 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
+import { login } from '../../_actions/auth';
 
 const Container = styled.div`
   position: relative;
@@ -76,12 +78,12 @@ const FormContents = styled.div``;
 
 const Input = styled.input`
   overflow: hidden;
-  display: block;
   margin: 0 0 0.1rem;
   border: 1px solid #000;
   border-radius: 2px;
+  font-size: 0.8rem;
   color: #8f8f91;
-  padding: 0.1rem;
+  padding: 0.2rem 0.5rem;
 `;
 
 const SLink = styled(Link)`
@@ -109,19 +111,47 @@ const Button = styled.button`
 `;
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const { email, password } = formData;
+
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    dispatch(login(email, password));
+  };
+
+  if (isAuthenticated) {
+    return <Redirect to='/' />;
+  }
+
   return (
     <Container>
       <Title>
         <h2>login</h2>
       </Title>
 
-      <Form>
+      <Form onSubmit={onSubmit}>
         <FormContents>
-          <p className='label'>아이디</p>
-          <Input />
+          <p className='label'>이메일</p>
+          <Input name='email' value={email} onChange={(e) => onChange(e)} />
 
           <p className='label'>비밀번호</p>
-          <Input />
+          <Input
+            name='password'
+            type='password'
+            value={password}
+            onChange={(e) => onChange(e)}
+          />
         </FormContents>
 
         <ul>

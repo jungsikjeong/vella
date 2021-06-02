@@ -103,15 +103,8 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 // 로그아웃
-export const logout =
-  (history, isLoggedIn = false) =>
-  async (dispatch) => {
-    dispatch({ type: LOGOUT });
+export const logout = () => async (dispatch) => {
+  dispatch({ type: LOGOUT });
 
-    alert('로그아웃 되었습니다');
-
-    if (!isLoggedIn) {
-      // eslint-disable-next-line no-restricted-globals
-      history.push('/');
-    }
-  };
+  alert('로그아웃 되었습니다');
+};
