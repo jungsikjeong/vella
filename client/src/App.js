@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+// Components
 import Home from './Components/Home/Home';
 import Header from './Components/Header/Header';
 import Join from './Components/Join/Join';
 import Login from './Components/Login/Login';
 import Overally from './Components/Overally/Overally';
+import About from './Components/About/About';
 
 //Redux
 import { Provider } from 'react-redux';
@@ -26,11 +28,12 @@ const App = () => {
       <Router>
         <>
           <Header />
-          <Overally />
+          <Overally /> {/* 모바일 메뉴 클릭시 활성화됨 */}
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/join' component={Join} />
             <Route exact path='/login' component={Login} />
+            <Route exact path='/about' component={About} />
           </Switch>
         </>
       </Router>

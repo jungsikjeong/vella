@@ -14,6 +14,7 @@ const Header = styled.header`
   position: fixed;
   top: 0;
   display: flex;
+
   justify-content: space-between;
   align-items: center;
   text-align: center;
@@ -122,7 +123,7 @@ const HeaderPC = ({ isAuthenticated }) => {
         <LeftMenu>
           <ul>
             <li>
-              <SLink to='#'>About</SLink>
+              <SLink to='/about'>About</SLink>
             </li>
             <li
               className='item menu-hover'

@@ -108,7 +108,7 @@ const MobileMenu = ({
 
       <NavMenu>
         <li>
-          <SLink to='#' onClick={MenuToggleHandler}>
+          <SLink to='/about' onClick={MenuToggleHandler}>
             About
           </SLink>
         </li>
