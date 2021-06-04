@@ -12,14 +12,12 @@ gsap.registerPlugin(ScrollTrigger);
 const Container = styled.div`
   margin: 0 auto;
   text-align: center;
-  background: rgba(0, 0, 0, 0.02);
+  /* background: rgba(0, 0, 0, 0.02); */
   height: 100vh;
 `;
 
 const Section = styled.section`
   background-image: url(${(props) => props.bgUrl});
-  background-color: rgba(0, 0, 0, 0.1);
-  /* background-position: center; */
   background-size: contain;
   background-repeat: no-repeat;
   position: relative;
@@ -140,7 +138,7 @@ const About = () => {
             <p className='about-title'>About Us</p>
 
             <p className='about-desc'>
-              vella는 지속 가능한 패션을 중점으로 생각하며 쾌적한 옷을
+              Vella는 지속 가능한 패션을 중점으로 생각하며 쾌적한 옷을
               수입해옵니다.
             </p>
           </AboutBox>
@@ -155,7 +153,7 @@ const About = () => {
             <p className='about-title'>For Conscious Women</p>
 
             <p className='about-desc'>
-              vella는 전반적으로 가심비(가격 대비 성능 + 심리적 만족도)를
+              Vella는 전반적으로 가심비(가격 대비 성능 + 심리적 만족도)를
               높여드립니다.
             </p>
           </AboutBox>
