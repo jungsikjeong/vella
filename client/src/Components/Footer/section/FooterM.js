@@ -8,6 +8,9 @@ const Container = styled.footer`
   color: #1b1b1b;
   border-top: 0px solid #c5c5c6;
   padding-top: 2rem;
+  z-index: 1;
+  position: relative;
+  background: #fff;
 `;
 
 const Policy = styled.div`
