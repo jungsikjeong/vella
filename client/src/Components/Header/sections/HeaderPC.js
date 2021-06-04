@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import Lookbook from './SubMenuPC/Lookbook';
 import Shop from './SubMenuPC/Shop';
 import Account from './SubMenuPC/Account';
 import Search from './Search/Search';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Header = styled.header`
   width: 100%;
@@ -44,7 +48,7 @@ const LeftMenu = styled.div`
   }
 `;
 
-const Logo = styled.h1`
+const Logo = styled.div`
   width: 33.33333333333333%;
   height: 100%;
   display: flex;
@@ -53,6 +57,9 @@ const Logo = styled.h1`
   font-weight: bold;
   letter-spacing: -0.1rem;
   font-size: 1.7rem;
+  .space {
+    margin-right: 0.5rem;
+  }
 `;
 
 const RightMenu = styled.div`
@@ -93,7 +100,53 @@ const SLink = styled(Link)`
   }
 `;
 
+export const sections = [
+  {
+    title: 'V',
+  },
+  {
+    title: 'I',
+  },
+  {
+    title: 'N',
+  },
+  {
+    title: 'T',
+  },
+  {
+    title: 'A',
+  },
+  {
+    title: 'G',
+  },
+  {
+    title: 'E',
+    className: 'space',
+  },
+
+  {
+    title: 'V',
+  },
+
+  {
+    title: 'E',
+  },
+
+  {
+    title: 'L',
+  },
+  {
+    title: 'L',
+  },
+  {
+    title: 'A',
+  },
+];
+
 const HeaderPC = ({ isAuthenticated }) => {
+  const revealRefs = useRef([]);
+  revealRefs.current = [];
+
   const [IsHovering, setIsHovering] = useState({
     DropdownOpen1: false,
     DropdownOpen2: false,
@@ -116,6 +169,22 @@ const HeaderPC = ({ isAuthenticated }) => {
     setOpenSearch((OpenSearch) => !OpenSearch);
   };
 
+  // div들 집어넣음
+  const addToRefs = (el) => {
+    if (el && !revealRefs.current.includes(el)) {
+      revealRefs.current.push(el);
+    }
+  };
+  useEffect(() => {
+    //텍스트 모션
+    revealRefs.current.forEach((el, index) => {
+      gsap.from(el, {
+        autoAlpha: 0,
+        delay: Math.random() * 1,
+        ease: 'power3.easeInOut',
+      });
+    });
+  }, []);
   return (
     <>
       <Search onOpenSearch={onOpenSearch} OpenSearch={OpenSearch} />
@@ -149,7 +218,15 @@ const HeaderPC = ({ isAuthenticated }) => {
         </LeftMenu>
 
         <Logo>
-          <Link to='/'>VINTAGE VELLA</Link>
+          {sections.map((title, index) => (
+            <div
+              ref={addToRefs}
+              key={index}
+              className={title.className && 'space'}
+            >
+              <Link to='/'>{title.title}</Link>
+            </div>
+          ))}
         </Logo>
 
         <RightMenu>
