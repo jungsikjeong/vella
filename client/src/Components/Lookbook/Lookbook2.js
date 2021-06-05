@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useMediaQuery } from 'react-responsive';
 import { imgArray2 } from './sections/imageArray2';
@@ -71,13 +71,37 @@ const Element = styled.div`
   }
 `;
 
+const ScrollUp = styled.div`
+  position: fixed;
+  z-index: 2147483647;
+  display: none;
+  bottom: 15%;
+  right: 2%;
+  color: #000;
+  font-size: 1.1rem;
+  font-family: verdana;
+  letter-spacing: 1px;
+  border-radius: 2px;
+  opacity: 0.9;
+  padding: 0.2rem 0.2rem 0.1rem 0.3rem;
+  cursor: pointer;
+  transition: 200ms linear;
+
+  &.scrollBtn {
+    display: block;
+  }
+`;
+
 const Lookbook2 = () => {
   const isMobile = useMediaQuery({
     query: '(max-width:800px)',
   });
 
+  const SectionRef = useRef();
+
   const [Toggle, setToggle] = useState(false);
   const [ImgSrc, setImgSrc] = useState(false);
+  const [ScrollBtn, setScrollBtn] = useState(false);
 
   const onToggle = (imgSrc) => {
     // 모바일 환경일땐 작동안하게끔
@@ -88,10 +112,34 @@ const Lookbook2 = () => {
     setImgSrc(imgSrc);
   };
 
-  return (
-    <Container>
-      {/* Toggle = true면 룩북 디테일페이지가 나타남 */}
+  const onScrollTo = () => {
+    window.scrollTo({
+      top: SectionRef.current.offsetTop,
+      behavior: 'smooth',
+    });
+  };
 
+  const scrollHandler = useCallback(() => {
+    const { pageYOffset } = window;
+    setScrollBtn(pageYOffset > 500);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', scrollHandler);
+
+    return () => window.removeEventListener('scroll', scrollHandler);
+  }, [scrollHandler]);
+
+  return (
+    <Container ref={SectionRef}>
+      {isMobile ? (
+        ''
+      ) : (
+        <ScrollUp onClick={onScrollTo} className={ScrollBtn && 'scrollBtn'}>
+          ^
+        </ScrollUp>
+      )}
+      {/* Toggle = true면 룩북 디테일페이지가 나타남 */}
       <ActiveBox imgSrc={ImgSrc} Toggle={Toggle} onToggle={onToggle} />
 
       <Wrapper>
