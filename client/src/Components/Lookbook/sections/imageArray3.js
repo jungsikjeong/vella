@@ -1,61 +1,81 @@
+import img1 from '../../../assets/lookbook3-image/1.jpg';
+import img2 from '../../../assets/lookbook3-image/2.jpg';
+import img3 from '../../../assets/lookbook3-image/3.jpg';
+import img4 from '../../../assets/lookbook3-image/4.jpg';
+import img5 from '../../../assets/lookbook3-image/5.jpg';
+import img6 from '../../../assets/lookbook3-image/6.jpg';
+import img7 from '../../../assets/lookbook3-image/7.jpg';
+import img8 from '../../../assets/lookbook3-image/8.jpg';
+import img9 from '../../../assets/lookbook3-image/9.jpeg';
+import img10 from '../../../assets/lookbook3-image/10.jpeg';
+import img11 from '../../../assets/lookbook3-image/11.jpg';
+import img12 from '../../../assets/lookbook3-image/12.jpg';
+import img13 from '../../../assets/lookbook3-image/13.jpg';
+import img14 from '../../../assets/lookbook3-image/14.jpg';
+import img15 from '../../../assets/lookbook3-image/15.jpeg';
+import img16 from '../../../assets/lookbook3-image/16.jpg';
+import img17 from '../../../assets/lookbook3-image/17.jpeg';
+import img18 from '../../../assets/lookbook3-image/18.jpeg';
+import img19 from '../../../assets/lookbook3-image/19.jpeg';
+
 export const imgArray3 = [
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/1.jpg',
+    src: img1,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/2.jpg',
+    src: img2,
     className: 'span2',
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/3.jpg',
+    src: img3,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/4.jpg',
+    src: img4,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/5.jpg',
+    src: img5,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/6.jpg',
+    src: img6,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/7.jpg',
+    src: img7,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/8.jpg',
+    src: img8,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/9.jpg',
+    src: img9,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/10.jpg',
+    src: img10,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/11.jpg',
+    src: img11,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/12.jpg',
+    src: img12,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/13.jpg',
+    src: img13,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/14.jpg',
+    src: img14,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/15.jpg',
+    src: img15,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/16.jpg',
+    src: img16,
     className: 'span2',
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/17.jpg',
+    src: img17,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/18.jpg',
+    src: img18,
   },
   {
-    src: 'https://nueahmik.com/web/upload/lookbook/2021ss/19.jpg',
+    src: img19,
   },
 ];

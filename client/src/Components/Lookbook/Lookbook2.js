@@ -4,6 +4,7 @@ import { useMediaQuery } from 'react-responsive';
 import { imgArray2 } from './sections/imageArray2';
 
 import ActiveBox from './sections/ActiveBox';
+import Footer from '../Footer/Footer';
 
 const Container = styled.div`
   padding-top: 2rem;
@@ -104,6 +105,7 @@ const Lookbook2 = () => {
           </Element>
         ))}
       </Wrapper>
+      <Footer />
     </Container>
   );
 };
