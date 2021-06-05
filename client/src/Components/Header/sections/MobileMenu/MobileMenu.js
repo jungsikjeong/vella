@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { GrClose } from 'react-icons/gr';
 import { Link } from 'react-router-dom';
@@ -43,13 +43,24 @@ const NavMenu = styled.ul`
   margin: 1rem 0;
   line-height: 0.5rem;
   text-align: right;
+
+  .look-submenu {
+    display: flex;
+    flex-direction: column;
+
+    a {
+      padding-left: 0.5rem;
+      font-size: 0.5rem;
+      font-weight: 100;
+    }
+  }
 `;
 
 const SLink = styled(Link)`
   color: #222 !important;
   display: inline-block;
   padding: 0.9em 1.6em 0.9em 0;
-  font-weight: 600;
+  font-weight: bold;
   font-size: 0.6rem;
 `;
 
@@ -59,6 +70,12 @@ const MobileMenu = ({
   isAuthenticated,
   onLogout,
 }) => {
+  const [LookMenuToggle, setLookMenuToggle] = useState(false);
+
+  const onLookMenuToggle = () => {
+    setLookMenuToggle(!LookMenuToggle);
+  };
+
   return (
     <Container className={MenuToggle && 'MenuToggle'}>
       <CloseBtn>
@@ -112,11 +129,28 @@ const MobileMenu = ({
             About
           </SLink>
         </li>
-        <li>
-          <SLink to='#' onClick={MenuToggleHandler}>
-            Lookbooks
-          </SLink>
+        <li onClick={onLookMenuToggle}>
+          <SLink to='#'>Lookbooks</SLink>
         </li>
+        {LookMenuToggle && (
+          <ul className='look-submenu'>
+            <li>
+              <SLink to='/lookbook1' onClick={MenuToggleHandler}>
+                Release 1
+              </SLink>
+            </li>
+            <li>
+              <SLink to='/lookbook2' onClick={MenuToggleHandler}>
+                Release 2
+              </SLink>
+            </li>
+            <li>
+              <SLink to='/lookbook3' onClick={MenuToggleHandler}>
+                Release 3
+              </SLink>
+            </li>
+          </ul>
+        )}
         <li>
           <SLink to='#' onClick={MenuToggleHandler}>
             Shop

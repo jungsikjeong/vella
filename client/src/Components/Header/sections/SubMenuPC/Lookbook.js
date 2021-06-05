@@ -65,13 +65,13 @@ const Lookbook = ({ DropdownOpen1 }) => {
   return (
     <SubMenuList className={DropdownOpen1 && 'DropdownOpen1'}>
       <SubMenuItem>
-        <SLink to='#'>Release 3</SLink>
+        <SLink to='/lookbook1'>Release 1</SLink>
       </SubMenuItem>
       <SubMenuItem>
-        <SLink to='#'>Release 2</SLink>
+        <SLink to='/lookbook2'>Release 2</SLink>
       </SubMenuItem>
       <SubMenuItem>
-        <SLink to='#'>Release 1</SLink>
+        <SLink to='/lookbook3'>Release 3</SLink>
       </SubMenuItem>
     </SubMenuList>
   );

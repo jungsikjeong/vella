@@ -9,6 +9,9 @@ import Login from './Components/Login/Login';
 import Overally from './Components/Overally/Overally';
 import About from './Components/About/About';
 import Contact from './Components/Contact/Contact';
+import Lookbook1 from './Components/Lookbook/Lookbook1';
+import Lookbook2 from './Components/Lookbook/Lookbook2';
+import Lookbook3 from './Components/Lookbook/Lookbook3.';
 
 //Redux
 import { Provider } from 'react-redux';
@@ -36,6 +39,9 @@ const App = () => {
             <Route exact path='/login' component={Login} />
             <Route exact path='/about' component={About} />
             <Route exact path='/contact' component={Contact} />
+            <Route exact path='/lookbook1' component={Lookbook1} />
+            <Route exact path='/lookbook2' component={Lookbook2} />
+            <Route exact path='/lookbook3' component={Lookbook3} />
           </Switch>
         </>
       </Router>
