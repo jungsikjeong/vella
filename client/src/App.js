@@ -8,6 +8,7 @@ import Join from './Components/Join/Join';
 import Login from './Components/Login/Login';
 import Overally from './Components/Overally/Overally';
 import About from './Components/About/About';
+import Contact from './Components/Contact/Contact';
 
 //Redux
 import { Provider } from 'react-redux';
@@ -34,7 +35,7 @@ const App = () => {
             <Route exact path='/join' component={Join} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/about' component={About} />
-            {/* <Route exact path='/contact' component={Contact} /> */}
+            <Route exact path='/contact' component={Contact} />
           </Switch>
         </>
       </Router>

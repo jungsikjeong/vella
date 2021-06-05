@@ -128,7 +128,7 @@ const MobileMenu = ({
           </SLink>
         </li>
         <li>
-          <SLink to='#' onClick={MenuToggleHandler}>
+          <SLink to='/contact' onClick={MenuToggleHandler}>
             Contact
           </SLink>
         </li>

@@ -241,7 +241,7 @@ const HeaderPC = ({ isAuthenticated }) => {
               <Account DropdownOpen3={IsHovering.DropdownOpen3} />
             </li>
             <li className='item'>
-              <SLink to='#'>Contact</SLink>
+              <SLink to='/contact'>Contact</SLink>
             </li>
 
             <li onClick={onOpenSearch}>

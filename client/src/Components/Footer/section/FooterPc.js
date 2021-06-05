@@ -46,13 +46,6 @@ const Col = styled.div`
   }
 `;
 
-const SLink = styled(Link)`
-  color: #333 !important;
-  font-size: 0.65rem;
-  font-weight: bold;
-  line-height: 17px;
-`;
-
 const FooterPc = () => {
   return (
     <Footer>
