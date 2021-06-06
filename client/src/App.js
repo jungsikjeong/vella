@@ -12,6 +12,13 @@ import Contact from './Components/Contact/Contact';
 import Lookbook1 from './Components/Lookbook/Lookbook1';
 import Lookbook2 from './Components/Lookbook/Lookbook2';
 import Lookbook3 from './Components/Lookbook/Lookbook3.';
+import All from './Components/Shop/All';
+import Top from './Components/Shop/Top';
+import Bottom from './Components/Shop/Bottom';
+import Dress from './Components/Shop/Dress';
+import Outer from './Components/Shop/Outer';
+import Promotion from './Components/Shop/Promotion';
+import Acc from './Components/Shop/Acc';
 
 //Redux
 import { Provider } from 'react-redux';
@@ -42,6 +49,13 @@ const App = () => {
             <Route exact path='/lookbook1' component={Lookbook1} />
             <Route exact path='/lookbook2' component={Lookbook2} />
             <Route exact path='/lookbook3' component={Lookbook3} />
+            <Route exact path='/product/all' component={All} />
+            <Route exact path='/product/top' component={Top} />
+            <Route exact path='/product/bottom' component={Bottom} />
+            <Route exact path='/product/dress' component={Dress} />
+            <Route exact path='/product/outer' component={Outer} />
+            <Route exact path='/product/proMotion' component={Promotion} />
+            <Route exact path='/product/acc' component={Acc} />
           </Switch>
         </>
       </Router>

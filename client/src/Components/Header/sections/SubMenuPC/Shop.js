@@ -65,25 +65,25 @@ const Shop = ({ DropdownOpen2 }) => {
   return (
     <SubMenuList className={DropdownOpen2 && 'DropdownOpen2'}>
       <SubMenuItem>
-        <SLink to='#'>ALL</SLink>
+        <SLink to='/product/all'>ALL</SLink>
       </SubMenuItem>
       <SubMenuItem>
-        <SLink to='#'>Top</SLink>
+        <SLink to='/product/top'>Top</SLink>
       </SubMenuItem>
       <SubMenuItem>
-        <SLink to='#'>Bottom</SLink>
+        <SLink to='/product/bottom'>Bottom</SLink>
       </SubMenuItem>
       <SubMenuItem>
-        <SLink to='#'>Dress</SLink>
+        <SLink to='/product/dress'>Dress</SLink>
       </SubMenuItem>
       <SubMenuItem>
-        <SLink to='#'>Outer</SLink>
+        <SLink to='/product/outer'>Outer</SLink>
       </SubMenuItem>
       <SubMenuItem>
-        <SLink to='#'>ProMotion</SLink>
+        <SLink to='/product/promotion'>ProMotion</SLink>
       </SubMenuItem>
       <SubMenuItem>
-        <SLink to='#'>Acc</SLink>
+        <SLink to='/product/acc'>Acc</SLink>
       </SubMenuItem>
     </SubMenuList>
   );
