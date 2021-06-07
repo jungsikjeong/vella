@@ -1,45 +1,23 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useMediaQuery } from 'react-responsive';
 
 import Categories from './Common/Categories';
 import Responsive from './Common/Responsiv';
+import Footer from '../Footer/Footer';
 
 import test from './Common/test.json';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const ani = keyframes`
-0% {
-    opacity: 0;
-    transform: translateY(20px);
-}
-
-100% {
-    opacity: 1;
-    transform: translateY(0);
-}
-`;
 
 const Container = styled(Responsive)``;
 
 const CategoryWrapper = styled.div`
   text-align: center;
   margin-bottom: 1.75rem;
-`;
-
-const ThisCategory = styled.div`
-  margin: 0.5rem 0 1rem;
-
-  h2 {
-    font-weight: 700;
-    font-size: 0.8rem;
-    text-align: center;
-    text-transform: uppercase;
-    color: #333;
-  }
 `;
 
 const ProductList = styled.ul`
@@ -135,18 +113,18 @@ const All = () => {
 
   // 상품들 집어넣음
   const contentsAddToRefs = (el) => {
+    if (isMobile) return;
     if (el && !revealRefs.current.includes(el)) {
       revealRefs.current.push(el);
     }
   };
+  const isMobile = useMediaQuery({
+    query: '(max-width:800px)',
+  });
 
   return (
     <Container>
       <CategoryWrapper>
-        <ThisCategory>
-          <h2>ALL</h2>
-        </ThisCategory>
-
         {/* 카테고리들 */}
         <Categories />
       </CategoryWrapper>
@@ -165,6 +143,7 @@ const All = () => {
           </ProductItem>
         ))}
       </ProductList>
+      <Footer />
     </Container>
   );
 };

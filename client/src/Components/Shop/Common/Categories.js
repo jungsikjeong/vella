@@ -30,6 +30,18 @@ const Container = styled.div`
   }
 `;
 
+const ThisCategory = styled.div`
+  margin: 0.5rem 0 1rem;
+
+  h2 {
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-align: center;
+    text-transform: uppercase;
+    color: #333;
+  }
+`;
+
 const SLink = styled(Link)`
   font-weight: 600;
   font-size: 0.6rem;
@@ -42,6 +54,9 @@ const SLink = styled(Link)`
 const Categories = ({ location: { pathname } }) => {
   return (
     <Container>
+      <ThisCategory>
+        <h2>{pathname.slice(9)}</h2>
+      </ThisCategory>
       <ul>
         <li>
           <SLink to='/product/all'>
