@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 import Categories from './Common/Categories';
 import Responsive from './Common/Responsiv';
+
+import test from './Common/test.json';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const ani = keyframes`
+0% {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+100% {
+    opacity: 1;
+    transform: translateY(0);
+}
+`;
 
 const Container = styled(Responsive)``;
 
@@ -57,6 +76,70 @@ const Description = styled.div`
 `;
 
 const All = () => {
+  // 6개씩 렌더링 되도록
+  // 초기값은 6개
+  const [Result, setResult] = useState(test.slice(0, 6));
+  const [ItemIndex, setItemIndex] = useState(0);
+
+  const revealRefs = useRef([]);
+  revealRefs.current = [];
+
+  const onInfiniteScroll = useCallback(() => {
+    let scrollHeight = Math.max(
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight
+    );
+    let scrollTop = Math.max(
+      document.documentElement.scrollTop,
+      document.body.scrollTop
+    );
+    let clientHeight = document.documentElement.clientHeight;
+
+    let sum = scrollTop + clientHeight;
+
+    if (Math.floor(sum) === scrollHeight) {
+      setItemIndex(ItemIndex + 6);
+      setResult(Result.concat(test.slice(ItemIndex + 6, ItemIndex + 12)));
+    }
+  }, [ItemIndex, Result]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', onInfiniteScroll, true);
+    return () => window.removeEventListener('scroll', onInfiniteScroll, true);
+  }, [onInfiniteScroll]);
+
+  useEffect(() => {
+    revealRefs.current.forEach((el, index) => {
+      gsap.fromTo(
+        el,
+        {
+          opacity: 0,
+          transform: 'translateY(20px)',
+          //   autoAlpha: 0,
+        },
+        {
+          duration: 1,
+          opacity: 1,
+          transform: 'translateY(0px)',
+          ease: 'none',
+          scrollTrigger: {
+            id: `section-${index + 1}`,
+            trigger: el,
+            start: 'top center+=100',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+    });
+  }, [Result]);
+
+  // 상품들 집어넣음
+  const contentsAddToRefs = (el) => {
+    if (el && !revealRefs.current.includes(el)) {
+      revealRefs.current.push(el);
+    }
+  };
+
   return (
     <Container>
       <CategoryWrapper>
@@ -69,55 +152,18 @@ const All = () => {
       </CategoryWrapper>
 
       <ProductList>
-        <ProductItem>
-          <Link to='#'>
-            <img
-              src='https://nueahmik.com/web/product/big/202103/3ab927ab6a00f07b72b4caca600ba9e4.jpg'
-              alt=''
-            />
+        {Result.map((item, index) => (
+          <ProductItem key={index} ref={contentsAddToRefs}>
+            <Link to='#'>
+              <img src={item.src} alt='' />
 
-            <Description>
-              <strong className='title'>GADI 밴드 셔링 미니 원피스</strong>
-              <p className='price'>219,000원</p>
-            </Description>
-          </Link>
-        </ProductItem>
-
-        <ProductItem>
-          <img
-            src='https://nueahmik.com/web/product/big/202103/3ab927ab6a00f07b72b4caca600ba9e4.jpg'
-            alt=''
-          />
-
-          <Description>
-            <strong className='title'>GADI 밴드 셔링 미니 원피스</strong>
-            <p className='price'>219,000원</p>
-          </Description>
-        </ProductItem>
-
-        <ProductItem>
-          <img
-            src='https://nueahmik.com/web/product/big/202103/3ab927ab6a00f07b72b4caca600ba9e4.jpg'
-            alt=''
-          />
-
-          <Description>
-            <strong className='title'>GADI 밴드 셔링 미니 원피스</strong>
-            <p className='price'>219,000원</p>
-          </Description>
-        </ProductItem>
-
-        <ProductItem>
-          <img
-            src='https://nueahmik.com/web/product/big/202103/3ab927ab6a00f07b72b4caca600ba9e4.jpg'
-            alt=''
-          />
-
-          <Description>
-            <strong className='title'>GADI 밴드 셔링 미니 원피스</strong>
-            <p className='price'>219,000원</p>
-          </Description>
-        </ProductItem>
+              <Description>
+                <strong className='title'>{item.title}</strong>
+                <p className='price'>{item.price}</p>
+              </Description>
+            </Link>
+          </ProductItem>
+        ))}
       </ProductList>
     </Container>
   );
