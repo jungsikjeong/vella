@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { GrClose } from 'react-icons/gr';
 import { Link } from 'react-router-dom';
+
+const fadeIn = keyframes`
+0%{
+  opacity: 0;
+}
+100%{
+  opacity: 1;
+}
+`;
 
 const Container = styled.div`
   z-index: 999;
@@ -47,11 +56,35 @@ const NavMenu = styled.ul`
   .look-submenu {
     display: flex;
     flex-direction: column;
-
+    li {
+      &:nth-child(1) {
+        animation: 0.5s ease 0s 1 normal forwards running ${fadeIn};
+      }
+      &:nth-child(2) {
+        animation: 0.5s ease 0.0833333s 1 normal forwards running ${fadeIn};
+      }
+      &:nth-child(3) {
+        animation: 0.5s ease 0.166667s 1 normal forwards running ${fadeIn};
+      }
+      &:nth-child(4) {
+        animation: 0.5s ease 0.25s 1 normal forwards running ${fadeIn};
+      }
+      &:nth-child(5) {
+        animation: 0.5s ease 0.333333s 1 normal forwards running ${fadeIn};
+      }
+      &:nth-child(6) {
+        animation: 0.5s ease 0.416667s 1 normal forwards running ${fadeIn};
+      }
+      &:nth-child(7) {
+        animation: 0.5s ease 0.5s 1 normal forwards running ${fadeIn};
+      }
+    }
     a {
       padding-left: 0.5rem;
       font-size: 0.5rem;
       font-weight: 100;
+      color: #333;
+      opacity: 0.8;
     }
   }
 `;
@@ -71,9 +104,14 @@ const MobileMenu = ({
   onLogout,
 }) => {
   const [LookMenuToggle, setLookMenuToggle] = useState(false);
+  const [ShopMenuToggle, setShopMenuToggle] = useState(false);
 
   const onLookMenuToggle = () => {
     setLookMenuToggle(!LookMenuToggle);
+  };
+
+  const onShopMenuToggle = () => {
+    setShopMenuToggle(!ShopMenuToggle);
   };
 
   return (
@@ -152,15 +190,50 @@ const MobileMenu = ({
           </ul>
         )}
         <li>
-          <SLink to='#' onClick={MenuToggleHandler}>
+          <SLink to='#' onClick={onShopMenuToggle}>
             Shop
           </SLink>
         </li>
-        <li>
-          <SLink to='#' onClick={MenuToggleHandler}>
-            Account
-          </SLink>
-        </li>
+        {ShopMenuToggle && (
+          <ul className='look-submenu'>
+            <li>
+              <SLink to='/product/all' onClick={MenuToggleHandler}>
+                ALL
+              </SLink>
+            </li>
+            <li>
+              <SLink to='/product/top' onClick={MenuToggleHandler}>
+                Top
+              </SLink>
+            </li>
+            <li>
+              <SLink to='/product/bottom' onClick={MenuToggleHandler}>
+                Bottom
+              </SLink>
+            </li>
+            <li>
+              <SLink to='/product/dress' onClick={MenuToggleHandler}>
+                Dress
+              </SLink>
+            </li>
+            <li>
+              <SLink to='/product/outer' onClick={MenuToggleHandler}>
+                Outer
+              </SLink>
+            </li>
+            <li>
+              <SLink to='/product/promotion' onClick={MenuToggleHandler}>
+                Promotion
+              </SLink>
+            </li>
+            <li>
+              <SLink to='/product/acc' onClick={MenuToggleHandler}>
+                Acc
+              </SLink>
+            </li>
+          </ul>
+        )}
+
         <li>
           <SLink to='/contact' onClick={MenuToggleHandler}>
             Contact
