@@ -43,6 +43,9 @@ const Col = styled.div`
 
   a {
     color: #525252;
+    &.insta-font {
+      font-size: 0.7rem;
+    }
   }
 `;
 
@@ -96,7 +99,12 @@ const FooterPc = () => {
         <Col>
           <h2>FOLLOW</h2>
           <span>
-            <a href='https://www.instagram.com/wndtlr1024/'>Instagram</a>
+            <a
+              href='https://www.instagram.com/wndtlr1024/'
+              className='insta-font'
+            >
+              Instagram
+            </a>
           </span>
           <p style={{ paddingTop: '.5rem' }}>Copyright© 2021 정중식.</p>
         </Col>

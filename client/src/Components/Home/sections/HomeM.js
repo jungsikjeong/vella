@@ -2,6 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import mainImage from '../../../assets/main-image/main-image.png';
+import mainImage2 from '../../../assets/main-image/main-image2.jpg';
+import mainImage3 from '../../../assets/main-image/main-image3.jpg';
+import mainImage4 from '../../../assets/main-image/main-image4.jpg';
+import mainImage5 from '../../../assets/main-image/main-image5.jpg';
+import mainImage6 from '../../../assets/main-image/main-image6.jpg';
+import mainImage7 from '../../../assets/main-image/main-image7.jpg';
+import mainImage8 from '../../../assets/main-image/main-image8.jpg';
+import mainImage9 from '../../../assets/main-image/main-image9.jpg';
+import mainImage10 from '../../../assets/main-image/main-image10.jpg';
+
 import Footer from '../../Footer/Footer';
 
 const Container = styled.div`
@@ -53,62 +64,32 @@ const HomeM = () => {
     <>
       <Container>
         <MainImage>
-          <img
-            src='https://cdn.imweb.me/thumbnail/20201020/ca50972584bae.png'
-            alt=' '
-          />
+          <img src={mainImage} alt=' ' />
         </MainImage>
 
         <ImageContainer>
           {/* New Items */}
-          <SLink to='#'>
-            <img
-              src='https://m.nueahmik.com/web/upload/main_page/2021ss/M1.jpg'
-              alt=''
-            />
+          <SLink to='/product/all'>
+            <img src={mainImage2} alt='' />
           </SLink>
 
-          <img
-            src='https://m.nueahmik.com/web/upload/main_page/2021ss/M2.jpg'
-            alt=''
-          />
+          <img src={mainImage3} alt='' />
 
-          <img
-            src='https://m.nueahmik.com/web/upload/main_page/2021ss/M3.jpg'
-            alt=''
-          />
-          <img
-            src='https://m.nueahmik.com/web/upload/main_page/2021ss/3.jpg'
-            alt=''
-          />
+          <img src={mainImage4} alt='' />
+          <img src={mainImage5} alt='' />
 
           {/* 원피스 카테고리로 이동 */}
-          <SLink to='#'>
-            <img
-              src='https://m.nueahmik.com/web/upload/main_page/2021ss/4.jpg'
-              alt=''
-            />
+          <SLink to='/product/dress'>
+            <img src={mainImage6} alt='' />
           </SLink>
 
-          <img
-            src='	https://m.nueahmik.com/web/upload/main_page/2021ss/M4.jpg'
-            alt=''
-          />
+          <img src={mainImage7} alt='' />
 
-          <img
-            src='https://m.nueahmik.com/web/upload/main_page/2021ss/6.jpg'
-            alt=''
-          />
+          <img src={mainImage8} alt='' />
           <br />
-          <img
-            src='https://m.nueahmik.com/web/upload/main_page/2021ss/7.jpg'
-            alt=''
-          />
+          <img src={mainImage9} alt='' />
 
-          <img
-            src='	https://m.nueahmik.com/web/upload/main_page/2021ss/9.jpg'
-            alt=''
-          />
+          <img src={mainImage10} alt='' />
         </ImageContainer>
       </Container>
       <Footer />
