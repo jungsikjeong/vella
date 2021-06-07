@@ -3,15 +3,29 @@ import { Link, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
+  .current {
+    border-bottom: 1px solid #333;
+  }
+
   ul {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
   }
-  li {
-    padding: 0.4rem 0.75rem 0.4rem 0.75rem;
 
-    .current {
-      border-bottom: 1px solid #333;
+  li {
+    width: 25%;
+    padding: 0.4rem 0.75rem 0.4rem 0.75rem;
+  }
+
+  @media (min-width: 800px) {
+    ul {
+      display: flex;
+      justify-content: center;
+      flex-wrap: nowrap;
+    }
+    li {
+      width: 100%;
     }
   }
 `;
