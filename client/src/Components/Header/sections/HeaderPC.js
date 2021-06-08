@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
@@ -168,6 +168,11 @@ const HeaderPC = ({ pathname }) => {
     setOpenSearch((OpenSearch) => !OpenSearch);
   };
 
+  // 헤더 영역클릭시 Search= false
+  const onSearchFalse = useCallback(() => {
+    if (OpenSearch) setOpenSearch(false);
+  }, [OpenSearch]);
+
   // div들 집어넣음
   const addToRefs = (el) => {
     if (el && !revealRefs.current.includes(el)) {
@@ -186,7 +191,9 @@ const HeaderPC = ({ pathname }) => {
   }, []);
   return (
     <>
+      {/* 검색 버튼 누르면 활성화되는 컴포넌트 */}
       <Search onOpenSearch={onOpenSearch} OpenSearch={OpenSearch} />
+
       <Header
         current={
           pathname === '/admin' ||
@@ -195,6 +202,7 @@ const HeaderPC = ({ pathname }) => {
           pathname === '/admin/products' ||
           pathname === '/admin/review'
         }
+        onClick={onSearchFalse}
       >
         <LeftMenu>
           <ul>

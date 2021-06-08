@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
+import Helmet from 'react-helmet';
 import image11 from '../../../assets/about-image/11.jpg';
 
 import Footer from '../../Footer/Footer';
@@ -137,6 +137,9 @@ const AboutPC = () => {
 
   return (
     <Container>
+      <Helmet>
+        <title>Vella | About</title>
+      </Helmet>
       <Wrapper>
         <Section bgUrl={image11}>
           <AboutBox

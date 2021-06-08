@@ -4,6 +4,7 @@ import { Form, Input, Checkbox, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
 import { register } from '../../_actions/auth';
+import Helmet from 'react-helmet';
 
 import Footer from '../Footer/Footer';
 
@@ -194,6 +195,9 @@ const Join = () => {
 
   return (
     <Container>
+      <Helmet>
+        <title>Vella | Join</title>
+      </Helmet>
       <Title>
         <h2>회원 가입</h2>
       </Title>

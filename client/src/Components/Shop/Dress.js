@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useMediaQuery } from 'react-responsive';
+import { useMediaQuery } from 'react-responsive';import Helmet from 'react-helmet';
 
 import Categories from './sections/Categories';
 import Responsive from '../Common/Responsive';
@@ -124,6 +124,9 @@ const Dress = () => {
 
   return (
     <Container>
+        <Helmet>
+        <title>Vella | Shop</title>
+      </Helmet>
       <CategoryWrapper>
         {/* 카테고리들 */}
         <Categories />

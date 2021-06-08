@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import image from '../../assets/contact-image/10.jpg';
+import Helmet from 'react-helmet';
 import { gsap } from 'gsap';
 
 import Footer from '../Footer/Footer';
@@ -92,6 +93,9 @@ const Contact = () => {
 
   return (
     <Container ref={containerRef}>
+      <Helmet>
+        <title>Vella | Contact</title>
+      </Helmet>
       <Figure>
         <img src={image} alt='' />
         &nbsp;

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useMediaQuery } from 'react-responsive';
 import { imgArray2 } from './sections/imageArray2';
+import Helmet from 'react-helmet';
 
 import ActiveBox from './sections/ActiveBox';
 import Footer from '../Footer/Footer';
@@ -132,6 +133,9 @@ const Lookbook2 = () => {
 
   return (
     <Container ref={SectionRef}>
+      <Helmet>
+        <title>Vella | Lookbook2</title>
+      </Helmet>
       {isMobile ? (
         ''
       ) : (

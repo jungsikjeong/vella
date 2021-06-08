@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { useMediaQuery } from 'react-responsive';
 import { imgArray } from './sections/imageArray';
+import Helmet from 'react-helmet';
 
 import ActiveBox from './sections/ActiveBox';
 import Footer from '../Footer/Footer';
-import { useCallback } from 'react';
 
 const Container = styled.div`
   padding-top: 2rem;
@@ -121,6 +121,10 @@ const Lookbook1 = () => {
 
   return (
     <Container ref={SectionRef}>
+      <Helmet>
+        <title>Vella | Lookbook1</title>
+      </Helmet>
+
       {isMobile ? (
         ''
       ) : (

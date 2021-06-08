@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { login } from '../../_actions/auth';
+import Helmet from 'react-helmet';
 
 const Container = styled.div`
   position: relative;
@@ -136,6 +137,9 @@ const Login = () => {
 
   return (
     <Container>
+       <Helmet>
+          <title>Vella | Login</title>
+        </Helmet>
       <Title>
         <h2>login</h2>
       </Title>
