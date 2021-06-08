@@ -15,7 +15,7 @@ const Container = styled.header`
   position: fixed;
   top: 0;
   left: 0;
-  display: flex;
+  display: ${(props) => (props.current ? 'none' : 'flex')};
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -46,7 +46,7 @@ const Menu = styled.div`
 
 const SLink = styled(Link)``;
 
-const HeaderM = () => {
+const HeaderM = ({ pathname }) => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const MenuToggle = useSelector((state) => state.toggle.MenuToggle);
@@ -62,7 +62,15 @@ const HeaderM = () => {
   };
 
   return (
-    <Container>
+    <Container
+      current={
+        pathname === '/admin' ||
+        pathname === '/admin/upload' ||
+        pathname === '/admin/' ||
+        pathname === '/admin/products' ||
+        pathname === '/admin/review'
+      }
+    >
       {/* 메뉴 버튼클릭시 활성화 됨 */}
       <MobileMenu
         MenuToggle={MenuToggle}

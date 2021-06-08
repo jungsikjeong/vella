@@ -38,11 +38,18 @@ router.post(
     try {
       // 사용자가 있는지 확인
       let user = await User.findOne({ email });
+      let userNickname = await User.findOne({ nickname });
 
       if (user) {
         res
           .status(400)
           .json({ errors: [{ msg: '이미 등록된 이메일입니다.' }] });
+      }
+
+      if (userNickname) {
+        res
+          .status(400)
+          .json({ errors: [{ msg: '이미 등록된 닉네임입니다.' }] });
       }
 
       user = new User({

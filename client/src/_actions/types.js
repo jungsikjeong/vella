@@ -13,5 +13,12 @@ export const LOGOUT = 'LOGOUT';
 
 export const CLEAR_POST = 'CLEAR_POST';
 
-// 모바일..
+// 모바일 메뉴
 export const MENU_TOGGLE = 'MENU_TOGGLE';
+
+// admin upload
+export const PRODUCT_POST_SUCCESS = 'PRODUCT_POST_SUCCESS';
+export const PRODUCT_POST_FAILURE = 'PRODUCT_POST_FAILURE';
+export const PRODUCT_POST_IMAGE_SUCCESS = 'PRODUCT_POST_IMAGE_SUCCESS';
+export const PRODUCT_POST_IMAGE_FAILURE = 'PRODUCT_POST_IMAGE_FAILURE';
+export const CLEAR_PRODUCT = 'CLEAR_PRODUCT';

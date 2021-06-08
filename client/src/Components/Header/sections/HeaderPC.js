@@ -17,8 +17,7 @@ const Header = styled.header`
   background-color: #fff;
   position: fixed;
   top: 0;
-  display: flex;
-
+  display: ${(props) => (props.current ? 'none' : 'flex')};
   justify-content: space-between;
   align-items: center;
   text-align: center;
@@ -143,7 +142,7 @@ export const sections = [
   },
 ];
 
-const HeaderPC = ({ isAuthenticated }) => {
+const HeaderPC = ({ pathname }) => {
   const revealRefs = useRef([]);
   revealRefs.current = [];
 
@@ -188,7 +187,15 @@ const HeaderPC = ({ isAuthenticated }) => {
   return (
     <>
       <Search onOpenSearch={onOpenSearch} OpenSearch={OpenSearch} />
-      <Header>
+      <Header
+        current={
+          pathname === '/admin' ||
+          pathname === '/admin/upload' ||
+          pathname === '/admin/' ||
+          pathname === '/admin/products' ||
+          pathname === '/admin/review'
+        }
+      >
         <LeftMenu>
           <ul>
             <li>
@@ -240,6 +247,7 @@ const HeaderPC = ({ isAuthenticated }) => {
               {/* 서브메뉴 */}
               <Account DropdownOpen3={IsHovering.DropdownOpen3} />
             </li>
+
             <li className='item'>
               <SLink to='/contact'>Contact</SLink>
             </li>

@@ -91,7 +91,6 @@ const tailFormItemLayout = {
 
 const Join = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  console.log('isAuthenticated:', isAuthenticated);
 
   const dispatch = useDispatch();
 

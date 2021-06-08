@@ -5,11 +5,11 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useMediaQuery } from 'react-responsive';
 
-import Categories from './Common/Categories';
-import Responsive from './Common/Responsiv';
+import Categories from './sections/Categories';
+import Responsive from '../Common/Responsive';
 import Footer from '../Footer/Footer';
 
-import test from './Common/test.json';
+import test from '../Common/test.json';
 
 gsap.registerPlugin(ScrollTrigger);
 
