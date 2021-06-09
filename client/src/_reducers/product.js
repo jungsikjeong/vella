@@ -23,6 +23,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         images: [...state.images, payload],
+        error: '',
       };
 
     case PRODUCT_POST_SUCCESS:
@@ -31,6 +32,7 @@ export default function (state = initialState, action) {
         ...state,
         product: payload,
         loading: false,
+        error: '',
       };
 
     case CLEAR_PRODUCT:
@@ -40,6 +42,7 @@ export default function (state = initialState, action) {
         products: [],
         images: [],
         loading: false,
+        error: '',
       };
 
     case PRODUCT_POST_FAILURE:

@@ -28,12 +28,18 @@ export const productImagePost = (image) => async (dispatch) => {
   }
 };
 
-export const writePost =
-  ({ body }) =>
+export const productPostUpload =
+  ({ body, history }) =>
   async (dispatch) => {
     try {
-      const { text, image } = body;
-      const res = await axios.post('/api/posts', { text, image });
+      const { title, description, price, images } = body;
+
+      const res = await axios.post('/api/posts', {
+        title,
+        description,
+        price,
+        images,
+      });
 
       dispatch({
         type: PRODUCT_POST_SUCCESS,
@@ -43,6 +49,8 @@ export const writePost =
       alert('상품 업로드 완료');
 
       dispatch({ type: CLEAR_PRODUCT });
+      // admin 메인 페이지로 이동
+      history.push('/admin/home');
     } catch (err) {
       const errors = err.response.data.errors;
       console.log(err.response.data.errors);

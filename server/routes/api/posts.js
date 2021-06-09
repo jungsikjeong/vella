@@ -6,6 +6,7 @@ const auth = require('../../middleware/auth');
 const Post = require('../../models/Post');
 const User = require('../../models/User');
 // const upload = require('../../middleware/upload');
+
 const multer = require('multer');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -59,10 +60,22 @@ router.post(
   [
     auth,
     [
-      check('text', '최소 25글자를 입력해주세요').not().isEmpty().isLength({
-        min: 25,
-        max: 100,
-      }),
+      check('title', '상품 이름은 최소 두글자, 최대 이십글자 입니다')
+        .not()
+        .isEmpty()
+        .isLength({
+          min: 2,
+          max: 20,
+        }),
+      check('description', '상품 설명은 최소 두글자, 최대 이백글자 입니다')
+        .not()
+        .isEmpty()
+        .isLength({
+          min: 2,
+          max: 200,
+        }),
+      check('price', '상품 가격을 확인해주세요').not(),
+      check('images', '상품 이미지를 업로드해주세요').not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -71,16 +84,17 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { text, image } = req.body;
+    const { title, description, price, images } = req.body;
 
     try {
       const user = await User.findById(req.user.id).select('-password');
 
       const newPost = new Post({
-        text: text,
-        name: user.name,
-        avatar: user.avatar,
-        image: image ? image : '',
+        title: title,
+        description: description,
+        name: user.nickname,
+        price: price,
+        images: images,
         user: req.user.id,
       });
 

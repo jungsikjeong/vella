@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Dropzone from 'react-dropzone';
 import { Button } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
 import { productImagePost } from '../../../../../_actions/product';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -15,10 +14,17 @@ const ImageUploadBtn = styled(Button)`
 const PreviewBox = styled.div`
   display: flex;
   width: 1024px;
-  height: 500px;
+  height: auto;
   margin-left: 1rem;
   overflow-x: scroll;
-  /* overflow-y: hidden; */
+  overflow-y: hidden;
+
+  img {
+    height: 240px;
+    /* min-width: 300px;
+    width: 300px;
+    height: 240px; */
+  }
 `;
 
 const FileUpload = () => {
@@ -33,9 +39,6 @@ const FileUpload = () => {
 
     dispatch(productImagePost(formData));
   };
-  useEffect(() => {
-    console.log(product.images);
-  }, []);
 
   return (
     <Container>
@@ -45,15 +48,7 @@ const FileUpload = () => {
             product.images &&
             product.images.map((image, index) => (
               <div key={index}>
-                <img
-                  style={{
-                    minWidth: '300px',
-                    width: '300px',
-                    height: '240px',
-                  }}
-                  src={`http://localhost:5000/${image}`}
-                  alt=''
-                />
+                <img src={`http://localhost:5000/${image}`} alt='' />
               </div>
             ))}
         </PreviewBox>
