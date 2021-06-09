@@ -26,6 +26,7 @@ import Outer from './Components/Shop/Outer';
 import Promotion from './Components/Shop/Promotion';
 import Acc from './Components/Shop/Acc';
 import Admin from './Components/Admin/Admin';
+import AdminLogin from './Components/Admin/Sections/AdminLogin/AdminLogin';
 import AdminUpload from './Components/Admin/Sections/AdminUpload/AdminUpload';
 
 if (localStorage.token) {
@@ -61,7 +62,8 @@ const App = () => {
               <Route exact path='/product/outer' component={Outer} />
               <Route exact path='/product/proMotion' component={Promotion} />
               <Route exact path='/product/acc' component={Acc} />
-              <Route exact path='/admin' component={Admin} />
+              <Route exact path='/admin' component={AdminLogin} />
+              <Route exact path='/admin/home' component={Admin} />
               <Route exact path='/admin/upload' component={AdminUpload} />
             </Switch>
           </>

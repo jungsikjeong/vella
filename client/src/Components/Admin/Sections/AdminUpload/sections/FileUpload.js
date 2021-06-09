@@ -1,8 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Dropzone from 'react-dropzone';
+import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { productImagePost } from '../../../../../_actions/product';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+
+const Container = styled.div``;
+
+const ImageUploadBtn = styled(Button)`
+  margin-top: 1rem;
+`;
+
+const PreviewBox = styled.div`
+  display: flex;
+  width: 1024px;
+  height: 500px;
+  margin-left: 1rem;
+  overflow-x: scroll;
+  /* overflow-y: hidden; */
+`;
 
 const FileUpload = () => {
   const product = useSelector((state) => state.product);
@@ -16,54 +33,41 @@ const FileUpload = () => {
 
     dispatch(productImagePost(formData));
   };
+  useEffect(() => {
+    console.log(product.images);
+  }, []);
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <Container>
+      {product && product.images && product.images.length !== 0 && (
+        <PreviewBox>
+          {product &&
+            product.images &&
+            product.images.map((image, index) => (
+              <div key={index}>
+                <img
+                  style={{
+                    minWidth: '300px',
+                    width: '300px',
+                    height: '240px',
+                  }}
+                  src={`http://localhost:5000/${image}`}
+                  alt=''
+                />
+              </div>
+            ))}
+        </PreviewBox>
+      )}
       <Dropzone onDrop={onImageUpload}>
         {({ getRootProps, getInputProps }) => (
-          <div
-            style={{
-              width: '300px',
-              height: '240px',
-              border: '1px solid lightgray',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            {...getRootProps()}
-          >
+          <ImageUploadBtn {...getRootProps()}>
+            업로드
             <input {...getInputProps()} />
-            <PlusOutlined style={{ fontSize: '3rem', color: 'gray' }} />
-          </div>
+            {/* <PlusOutlined style={{ fontSize: '3rem', color: 'gray' }} /> */}
+          </ImageUploadBtn>
         )}
       </Dropzone>
-
-      <div
-        style={{
-          display: 'flex',
-          width: '350px',
-          height: '240px',
-          marginLeft: '1rem',
-          overflowX: 'scroll',
-          overflowY: 'hidden',
-        }}
-      >
-        {/* {product &&
-          product.images.map((image, index) => (
-            <div key={index}>
-              <img
-                style={{
-                  minWidth: '300px',
-                  width: '300px',
-                  height: '240px',
-                }}
-                src={image.filePath}
-                alt=''
-              />
-            </div>
-          ))} */}
-      </div>
-    </div>
+    </Container>
   );
 };
 

@@ -7,7 +7,6 @@ const Post = require('../../models/Post');
 const User = require('../../models/User');
 // const upload = require('../../middleware/upload');
 const multer = require('multer');
-
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/');

@@ -16,8 +16,8 @@ app.use('/api/posts', require('./routes/api/posts'));
 
 //이것을 사용하여 노드 js 서버에있는 이미지를 클라이언트에 표시(react js)
 //https://stackoverflow.com/questions/48914987/send-image-path-from-node-js-express-server-to-react-client
-// app.use('/uploads', express.static('uploads'));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static('uploads'));
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Serve static assets if in production
 // 프론트엔드를 위한 코드 (헤로쿠가 바라보는 코드)

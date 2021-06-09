@@ -197,6 +197,7 @@ const HeaderPC = ({ pathname }) => {
       <Header
         current={
           pathname === '/admin' ||
+          pathname === '/admin/home' ||
           pathname === '/admin/upload' ||
           pathname === '/admin/' ||
           pathname === '/admin/products' ||

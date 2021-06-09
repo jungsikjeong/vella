@@ -65,6 +65,7 @@ const HeaderM = ({ pathname }) => {
     <Container
       current={
         pathname === '/admin' ||
+        pathname === '/admin/home' ||
         pathname === '/admin/upload' ||
         pathname === '/admin/' ||
         pathname === '/admin/products' ||
