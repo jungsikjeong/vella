@@ -7,6 +7,7 @@ import FileUpload from './sections/FileUpload';
 import { useDispatch, useSelector } from 'react-redux';
 import { productPostUpload } from '../../../../_actions/product';
 import { withRouter } from 'react-router';
+import { categories } from '../../../../utils/categories';
 
 const { TextArea } = Input;
 
@@ -19,6 +20,10 @@ const Container = styled(Responsive)`
 `;
 const SForm = styled(Form)`
   padding: 0 1rem;
+`;
+
+const ButtonWrap = styled.div`
+  padding-bottom: 1rem;
 `;
 
 const SButton = styled(Button)`
@@ -41,6 +46,9 @@ const AdminUpload = ({ history }) => {
     description: '',
     price: '',
   });
+
+  const [Category, setCategory] = useState(1);
+
   const { title, description, price } = FormData;
 
   const onChange = useCallback(
@@ -50,10 +58,14 @@ const AdminUpload = ({ history }) => {
     [FormData]
   );
 
+  const onCategoryChange = (e) => {
+    setCategory(e.currentTarget.value);
+  };
+
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      if (!title || !description || !price || !product.images) {
+      if (!title || !description || !price || !product.images || !Category) {
         alert('빈 칸을 모두 채워주세요');
       }
 
@@ -64,11 +76,12 @@ const AdminUpload = ({ history }) => {
         description,
         price,
         images,
+        category: Category,
       };
 
       dispatch(productPostUpload({ body, history }));
     },
-    [title, description, price, dispatch, product.images]
+    [title, description, price, dispatch, product.images, history, Category]
   );
 
   return (
@@ -79,7 +92,15 @@ const AdminUpload = ({ history }) => {
         <SForm onFinish={onSubmit}>
           {/* 파일 업로드 */}
           <FileUpload />
-
+          <br />
+          <select onChange={onCategoryChange}>
+            {categories.map((item) => (
+              <option key={item.key} value={item.key}>
+                {item.value}
+              </option>
+            ))}
+          </select>
+          <br />
           <br />
           <label>상품 이름</label>
           <Input onChange={(e) => onChange(e)} value={title} name='title' />
@@ -101,12 +122,15 @@ const AdminUpload = ({ history }) => {
             name='price'
           />
           <br />
-          <br />
         </SForm>
-        <SButton type='submit' onClick={onSubmit}>
-          확인
-        </SButton>
-        <SButton className='cancel-btb'>취소</SButton>
+        <br />
+
+        <ButtonWrap>
+          <SButton type='submit' onClick={onSubmit}>
+            확인
+          </SButton>
+          <SButton className='cancel-btb'>취소</SButton>
+        </ButtonWrap>
       </Container>
     </>
   );

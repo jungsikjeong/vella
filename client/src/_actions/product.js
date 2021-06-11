@@ -5,6 +5,8 @@ import {
   PRODUCT_POST_IMAGE_SUCCESS,
   PRODUCT_POST_IMAGE_FAILURE,
   CLEAR_PRODUCT,
+  GET_ALL_PRODUCT,
+  GET_ALL_PRODUCT_FAILURE,
 } from './types';
 
 // 게시글 이미지 업로드
@@ -32,13 +34,14 @@ export const productPostUpload =
   ({ body, history }) =>
   async (dispatch) => {
     try {
-      const { title, description, price, images } = body;
+      const { title, description, price, images, category } = body;
 
       const res = await axios.post('/api/posts', {
         title,
         description,
         price,
         images,
+        categories: category,
       });
 
       dispatch({
@@ -87,22 +90,24 @@ export const productPostUpload =
 //   }
 // };
 
-// // 모든 게시글 가져오기
-// export const getAllPosts = () => async (dispatch) => {
-//   try {
-//     const res = await axios.get('/api/posts');
-
-//     dispatch({
-//       type: GET_ALL_POSTS,
-//       payload: res.data,
-//     });
-//   } catch (err) {
-//     dispatch({
-//       type: PRODUCT_POST_FAILURE,
-//       payload: { msg: err.response.statusText, status: err.response.status },
-//     });
-//   }
-// };
+// 모든 게시글 가져오기
+export const getAllPosts =
+  ({ body }) =>
+  async (dispatch) => {
+    try {
+      const res = await axios.post('/api/posts/products', body);
+      console.log(body);
+      dispatch({
+        type: GET_ALL_PRODUCT,
+        payload: res.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: GET_ALL_PRODUCT_FAILURE,
+        payload: { msg: err },
+      });
+    }
+  };
 
 // 특정 게시글 지우기
 export const removePost = (postId, history) => async (dispatch) => {

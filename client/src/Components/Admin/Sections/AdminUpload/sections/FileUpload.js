@@ -13,7 +13,7 @@ const ImageUploadBtn = styled(Button)`
 
 const PreviewBox = styled.div`
   display: flex;
-  width: 1024px;
+  width: 100%;
   height: auto;
   margin-left: 1rem;
   overflow-x: scroll;
@@ -21,9 +21,6 @@ const PreviewBox = styled.div`
 
   img {
     height: 240px;
-    /* min-width: 300px;
-    width: 300px;
-    height: 240px; */
   }
 `;
 

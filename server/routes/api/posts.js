@@ -84,7 +84,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { title, description, price, images } = req.body;
+    const { title, description, price, images, categories } = req.body;
 
     try {
       const user = await User.findById(req.user.id).select('-password');
@@ -92,9 +92,9 @@ router.post(
       const newPost = new Post({
         title: title,
         description: description,
-        name: user.nickname,
         price: price,
         images: images,
+        categories: categories,
         user: req.user.id,
       });
 
@@ -114,11 +114,31 @@ router.post(
 // @route   GET api/posts
 // @desc    모든 게시물 가져 오기
 // @access  Public
-router.get('/', async (req, res) => {
+router.post('/products', async (req, res) => {
+  let categoryNumber = req.body.categoryNumber
+    ? parseInt(req.body.categoryNumber)
+    : '';
+
+  let posts;
+  let findArgs = {};
+  console.log('req.body::', req.body);
+
   try {
-    const posts = await Post.find().sort({
-      date: -1,
-    });
+    if (categoryNumber) {
+      findArgs['categories'] = categoryNumber;
+
+      posts = await Post.find(findArgs).sort({
+        date: -1,
+      });
+      console.log('카테고리 넘버:', findArgs);
+      console.log('포스트스결과물::', posts);
+      res.json(posts);
+      return;
+    } else {
+      posts = await Post.find().sort({
+        date: -1,
+      });
+    }
 
     res.json(posts);
   } catch (err) {

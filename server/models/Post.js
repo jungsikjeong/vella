@@ -21,6 +21,10 @@ const PostSchema = new Schema({
     type: Array,
     default: [],
   },
+  categories: {
+    type: Number,
+    default: 1,
+  },
   sold: {
     type: Number,
     maxlength: 100,
