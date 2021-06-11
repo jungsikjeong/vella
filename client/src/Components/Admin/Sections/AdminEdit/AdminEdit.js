@@ -2,9 +2,14 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Form, Input, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { productPostUpload, readProduct } from '../../../../_actions/product';
+import {
+  productPostUpload,
+  readProduct,
+  clearProduct,
+} from '../../../../_actions/product';
 import { withRouter } from 'react-router';
 import { categories } from '../../../../utils/categories';
+
 // components
 import Responsive from '../../../Common/Responsive';
 import AdminHeader from '../AdminHeader/AdminHeader';
@@ -92,15 +97,20 @@ const AdminEdit = ({ history, match }) => {
   //     [title, description, price, dispatch, product.images, history, Category]
   //   );
 
+  const onCancel = () => {
+    dispatch(clearProduct());
+    history.push('/admin/home');
+  };
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearProduct());
+    };
+  }, [dispatch]);
+
   useEffect(() => {
     dispatch(readProduct(id));
   }, [dispatch, id]);
-
-  const isSelected = (selected) => {
-    console.log(selected);
-    return true;
-    // if (product && product.categories) return product.categories === selected;
-  };
 
   return (
     <>
@@ -169,7 +179,9 @@ const AdminEdit = ({ history, match }) => {
               <SButton type='submit' onClick={''}>
                 확인
               </SButton>
-              <SButton className='cancel-btb'>취소</SButton>
+              <SButton className='cancel-btb' onClick={onCancel}>
+                취소
+              </SButton>
             </ButtonWrap>
           </Container>
         </>

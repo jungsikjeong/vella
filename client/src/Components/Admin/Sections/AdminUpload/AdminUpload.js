@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Form, Input, Button } from 'antd';
 import Responsive from '../../../Common/Responsive';
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { productPostUpload } from '../../../../_actions/product';
 import { withRouter } from 'react-router';
 import { categories } from '../../../../utils/categories';
+import { clearProduct } from '../../../../_actions/product';
 
 const { TextArea } = Input;
 
@@ -84,6 +85,17 @@ const AdminUpload = ({ history }) => {
     [title, description, price, dispatch, product.images, history, Category]
   );
 
+  const onCancel = () => {
+    dispatch(clearProduct());
+    history.push('/admin/home');
+  };
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearProduct());
+    };
+  }, [dispatch]);
+
   return (
     <>
       <AdminHeader />
@@ -129,7 +141,9 @@ const AdminUpload = ({ history }) => {
           <SButton type='submit' onClick={onSubmit}>
             확인
           </SButton>
-          <SButton className='cancel-btb'>취소</SButton>
+          <SButton className='cancel-btb' onClick={onCancel}>
+            취소
+          </SButton>
         </ButtonWrap>
       </Container>
     </>

@@ -130,8 +130,8 @@ export const removePost = (postId, history) => async (dispatch) => {
   }
 };
 
-// CLEAR_POST
-export const clearPost = () => async (dispatch) => {
+// CLEAR_PRODUCT
+export const clearProduct = () => async (dispatch) => {
   dispatch({
     type: CLEAR_PRODUCT,
   });
