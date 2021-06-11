@@ -45,7 +45,7 @@ const FileUpload = ({ onUpdateImages, match }) => {
 
   return (
     <Container>
-      {/* Edit페이지에서 활성화됨 */}
+      {/* Edit페이지에서 이미지 불러옴 및 활성화됨 */}
       {product.product &&
         product.product.images &&
         product.product.images.length !== 0 && (
@@ -59,7 +59,7 @@ const FileUpload = ({ onUpdateImages, match }) => {
           </PreviewBox>
         )}
 
-      {/* 일반 업로드 페이지에서 활성화됨 */}
+      {/* 일반 업로드 페이지에서 이미지 업로드시 이미지 불러옴 및  활성화됨 */}
       {product && product.images && product.images.length !== 0 && (
         <PreviewBox>
           {product &&

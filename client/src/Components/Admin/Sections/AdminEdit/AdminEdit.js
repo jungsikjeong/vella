@@ -43,6 +43,7 @@ const AdminEdit = ({ history, match }) => {
   const { id } = match.params;
   const dispatch = useDispatch();
   const product = useSelector((state) => state.product.product);
+  const loading = useSelector((state) => state.product.loading);
 
   const [FormData, setFormData] = useState({
     title: '',
@@ -95,61 +96,83 @@ const AdminEdit = ({ history, match }) => {
     dispatch(readProduct(id));
   }, [dispatch, id]);
 
+  const isSelected = (selected) => {
+    console.log(selected);
+    return true;
+    // if (product && product.categories) return product.categories === selected;
+  };
+
   return (
     <>
-      <AdminHeader />
-      <Container>
-        <h1 className='page-title'>쇼핑몰 상품 업로드</h1>
-        <SForm onFinish={''}>
-          {/* 파일 업로드 */}
-          <FileUpload onUpdateImages={onUpdateImages} />
-          <br />
-          <select onChange={onCategoryChange}>
-            {categories.map((item) => (
-              <option key={item.key} value={item.key}>
-                {item.value}
-              </option>
-            ))}
-          </select>
-          <br />
-          <br />
-          <label>상품 이름</label>
-          <Input
-            onChange={(e) => onChange(e)}
-            value={title}
-            name='title'
-            placeholder={product && product.title}
-          />
-          <br />
-          <br />
-          <label>상품 설명</label>
-          <TextArea
-            onChange={(e) => onChange(e)}
-            value={description}
-            placeholder={product && product.description}
-            name='description'
-          />
-          <br />
-          <br />
-          <label>상품 가격($)</label>
-          <Input
-            type='number'
-            onChange={(e) => onChange(e)}
-            value={price}
-            placeholder={product && product.price}
-            name='price'
-          />
-          <br />
-        </SForm>
-        <br />
+      {loading ? (
+        <div> loading...</div>
+      ) : (
+        <>
+          <AdminHeader />
+          <Container>
+            <h1 className='page-title'>쇼핑몰 상품 업로드</h1>
+            <SForm onFinish={''}>
+              {/* 파일 업로드 */}
+              <FileUpload onUpdateImages={onUpdateImages} />
+              <br />
+              <select onChange={onCategoryChange}>
+                {categories.map((item) => (
+                  <option
+                    key={item.key}
+                    value={item.key}
+                    selected={
+                      product &&
+                      product.categories &&
+                      product.categories === item.key
+                        ? 'selected'
+                        : ''
+                    }
+                  >
+                    {item.value}
+                  </option>
+                ))}
+              </select>
+              <br />
+              <br />
+              <label>상품 이름</label>
+              <Input
+                onChange={(e) => onChange(e)}
+                value={title}
+                name='title'
+                placeholder={product && product.title}
+              />
+              <br />
+              <br />
+              <label>상품 설명</label>
+              <TextArea
+                onChange={(e) => onChange(e)}
+                value={description}
+                placeholder={product && product.description}
+                name='description'
+              />
+              <br />
+              <br />
+              <label>상품 가격($)</label>
+              <Input
+                type='number'
+                onChange={(e) => onChange(e)}
+                value={price}
+                placeholder={product && product.price}
+                name='price'
+              />
+              <br />
+            </SForm>
+            <br />
 
-        <ButtonWrap>
-          <SButton type='submit' onClick={''}>
-            확인
-          </SButton>
-          <SButton className='cancel-btb'>취소</SButton>
-        </ButtonWrap>
-      </Container>
+            <ButtonWrap>
+              <SButton type='submit' onClick={''}>
+                확인
+              </SButton>
+              <SButton className='cancel-btb'>취소</SButton>
+            </ButtonWrap>
+          </Container>
+        </>
+      )}
     </>
   );
 };
