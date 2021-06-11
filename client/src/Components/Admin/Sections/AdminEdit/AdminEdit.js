@@ -120,6 +120,7 @@ const AdminEdit = ({ history, match }) => {
                   <option
                     key={item.key}
                     value={item.key}
+                    // 불러온 데이터의 카테고리 기본값 설정
                     selected={
                       product &&
                       product.categories &&
