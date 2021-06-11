@@ -7,13 +7,17 @@ import { Redirect } from 'react-router';
 
 // Components
 import Responsive from '../../../Common/Responsive';
+import { Link } from 'react-router-dom';
 
 const Container = styled(Responsive)`
   overflow-x: hidden;
 
   img {
+    width: 50px;
     height: 100px;
+    object-fit: cover;
   }
+
   div {
     display: flex;
     flex-direction: column;
@@ -43,6 +47,9 @@ const columns = [
   {
     title: 'Title',
     dataIndex: 'title',
+    render: (title, id) => (
+      <Link to={`/admin/product/edit/${id.id}`}>{title}</Link>
+    ),
     ellipsis: {
       showTitle: false,
     },
@@ -50,6 +57,9 @@ const columns = [
   {
     title: 'Description',
     dataIndex: 'description',
+    render: (description, id) => (
+      <Link to={`/admin/product/edit/${id.id}`}>{description}</Link>
+    ),
     ellipsis: {
       showTitle: false,
     },
@@ -57,7 +67,9 @@ const columns = [
   {
     title: 'Price',
     dataIndex: 'price',
-    render: (price) => `${price}원`,
+    render: (price, id) => (
+      <Link to={`/admin/product/edit/${id.id}`}>{price}원</Link>
+    ),
     ellipsis: {
       showTitle: false,
     },
@@ -65,8 +77,10 @@ const columns = [
   {
     title: 'Images',
     dataIndex: 'images',
-    render: (images) => (
-      <img src={`http://localhost:5000/${images[0]}`} alt='' />
+    render: (images, id) => (
+      <Link to={`/admin/product/edit/${id.id}`}>
+        <img src={`http://localhost:5000/${images[0]}`} alt='' />
+      </Link>
     ),
   },
 ];
@@ -88,6 +102,7 @@ const AdminHome = () => {
   product.products.map((item) =>
     data.push({
       key: item._id,
+      id: item._id,
       title: item.title,
       description: item.description,
       price: item.price,
@@ -215,6 +230,7 @@ const AdminHome = () => {
       ) : (
         <>
           <h1>{CurrentCategory}</h1>
+
           <Table
             rowSelection={rowSelection}
             columns={columns}
@@ -227,20 +243,3 @@ const AdminHome = () => {
 };
 
 export default AdminHome;
-// let newProducts = [];
-
-// newProducts = product.products.filter(
-//   (item) => item.categories === 1
-// );
-
-// data = [];
-
-// newProducts.map((item) =>
-//   data.push({
-//     key: item._id,
-//     title: item.title,
-//     description: item.description,
-//     price: item.price,
-//     images: item.images,
-//   })
-// );

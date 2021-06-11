@@ -7,6 +7,8 @@ import {
   CLEAR_PRODUCT,
   GET_ALL_PRODUCT,
   GET_ALL_PRODUCT_FAILURE,
+  PRODUCT_READ,
+  PRODUCT_READ_FAILURE,
 } from './types';
 
 // 게시글 이미지 업로드
@@ -70,25 +72,26 @@ export const productPostUpload =
     }
   };
 
-// // id로 게시글 가져오기
-// export const readPost = (postId) => async (dispatch) => {
-//   dispatch({ type: CLEAR_POST });
-//   try {
-//     const res = await axios.get(`/api/posts/${postId}`);
+// id로  상품 가져오기
+export const readProduct = (productId) => async (dispatch) => {
+  dispatch({ type: CLEAR_PRODUCT });
 
-//     dispatch({
-//       type: POST_READ,
-//       payload: res.data,
-//     });
-//   } catch (err) {
-//     console.error(err);
+  try {
+    const res = await axios.get(`/api/posts/${productId}`);
 
-//     dispatch({
-//       type: POST_READ_FAILURE,
-//       payload: { msg: err },
-//     });
-//   }
-// };
+    dispatch({
+      type: PRODUCT_READ,
+      payload: res.data,
+    });
+  } catch (err) {
+    console.error(err);
+
+    dispatch({
+      type: PRODUCT_READ_FAILURE,
+      payload: { msg: err },
+    });
+  }
+};
 
 // 모든 게시글 가져오기
 export const getAllPosts =
@@ -96,7 +99,7 @@ export const getAllPosts =
   async (dispatch) => {
     try {
       const res = await axios.post('/api/posts/products', body);
-      console.log(body);
+
       dispatch({
         type: GET_ALL_PRODUCT,
         payload: res.data,

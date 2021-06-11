@@ -6,6 +6,8 @@ import {
   CLEAR_PRODUCT,
   GET_ALL_PRODUCT,
   GET_ALL_PRODUCT_FAILURE,
+  PRODUCT_READ,
+  PRODUCT_READ_FAILURE,
 } from '../_actions/types';
 
 const initialState = {
@@ -29,7 +31,7 @@ export default function (state = initialState, action) {
       };
 
     case PRODUCT_POST_SUCCESS:
-      // case POST_READ:
+    case PRODUCT_READ:
       return {
         ...state,
         product: payload,
@@ -49,10 +51,12 @@ export default function (state = initialState, action) {
 
     case PRODUCT_POST_FAILURE:
     case PRODUCT_POST_IMAGE_FAILURE:
+    case PRODUCT_READ_FAILURE:
     case GET_ALL_PRODUCT_FAILURE:
       return {
         ...state,
         error: payload,
+        product: null,
         products: [],
         loading: false,
       };

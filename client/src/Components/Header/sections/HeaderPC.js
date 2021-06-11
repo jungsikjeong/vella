@@ -200,6 +200,7 @@ const HeaderPC = ({ pathname }) => {
           pathname === '/admin/home' ||
           pathname === '/admin/upload' ||
           pathname === '/admin/' ||
+          pathname === '/admin/product/edit/:id' ||
           pathname === '/admin/products' ||
           pathname === '/admin/review'
         }

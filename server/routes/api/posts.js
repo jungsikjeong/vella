@@ -121,7 +121,6 @@ router.post('/products', async (req, res) => {
 
   let posts;
   let findArgs = {};
-  console.log('req.body::', req.body);
 
   try {
     if (categoryNumber) {
@@ -130,8 +129,7 @@ router.post('/products', async (req, res) => {
       posts = await Post.find(findArgs).sort({
         date: -1,
       });
-      console.log('카테고리 넘버:', findArgs);
-      console.log('포스트스결과물::', posts);
+
       res.json(posts);
       return;
     } else {
@@ -153,10 +151,7 @@ router.post('/products', async (req, res) => {
 // @access  Public
 router.get('/:id', async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id)
-      .populate('user', ['name', 'avatar'])
-      .populate('comments.user', ['name', 'avatar'])
-      .populate('comments.commentsStep.user', ['name', 'avatar']);
+    const post = await Post.findById(req.params.id);
 
     if (!post) {
       return res.status(404).json({ msg: '게시글을 찾을 수 없습니다' });
