@@ -78,10 +78,11 @@ const AdminHome = () => {
   const dispatch = useDispatch();
 
   const [SelectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [CategoryNumber, setCategoryNumber] = useState(1);
   const [CurrentCategory, setCurrentCategory] = useState('All');
 
   let data = [];
+  // 서버에 보내줄 카테고리 넘버, 서버 필터에 넣어줄 데이터
+  let categoryNumber = '';
 
   // 테이블 컬럼에 넣어줄 데이터
   product.products.map((item) =>
@@ -99,8 +100,6 @@ const AdminHome = () => {
     setSelectedRowKeys({ selectedRowKeys });
   };
 
-  const onChangeCategoryNumber = (number) => setCategoryNumber(number);
-
   const rowSelection = {
     SelectedRowKeys,
     onChange: onSelectChange,
@@ -110,6 +109,7 @@ const AdminHome = () => {
         key: 'all',
         text: 'All',
         onSelect: (changeProduct) => {
+          categoryNumber = '';
           setCurrentCategory('All');
           dispatch(getAllPosts(''));
         },
@@ -120,9 +120,9 @@ const AdminHome = () => {
         key: 'top',
         text: 'Top',
         onSelect: (changeProduct) => {
-          onChangeCategoryNumber(1);
+          categoryNumber = '1';
           let body = {
-            categoryNumber: CategoryNumber,
+            categoryNumber,
           };
           setCurrentCategory('Top');
           dispatch(getAllPosts({ body }));
@@ -133,9 +133,9 @@ const AdminHome = () => {
         key: 'bottom',
         text: 'Bottom',
         onSelect: (changeProduct) => {
-          onChangeCategoryNumber(2);
+          categoryNumber = '2';
           let body = {
-            categoryNumber: CategoryNumber,
+            categoryNumber,
           };
           setCurrentCategory('Bottom');
           dispatch(getAllPosts({ body }));
@@ -147,9 +147,9 @@ const AdminHome = () => {
         key: 'dress',
         text: 'Dress',
         onSelect: (changeProduct) => {
-          onChangeCategoryNumber(3);
+          categoryNumber = '3';
           let body = {
-            categoryNumber: CategoryNumber,
+            categoryNumber,
           };
           setCurrentCategory('Dress');
           dispatch(getAllPosts({ body }));
@@ -161,9 +161,9 @@ const AdminHome = () => {
         key: 'outer',
         text: 'Outer',
         onSelect: (changeProduct) => {
-          onChangeCategoryNumber(4);
+          categoryNumber = '4';
           let body = {
-            categoryNumber: CategoryNumber,
+            categoryNumber,
           };
           setCurrentCategory('Outer');
           dispatch(getAllPosts({ body }));
@@ -175,9 +175,9 @@ const AdminHome = () => {
         key: 'promotion',
         text: 'Promotion',
         onSelect: (changeProduct) => {
-          onChangeCategoryNumber(5);
+          categoryNumber = '5';
           let body = {
-            categoryNumber: CategoryNumber,
+            categoryNumber,
           };
           setCurrentCategory('Promotion');
           dispatch(getAllPosts({ body }));
@@ -189,9 +189,9 @@ const AdminHome = () => {
         key: 'acc',
         text: 'Acc',
         onSelect: (changeProduct) => {
-          onChangeCategoryNumber(6);
+          categoryNumber = '6';
           let body = {
-            categoryNumber: CategoryNumber,
+            categoryNumber,
           };
           setCurrentCategory('Acc');
           dispatch(getAllPosts({ body }));
