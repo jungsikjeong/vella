@@ -8,6 +8,7 @@ import {
   GET_ALL_PRODUCT_FAILURE,
   PRODUCT_READ,
   PRODUCT_READ_FAILURE,
+  PRODUCT_IMAGE_REMOVE,
 } from '../_actions/types';
 
 const initialState = {
@@ -27,6 +28,13 @@ export default function (state = initialState, action) {
       return {
         ...state,
         images: [...state.images, payload],
+        error: '',
+      };
+
+    case PRODUCT_IMAGE_REMOVE:
+      return {
+        ...state,
+        images: state.images.filter((_, i) => i !== payload),
         error: '',
       };
 

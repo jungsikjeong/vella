@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Upload } from 'antd';
 import Responsive from '../../../Common/Responsive';
 import AdminHeader from '../AdminHeader/AdminHeader';
 import FileUpload from './sections/FileUpload';
 import { useDispatch, useSelector } from 'react-redux';
-import { productPostUpload } from '../../../../_actions/product';
+import {
+  productImagePost,
+  productPostUpload,
+} from '../../../../_actions/product';
 import { withRouter } from 'react-router';
 import { categories } from '../../../../utils/categories';
 import { clearProduct } from '../../../../_actions/product';

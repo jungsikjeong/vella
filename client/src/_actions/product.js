@@ -9,6 +9,7 @@ import {
   GET_ALL_PRODUCT_FAILURE,
   PRODUCT_READ,
   PRODUCT_READ_FAILURE,
+  PRODUCT_IMAGE_REMOVE,
 } from './types';
 
 // 게시글 이미지 업로드
@@ -29,6 +30,26 @@ export const productImagePost = (image) => async (dispatch) => {
     dispatch({
       type: PRODUCT_POST_IMAGE_FAILURE,
     });
+  }
+};
+
+// 게시글 이미지 삭제 (로컬, 추후에 s3 삭제로 바뀔거임)
+export const productImageRemove = (images, image) => async (dispatch) => {
+  try {
+    const currentIndex = images.indexOf(image);
+
+    // const onDeleteImage = (image) => {
+    //   const currentIndex = images.indexOf(image);
+
+    //   const newImages = images.filter((_, i) => i !== currentIndex);
+    // };
+
+    dispatch({
+      type: PRODUCT_IMAGE_REMOVE,
+      payload: currentIndex,
+    });
+  } catch (err) {
+    console.error(err);
   }
 };
 
