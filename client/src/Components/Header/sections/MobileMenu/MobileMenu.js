@@ -128,12 +128,13 @@ const MobileMenu = ({
             </SLink>
           </li>
           <li>
-            <SLink to='#' onClick={MenuToggleHandler}>
+            {/* 마찬가지로 user.id로 수정예정 */}
+            <SLink to='/profile:id' onClick={MenuToggleHandler}>
               My Profile
             </SLink>
           </li>
           <li>
-            <SLink to='#' onClick={MenuToggleHandler}>
+            <SLink to='/cart' onClick={MenuToggleHandler}>
               Cart
             </SLink>
           </li>

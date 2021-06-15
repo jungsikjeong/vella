@@ -29,6 +29,7 @@ import Admin from './Components/Admin/Admin';
 import AdminLogin from './Components/Admin/Sections/AdminLogin/AdminLogin';
 import AdminUpload from './Components/Admin/Sections/AdminUpload/AdminUpload';
 import AdminEdit from './Components/Admin/Sections/AdminEdit/AdminEdit';
+import Cart from './Components/Cart/Cart';
 
 if (localStorage.token) {
   //  글로벌 axios 기본(defaults) 설정
@@ -63,6 +64,7 @@ const App = () => {
               <Route exact path='/product/outer' component={Outer} />
               <Route exact path='/product/proMotion' component={Promotion} />
               <Route exact path='/product/acc' component={Acc} />
+              <Route exact path='/cart' component={Cart} />
               <Route exact path='/admin' component={AdminLogin} />
               <Route exact path='/admin/home' component={Admin} />
               <Route exact path='/admin/upload' component={AdminUpload} />
