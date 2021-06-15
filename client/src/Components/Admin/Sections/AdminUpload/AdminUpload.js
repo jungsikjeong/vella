@@ -1,14 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Form, Input, Button, Upload } from 'antd';
+import { Form, Input, Button } from 'antd';
 import Responsive from '../../../Common/Responsive';
 import AdminHeader from '../AdminHeader/AdminHeader';
 import FileUpload from './sections/FileUpload';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  productImagePost,
-  productPostUpload,
-} from '../../../../_actions/product';
+import { productPostUpload } from '../../../../_actions/product';
 import { withRouter } from 'react-router';
 import { categories } from '../../../../utils/categories';
 import { clearProduct } from '../../../../_actions/product';
@@ -71,6 +68,11 @@ const AdminUpload = ({ history }) => {
       e.preventDefault();
       if (!title || !description || !price || !product.images || !Category) {
         alert('빈 칸을 모두 채워주세요');
+        return;
+      }
+      if (!product.images) {
+        alert('이미지를 업로드해주세요');
+        return;
       }
 
       const images = product.images;

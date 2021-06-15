@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllPosts } from '../../../../_actions/product';
+import { getAllPosts, removePost } from '../../../../_actions/product';
 import { Redirect } from 'react-router';
+import { DeleteOutlined } from '@ant-design/icons';
 
 // Components
 import Responsive from '../../../Common/Responsive';
@@ -41,49 +42,15 @@ const Container = styled(Responsive)`
     text-align: center;
     padding-bottom: 1rem;
   }
-`;
 
-const columns = [
-  {
-    title: 'Title',
-    dataIndex: 'title',
-    render: (title, id) => (
-      <Link to={`/admin/product/edit/${id.id}`}>{title}</Link>
-    ),
-    ellipsis: {
-      showTitle: false,
-    },
-  },
-  {
-    title: 'Description',
-    dataIndex: 'description',
-    render: (description, id) => (
-      <Link to={`/admin/product/edit/${id.id}`}>{description}</Link>
-    ),
-    ellipsis: {
-      showTitle: false,
-    },
-  },
-  {
-    title: 'Price',
-    dataIndex: 'price',
-    render: (price, id) => (
-      <Link to={`/admin/product/edit/${id.id}`}>{price}원</Link>
-    ),
-    ellipsis: {
-      showTitle: false,
-    },
-  },
-  {
-    title: 'Images',
-    dataIndex: 'images',
-    render: (images, id) => (
-      <Link to={`/admin/product/edit/${id.id}`}>
-        <img src={`http://localhost:5000/${images[0]}`} alt='' />
-      </Link>
-    ),
-  },
-];
+  // remove 컬럼
+  th:nth-child(6) {
+    width: 2.5rem;
+    text-align: center;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+`;
 
 const AdminHome = () => {
   const user = useSelector((state) => state.auth.user);
@@ -113,6 +80,10 @@ const AdminHome = () => {
   const onSelectChange = (selectedRowKeys) => {
     console.log('selectedRowKeys changed: ', selectedRowKeys);
     setSelectedRowKeys({ selectedRowKeys });
+  };
+
+  const onDeleteProduct = (productId) => {
+    dispatch(removePost(productId));
   };
 
   const rowSelection = {
@@ -218,6 +189,59 @@ const AdminHome = () => {
   useEffect(() => {
     dispatch(getAllPosts(''));
   }, [dispatch]);
+
+  const columns = [
+    {
+      title: 'Title',
+      dataIndex: 'title',
+      render: (title, id) => (
+        <Link to={`/admin/product/edit/${id.id}`}>{title}</Link>
+      ),
+      ellipsis: {
+        showTitle: false,
+      },
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      render: (description, id) => (
+        <Link to={`/admin/product/edit/${id.id}`}>{description}</Link>
+      ),
+      ellipsis: {
+        showTitle: false,
+      },
+    },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      render: (price, id) => (
+        <Link to={`/admin/product/edit/${id.id}`}>{price}원</Link>
+      ),
+      ellipsis: {
+        showTitle: false,
+      },
+    },
+    {
+      title: 'Images',
+      dataIndex: 'images',
+      render: (images, id) => (
+        <Link to={`/admin/product/edit/${id.id}`}>
+          <img src={`http://localhost:5000/${images[0]}`} alt='' />
+        </Link>
+      ),
+    },
+    {
+      title: (
+        <DeleteOutlined
+          onClick={() => onDeleteProduct(SelectedRowKeys)}
+          style={{
+            color: SelectedRowKeys.length === 0 ? '#e9e9e9' : 'black',
+          }}
+        />
+      ),
+      dataIndex: 'remove',
+    },
+  ];
 
   // if (!user || !user.admin || user.admin === null) {
   //   return <Redirect to='/admin' />;

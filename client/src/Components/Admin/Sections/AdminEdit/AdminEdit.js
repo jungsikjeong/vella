@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Form, Input, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  productPostUpload,
   readProduct,
   clearProduct,
+  productPostUpload,
 } from '../../../../_actions/product';
 import { withRouter } from 'react-router';
 import { categories } from '../../../../utils/categories';
@@ -13,8 +13,7 @@ import { categories } from '../../../../utils/categories';
 // components
 import Responsive from '../../../Common/Responsive';
 import AdminHeader from '../AdminHeader/AdminHeader';
-import FileUpload from '../AdminUpload/sections/FileUpload';
-import TimelineItem from 'antd/lib/timeline/TimelineItem';
+import EditFileUpload from './sections/EditFileUpload';
 
 const { TextArea } = Input;
 
@@ -47,6 +46,7 @@ const SButton = styled(Button)`
 const AdminEdit = ({ history, match }) => {
   const { id } = match.params;
   const dispatch = useDispatch();
+
   const product = useSelector((state) => state.product.product);
   const loading = useSelector((state) => state.product.loading);
 
@@ -54,63 +54,67 @@ const AdminEdit = ({ history, match }) => {
     title: '',
     description: '',
     price: '',
+    category: '',
   });
-  const [Category, setCategory] = useState(1);
-  const [Images, setImages] = useState([]);
 
-  const { title, description, price } = FormData;
-
-  const onUpdateImages = (newImages) => {
-    setImages(newImages);
-  };
+  const { title, description, price, category } = FormData;
 
   const onChange = useCallback(
     (e) => {
       setFormData({ ...FormData, [e.target.name]: e.target.value });
+      mounted.current = true;
     },
     [FormData]
   );
 
-  const onCategoryChange = (e) => {
-    setCategory(e.currentTarget.value);
-  };
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
 
-  //   const onSubmit = useCallback(
-  //     (e) => {
-  //       e.preventDefault();
-  //       if (!title || !description || !price || !product.images || !Category) {
-  //         alert('빈 칸을 모두 채워주세요');
-  //       }
+      const images = product.images;
 
-  //       const images = product.images;
+      const body = {
+        title,
+        description,
+        price,
+        images,
+        category,
+        productId: product._id,
+      };
 
-  //       const body = {
-  //         title,
-  //         description,
-  //         price,
-  //         images,
-  //         category: Category,
-  //       };
-
-  //       //   dispatch(productPostUpload({ body, history }));
-  //     },
-  //     [title, description, price, dispatch, product.images, history, Category]
-  //   );
+      dispatch(productPostUpload({ body, history }));
+    },
+    [title, description, price, category, product, dispatch, history]
+  );
 
   const onCancel = () => {
     dispatch(clearProduct());
     history.push('/admin/home');
   };
 
+  const mounted = useRef(false);
+
+  useEffect(() => {
+    if (mounted.current) return;
+
+    if (product)
+      setFormData({
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        category: product.categories,
+      });
+  }, [product]);
+
+  useEffect(() => {
+    dispatch(readProduct(id));
+  }, [dispatch, id]);
+
   useEffect(() => {
     return () => {
       dispatch(clearProduct());
     };
   }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(readProduct(id));
-  }, [dispatch, id]);
 
   return (
     <>
@@ -121,22 +125,18 @@ const AdminEdit = ({ history, match }) => {
           <AdminHeader />
           <Container>
             <h1 className='page-title'>쇼핑몰 상품 업로드</h1>
-            <SForm onFinish={''}>
+            <SForm onFinish={onSubmit}>
               {/* 파일 업로드 */}
-              <FileUpload onUpdateImages={onUpdateImages} />
+              <EditFileUpload />
               <br />
-              <select onChange={onCategoryChange}>
+              <select onChange={(e) => onChange(e)} name='category'>
                 {categories.map((item) => (
                   <option
                     key={item.key}
                     value={item.key}
                     // 불러온 데이터의 카테고리 기본값 설정
                     selected={
-                      product &&
-                      product.categories &&
-                      product.categories === item.key
-                        ? 'selected'
-                        : ''
+                      category && category === item.key ? 'selected' : ''
                     }
                   >
                     {item.value}
@@ -146,19 +146,13 @@ const AdminEdit = ({ history, match }) => {
               <br />
               <br />
               <label>상품 이름</label>
-              <Input
-                onChange={(e) => onChange(e)}
-                value={title}
-                name='title'
-                placeholder={product && product.title}
-              />
+              <Input onChange={(e) => onChange(e)} value={title} name='title' />
               <br />
               <br />
               <label>상품 설명</label>
               <TextArea
                 onChange={(e) => onChange(e)}
                 value={description}
-                placeholder={product && product.description}
                 name='description'
               />
               <br />
@@ -168,7 +162,6 @@ const AdminEdit = ({ history, match }) => {
                 type='number'
                 onChange={(e) => onChange(e)}
                 value={price}
-                placeholder={product && product.price}
                 name='price'
               />
               <br />
@@ -176,7 +169,7 @@ const AdminEdit = ({ history, match }) => {
             <br />
 
             <ButtonWrap>
-              <SButton type='submit' onClick={''}>
+              <SButton type='submit' onClick={onSubmit}>
                 확인
               </SButton>
               <SButton className='cancel-btb' onClick={onCancel}>

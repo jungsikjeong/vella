@@ -9,6 +9,9 @@ import {
   PRODUCT_READ,
   PRODUCT_READ_FAILURE,
   PRODUCT_IMAGE_REMOVE,
+  EDIT_PRODUCT_IMAGE_REMOVE,
+  EDIT_PRODUCT_POST_IMAGE_SUCCESS,
+  EDIT_PRODUCT_POST_IMAGE_FAILURE,
 } from '../_actions/types';
 
 const initialState = {
@@ -31,10 +34,30 @@ export default function (state = initialState, action) {
         error: '',
       };
 
+    case EDIT_PRODUCT_POST_IMAGE_SUCCESS:
+      return {
+        ...state,
+        product: {
+          ...state.product,
+          images: [...state.product.images, payload],
+        },
+        error: '',
+      };
+
     case PRODUCT_IMAGE_REMOVE:
       return {
         ...state,
         images: state.images.filter((_, i) => i !== payload),
+        error: '',
+      };
+
+    case EDIT_PRODUCT_IMAGE_REMOVE:
+      return {
+        ...state,
+        product: {
+          ...state.product,
+          images: state.product.images.filter((_, i) => i !== payload),
+        },
         error: '',
       };
 
@@ -61,6 +84,7 @@ export default function (state = initialState, action) {
     case PRODUCT_POST_IMAGE_FAILURE:
     case PRODUCT_READ_FAILURE:
     case GET_ALL_PRODUCT_FAILURE:
+    case EDIT_PRODUCT_POST_IMAGE_FAILURE:
       return {
         ...state,
         error: payload,

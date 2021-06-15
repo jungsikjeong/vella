@@ -189,6 +189,7 @@ const HeaderPC = ({ pathname }) => {
       });
     });
   }, []);
+
   return (
     <>
       {/* 검색 버튼 누르면 활성화되는 컴포넌트 */}
@@ -200,7 +201,6 @@ const HeaderPC = ({ pathname }) => {
           pathname === '/admin/home' ||
           pathname === '/admin/upload' ||
           pathname === '/admin/' ||
-          pathname === '/admin/product/edit/:id' ||
           pathname === '/admin/products' ||
           pathname === '/admin/review'
         }

@@ -84,10 +84,22 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { title, description, price, images, categories } = req.body;
+    const { title, description, price, images, categories, productId } =
+      req.body;
 
     try {
       const user = await User.findById(req.user.id).select('-password');
+
+      if (productId) {
+        // 상품 편집
+        const newData = { ...req.body };
+        const newPost = await Post.findOneAndUpdate(productId, newData, {
+          new: true,
+        }).exec();
+
+        res.json(newPost);
+        return;
+      }
 
       const newPost = new Post({
         title: title,
@@ -97,10 +109,6 @@ router.post(
         categories: categories,
         user: req.user.id,
       });
-
-      user.posts.push(newPost);
-      await user.save();
-
       const post = await newPost.save();
 
       res.json(post);
@@ -170,52 +178,52 @@ router.get('/:id', async (req, res) => {
 // @route   DELETE api/posts/:id
 // @desc    게시글 지우기
 // @access  Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/delete', auth, async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    // id =123123,123123,123123 이거를
+    // productIds =['123123','123123','123123'] 이런식으로 바꿔주기
+    let productIds = req.query.id;
+    let ids = req.query.id.split(',');
+    let postUser;
+
+    productIds = ids.map((item) => {
+      return item;
+    });
+
+    const post = await Post.find({ _id: { $in: productIds } });
     const user = await User.findById(req.user.id).select('-password');
 
     if (!post) {
       return res.status(404).json({ msg: '게시글이 없습니다.' });
     }
 
-    // aws s3 버킷에서 파일 삭제
-    const url = post.image.split('/'); // post에 저장된 image를 가져옴
-    const delFileName = url[url.length - 1];
-
-    const params = {
-      Bucket: 'gongcha',
-      Key: `uploadImage/${delFileName}`,
-    };
-
-    upload.s3.deleteObject(params, function (err, data) {
-      console.log(params);
-
-      if (err) {
-        console.log('aws image delete error');
-        console.log(err, err.stack);
-        return;
-      } else {
-        console.log('aws image delete success' + data);
-      }
-    });
+    // post.user.toString()이 배열로 나와서, 객체로 바꿔줌
+    post.map((product) => (postUser = product.user.toString()));
 
     // check user
-    if (post.user.toString() !== req.user.id) {
+    if (postUser !== req.user.id) {
       return res.status(401).json({ msg: '게시글을 작성한 유저가 아닙니다.' });
     }
-    const userPost = user.posts.filter(
-      (post) => post._id.toString() !== req.params.id
-    );
-    // Get remove index
-    const removeIndex = user.posts
-      .map((post) => post._id.toString())
-      .indexOf(req.user.id);
 
-    user.posts.splice(removeIndex, 1);
+    await Post.deleteMany({ _id: post });
 
-    await user.save();
-    await post.remove();
+    // // aws s3 버킷에서 파일 삭제
+    // const url = post.image.split('/'); // post에 저장된 image를 가져옴
+    // const delFileName = url[url.length - 1];
+    // const params = {
+    //   Bucket: 'gongcha',
+    //   Key: `uploadImage/${delFileName}`,
+    // };
+    // upload.s3.deleteObject(params, function (err, data) {
+    //   console.log(params);
+    //   if (err) {
+    //     console.log('aws image delete error');
+    //     console.log(err, err.stack);
+    //     return;
+    //   } else {
+    //     console.log('aws image delete success' + data);
+    //   }
+    // });
 
     res.json({ msg: '게시글 삭제 완료' });
   } catch (err) {

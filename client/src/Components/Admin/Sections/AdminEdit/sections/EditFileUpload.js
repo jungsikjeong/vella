@@ -2,8 +2,8 @@ import React from 'react';
 import Dropzone from 'react-dropzone';
 import { Button } from 'antd';
 import {
-  productImagePost,
-  productImageRemove,
+  productImageEditPost,
+  editProductImageRemove,
 } from '../../../../../_actions/product';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -27,42 +27,46 @@ const PreviewBox = styled.div`
   }
 `;
 
-const FileUpload = ({ pathname }) => {
+const EditFileUpload = () => {
   const dispatch = useDispatch();
 
   const product = useSelector((state) => state.product);
 
-  const onImageUpload = (files) => {
+  const onImageEditUpload = (files) => {
     // 파일을 서버에 전송하기위한것
     const formData = new FormData();
 
     formData.append('file', files[0]);
 
-    dispatch(productImagePost(formData));
+    dispatch(productImageEditPost(formData));
   };
 
-  const onImageRemove = (images, image) => {
-    dispatch(productImageRemove(images, image));
+  const onEditImageRemove = (images, image) => {
+    dispatch(editProductImageRemove(images, image));
   };
 
   return (
     <Container>
-      {product && product.images && product.images.length !== 0 && (
-        <PreviewBox>
-          {product &&
-            product.images &&
-            product.images.map((image, index) => (
-              <div
-                key={index}
-                onClick={() => onImageRemove(product.images, image)}
-                style={{ cursor: 'pointer' }}
-              >
-                <img src={`http://localhost:5000/${image}`} alt='' />
-              </div>
-            ))}
-        </PreviewBox>
-      )}
-      <Dropzone onDrop={onImageUpload}>
+      {product.product &&
+        product.product.images &&
+        product.product.images.length !== 0 && (
+          <PreviewBox>
+            {product.product.images &&
+              product.product.images.map((image, index) => (
+                <div
+                  key={index}
+                  onClick={() =>
+                    onEditImageRemove(product.product.images, image)
+                  }
+                  style={{ cursor: 'pointer' }}
+                >
+                  <img src={`http://localhost:5000/${image}`} alt='' />
+                </div>
+              ))}
+          </PreviewBox>
+        )}
+
+      <Dropzone onDrop={onImageEditUpload}>
         {({ getRootProps, getInputProps }) => (
           <ImageUploadBtn {...getRootProps()}>
             업로드
@@ -75,4 +79,4 @@ const FileUpload = ({ pathname }) => {
   );
 };
 
-export default FileUpload;
+export default EditFileUpload;

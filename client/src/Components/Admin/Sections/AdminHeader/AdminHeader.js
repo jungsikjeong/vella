@@ -10,6 +10,8 @@ const MenuItemGroup = Menu.ItemGroup;
 const Container = styled.div`
   display: ${(props) => (props.current ? 'none' : 'block')};
   position: fixed;
+  width: 100%;
+  z-index: 999;
 `;
 
 const AdminHeader = ({ location: { pathname } }) => {
