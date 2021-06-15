@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Footer from '../../Footer/Footer';
 
 const Container = styled.div`
   width: 100%;
@@ -145,6 +146,7 @@ const PcDetailProduct = () => {
           />
         </CenterScreen>
       </Wrapper>
+      <Footer />
     </Container>
   );
 };

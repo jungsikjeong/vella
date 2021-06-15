@@ -36,7 +36,6 @@ const LeftMenu = styled.div`
   padding-left: 1.2rem;
 
   ul {
-    width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
