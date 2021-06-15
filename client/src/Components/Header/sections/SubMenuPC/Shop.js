@@ -16,11 +16,10 @@ to{
 const SubMenuList = styled.ul`
   position: absolute;
   top: 100%;
-  left: 0;
+  left: 20px;
   padding-top: 0.5rem;
   display: flex;
   flex-direction: column;
-
   display: none;
   opacity: 0;
   visibility: hidden;
@@ -36,9 +35,11 @@ const SubMenuList = styled.ul`
 const SubMenuItem = styled.li`
   white-space: nowrap;
   line-height: 15px;
-  padding: 0.2rem 0;
+  padding: 0.2rem 0rem;
+  padding-right: 3.7rem;
   width: 100%;
   text-align: left;
+  background-color: rgba(255, 255, 255, 0.5);
 `;
 
 const SLink = styled(Link)`

@@ -20,7 +20,6 @@ const SubMenuList = styled.ul`
   padding-top: 0.5rem;
   display: flex;
   flex-direction: column;
-
   display: none;
   opacity: 0;
   visibility: hidden;
@@ -35,7 +34,7 @@ const SubMenuList = styled.ul`
 
 const SubMenuItem = styled.li`
   padding: 0.2rem 0;
-  /* background-color: rgba(245, 245, 245, 0.95); */
+  background-color: rgba(255, 255, 255, 0.5);
   display: block;
   white-space: nowrap;
   line-height: 15px;

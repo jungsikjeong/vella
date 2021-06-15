@@ -22,9 +22,9 @@ const SubMenuList = styled.ul`
   padding-top: 2.8rem;
   display: flex;
   flex-direction: column;
-
   opacity: 0;
   visibility: hidden;
+  background-color: rgba(255, 255, 255, 0.5);
 
   &.DropdownOpen3 {
     animation: ${ani} 0.5s;
