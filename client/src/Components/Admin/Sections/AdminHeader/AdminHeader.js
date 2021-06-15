@@ -27,8 +27,6 @@ const AdminHeader = ({ location: { pathname } }) => {
             <Link to='/admin/upload'>
               <Menu.Item key='setting:1'>상품 업로드</Menu.Item>
             </Link>
-
-            <Menu.Item key='setting:2'>상품 수정 및 삭제</Menu.Item>
           </MenuItemGroup>
           <MenuItemGroup title='고객관리'>
             <Menu.Item key='setting:3'>리뷰관리</Menu.Item>
