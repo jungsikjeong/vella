@@ -56,6 +56,7 @@ const AdminHome = () => {
   const user = useSelector((state) => state.auth.user);
   const product = useSelector((state) => state.product);
   const loading = useSelector((state) => state.product.loading);
+
   const dispatch = useDispatch();
 
   const [SelectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -243,9 +244,9 @@ const AdminHome = () => {
     },
   ];
 
-  // if (!user || !user.admin || user.admin === null) {
-  //   return <Redirect to='/admin' />;
-  // }
+  if (!user || !user.admin || user.admin === null) {
+    return <Redirect to='/admin' />;
+  }
 
   return (
     <Container>

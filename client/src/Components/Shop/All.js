@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useMediaQuery } from 'react-responsive';import Helmet from 'react-helmet';
+import { useMediaQuery } from 'react-responsive';
+import Helmet from 'react-helmet';
 
 import Categories from './sections/Categories';
 import Responsive from '../Common/Responsive';
@@ -124,7 +125,7 @@ const All = () => {
 
   return (
     <Container>
-        <Helmet>
+      <Helmet>
         <title>Vella | Shop</title>
       </Helmet>
       <CategoryWrapper>
@@ -135,7 +136,7 @@ const All = () => {
       <ProductList>
         {Result.map((item, index) => (
           <ProductItem key={index} ref={contentsAddToRefs}>
-            <Link to='#'>
+            <Link to='/product/detail'>
               <img src={item.src} alt='' />
 
               <Description>
