@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useMediaQuery } from 'react-responsive';
 import Helmet from 'react-helmet';
 
 import Categories from './sections/Categories';
@@ -11,8 +9,6 @@ import Responsive from '../Common/Responsive';
 import Footer from '../Footer/Footer';
 
 import test from '../Common/test.json';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const Container = styled(Responsive)``;
 
@@ -60,8 +56,7 @@ const Acc = () => {
   const [Result, setResult] = useState(test.slice(0, 6));
   const [ItemIndex, setItemIndex] = useState(0);
 
-  const revealRefs = useRef([]);
-  revealRefs.current = [];
+  const revealRefs = useRef();
 
   const onInfiniteScroll = useCallback(() => {
     let scrollHeight = Math.max(
@@ -88,40 +83,22 @@ const Acc = () => {
   }, [onInfiniteScroll]);
 
   useEffect(() => {
-    revealRefs.current.forEach((el, index) => {
-      gsap.fromTo(
-        el,
-        {
-          opacity: 0,
-          transform: 'translateY(20px)',
-          //   autoAlpha: 0,
-        },
-        {
-          duration: 1,
-          opacity: 1,
-          transform: 'translateY(0px)',
-          ease: 'none',
-          scrollTrigger: {
-            id: `section-${index + 1}`,
-            trigger: el,
-            start: 'top center+=100',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
+    gsap.from(revealRefs.current, {
+      duration: 2.5,
+      autoAlpha: 0,
+      transform: 'translateY(20px)',
+      ease: 'power4.inOut',
+    });
+  }, []);
+
+  useEffect(() => {
+    // 인피니티 스크롤로 데이터 새롭게 불러왔을때 작동하는 애니메이션
+    gsap.from(revealRefs.current, {
+      duration: 2.5,
+      transform: 'translateY(20px)',
+      ease: 'power4.inOut',
     });
   }, [Result]);
-
-  // 상품들 집어넣음
-  const contentsAddToRefs = (el) => {
-    if (isMobile) return;
-    if (el && !revealRefs.current.includes(el)) {
-      revealRefs.current.push(el);
-    }
-  };
-  const isMobile = useMediaQuery({
-    query: '(max-width:800px)',
-  });
 
   return (
     <Container>
@@ -133,9 +110,9 @@ const Acc = () => {
         <Categories />
       </CategoryWrapper>
 
-      <ProductList>
+      <ProductList ref={revealRefs}>
         {Result.map((item, index) => (
-          <ProductItem key={index} ref={contentsAddToRefs}>
+          <ProductItem key={index}>
             <Link to='#'>
               <img src={item.src} alt='' />
 
