@@ -22,8 +22,8 @@ const Wrapper = styled.div`
   @media (min-width: 800px) {
     width: 100%;
     padding: 0 5rem;
-    /* width: 1018px; */
-    /* min-width: 460px; */
+    width: 1018px;
+    min-width: 460px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);

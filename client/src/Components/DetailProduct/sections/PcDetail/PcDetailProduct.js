@@ -143,27 +143,76 @@ const Bottom = styled.div`
   }
 `;
 
+const ScrollUp = styled.div`
+  position: fixed;
+  z-index: 2147483647;
+  display: none;
+  bottom: 15%;
+  right: 2%;
+  color: #000;
+  font-size: 1.1rem;
+  font-family: verdana;
+  letter-spacing: 1px;
+  border-radius: 2px;
+  opacity: 0.9;
+  padding: 0.2rem 0.2rem 0.1rem 0.3rem;
+  cursor: pointer;
+  transition: 200ms linear;
+
+  &.scrollBtn {
+    display: block;
+  }
+
+  .under {
+    transform: rotate(180deg);
+  }
+`;
+
 const PcDetailProduct = () => {
-  const [Hide, setHide] = useState(false);
   const currentRef = useRef();
+  const SectionRef = useRef();
+
+  const [Hide, setHide] = useState(false);
+  const [ScrollBtn, setScrollBtn] = useState(false);
+
+  const onScrollToTop = () => {
+    window.scrollTo({
+      top: SectionRef.current.offsetTop,
+      behavior: 'smooth',
+    });
+  };
+
+  const onScrollToUnder = () => {
+    window.scrollTo({
+      top: currentRef.current.offsetTop,
+      behavior: 'smooth',
+    });
+  };
+
+  const scrollHandler = useCallback(() => {
+    const { pageYOffset } = window;
+    setScrollBtn(pageYOffset > 500);
+  }, []);
 
   const onInfiniteScroll = useCallback(() => {
     setHide(false);
+    scrollHandler();
 
     if (currentRef.current === null) {
       return;
     }
 
     if (currentRef.current.offsetTop) {
-      const offsetTop = currentRef.current.offsetTop;
-      const pageYOffset = window.pageYOffset;
-      const sum = pageYOffset + currentRef.current.scrollHeight + 300;
+      const { offsetTop } = currentRef.current;
+      const { pageYOffset } = window;
+      const { scrollHeight } = currentRef.current;
+      const sum = pageYOffset + scrollHeight + 300;
 
       if (offsetTop < sum) {
         setHide(true);
       }
     }
-  }, [currentRef]);
+  }, [currentRef, scrollHandler]);
 
   useEffect(() => {
     window.addEventListener('scroll', onInfiniteScroll, true);
@@ -173,7 +222,13 @@ const PcDetailProduct = () => {
 
   return (
     <>
-      <Container>
+      <Container ref={SectionRef}>
+        <ScrollUp className={ScrollBtn && 'scrollBtn'}>
+          <span onClick={onScrollToTop}>^</span> <br />
+          <div className='under' onClick={onScrollToUnder}>
+            ^
+          </div>
+        </ScrollUp>
         <Wrapper>
           <LeftScreen className={Hide && 'hide'}>
             <div className='heading-area'>
