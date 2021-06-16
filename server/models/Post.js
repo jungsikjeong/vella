@@ -30,35 +30,14 @@ const PostSchema = new Schema({
     maxlength: 100,
     default: 0,
   },
-  views: {
-    type: Number,
-    default: 0,
-  },
 
   reviews: [
     {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'user',
-      },
-      text: {
-        type: String,
-        required: true,
-      },
-      date: {
-        type: Date,
-        default: Date.now,
-      },
-      likes: [
-        {
-          user: {
-            type: Schema.Types.ObjectId,
-            ref: 'user',
-          },
-        },
-      ],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'review',
     },
   ],
+
   date: {
     type: Date,
     default: Date.now,

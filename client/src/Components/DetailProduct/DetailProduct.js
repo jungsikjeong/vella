@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMediaQuery } from 'react-responsive';
-import MobileDetailProduct from './sections/MobileDetailProduct';
-import PcDetailProduct from './sections/PcDetailProduct';
+import MobileDetailProduct from './sections/MobileDetail/MobileDetailProduct';
+import PcDetailProduct from './sections/PcDetail/PcDetailProduct';
 
 const DetailProduct = () => {
   const isMobile = useMediaQuery({

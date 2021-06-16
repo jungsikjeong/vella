@@ -6,24 +6,18 @@ const ReviewSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'user',
   },
-  text: {
+  title: {
     type: String,
     required: true,
   },
-  name: {
+  description: {
     type: String,
+    required: true,
   },
-  image: {
-    type: String,
+  views: {
+    type: Number,
+    default: 0,
   },
-  likes: [
-    {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'user',
-      },
-    },
-  ],
   comments: [
     {
       user: {
@@ -40,6 +34,7 @@ const ReviewSchema = new Schema({
       },
     },
   ],
+
   date: {
     type: Date,
     default: Date.now,
