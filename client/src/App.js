@@ -31,6 +31,7 @@ import AdminUpload from './Components/Admin/Sections/AdminUpload/AdminUpload';
 import AdminEdit from './Components/Admin/Sections/AdminEdit/AdminEdit';
 import Cart from './Components/Cart/Cart';
 import DetailProduct from './Components/DetailProduct/DetailProduct';
+import ScrollToTop from './utils/scrollToTop';
 
 if (localStorage.token) {
   //  글로벌 axios 기본(defaults) 설정
@@ -48,6 +49,7 @@ const App = () => {
         <Router>
           <>
             <Header />
+            <ScrollToTop />
             <Overally /> {/* 모바일 메뉴 클릭시 활성화됨 */}
             <Switch>
               <Route exact path='/' component={Home} />

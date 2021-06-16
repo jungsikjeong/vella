@@ -58,11 +58,14 @@ const LeftScreen = styled.div`
 `;
 
 const CenterScreen = styled.div`
+  padding: 4.5rem 0 0;
   width: 40%;
   height: 100%;
+  text-align: center;
   margin-left: 30%;
 
   img {
+    margin-top: 0.9rem;
     max-width: 100%;
   }
 `;
@@ -264,13 +267,40 @@ const PcDetailProduct = () => {
           </RightScreen>
 
           <CenterScreen>
+            {/*             
             <img
               src='https://nueahmik.com/web/product/big/202103/3ab927ab6a00f07b72b4caca600ba9e4.jpg'
+              alt=''
+            /> */}
+
+            {/* 
+            <img
+              src='https://nueahmik.com/web/upload/NNEditor/20210327/GADI.JPG'
+              alt=''
+            /> */}
+
+            <img
+              src='https://cdn.imweb.me/upload/S20200528393091e0c3a75/64f02610ba579.png'
               alt=''
             />
 
             <img
-              src='https://nueahmik.com/web/upload/NNEditor/20210327/GADI.JPG'
+              src='https://cdn.imweb.me/upload/S20200528393091e0c3a75/13b3120613b50.png'
+              alt=''
+            />
+
+            <img
+              src='https://cdn.imweb.me/upload/S20200528393091e0c3a75/34db737fa8f0c.png'
+              alt=''
+            />
+
+            <img
+              src='https://cdn.imweb.me/upload/S20200528393091e0c3a75/72fe38abe76f2.png'
+              alt=''
+            />
+
+            <img
+              src='https://cdn.imweb.me/upload/S20200528393091e0c3a75/0b7b887c9b4bb.png'
               alt=''
             />
           </CenterScreen>
