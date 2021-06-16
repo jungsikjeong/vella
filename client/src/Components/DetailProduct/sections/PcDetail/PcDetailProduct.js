@@ -149,16 +149,21 @@ const PcDetailProduct = () => {
 
   const onInfiniteScroll = useCallback(() => {
     setHide(false);
-    const offsetTop = currentRef.current.offsetTop;
-    const pageYOffset = window.pageYOffset;
 
-    const sum = pageYOffset + currentRef.current.scrollHeight + 300;
-    if (offsetTop < sum) {
-      setHide(true);
+    if (currentRef.current === null) {
+      return;
     }
-    // console.log('sum', sum);
-    // console.log('offsetTop', currentRef.current.offsetTop);
-  }, []);
+
+    if (currentRef.current.offsetTop) {
+      const offsetTop = currentRef.current.offsetTop;
+      const pageYOffset = window.pageYOffset;
+      const sum = pageYOffset + currentRef.current.scrollHeight + 300;
+
+      if (offsetTop < sum) {
+        setHide(true);
+      }
+    }
+  }, [currentRef]);
 
   useEffect(() => {
     window.addEventListener('scroll', onInfiniteScroll, true);
