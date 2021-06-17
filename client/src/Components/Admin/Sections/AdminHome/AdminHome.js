@@ -249,13 +249,23 @@ const AdminHome = () => {
           onClick={() => onRemoveClick(SelectedRowKeys)}
           style={{
             color:
+              !SelectedRowKeys.selectedRowKeys ||
+              SelectedRowKeys.selectedRowKeys.length === 'undefined' ||
               SelectedRowKeys.selectedRowKeys.length === 0
                 ? '#e9e9e9'
                 : 'black',
             display:
-              SelectedRowKeys.selectedRowKeys.length === 0 ? 'none' : 'block',
+              !SelectedRowKeys.selectedRowKeys ||
+              SelectedRowKeys.selectedRowKeys.length === 'undefined' ||
+              SelectedRowKeys.selectedRowKeys.length === 0
+                ? 'none'
+                : 'block',
             cursor:
-              SelectedRowKeys.selectedRowKeys.length === 0 ? 'none' : 'pointer',
+              !SelectedRowKeys.selectedRowKeys ||
+              SelectedRowKeys.selectedRowKeys.length === 'undefined' ||
+              SelectedRowKeys.selectedRowKeys.length === 0
+                ? 'none'
+                : 'pointer',
           }}
         />
       ),

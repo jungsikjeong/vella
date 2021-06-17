@@ -1,14 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Form, Input, Button } from 'antd';
-import Responsive from '../../../Common/Responsive';
-import AdminHeader from '../AdminHeader/AdminHeader';
-import FileUpload from './sections/FileUpload';
 import { useDispatch, useSelector } from 'react-redux';
 import { productPostUpload } from '../../../../_actions/product';
 import { withRouter } from 'react-router';
 import { categories } from '../../../../utils/categories';
 import { clearProduct } from '../../../../_actions/product';
+//Components
+import Responsive from '../../../Common/Responsive';
+import AdminHeader from '../AdminHeader/AdminHeader';
+import FileUpload from './sections/FileUpload';
+import AskModal from '../../../Common/AskModal/AskModal';
 
 const { TextArea } = Input;
 
@@ -47,7 +49,7 @@ const AdminUpload = ({ history }) => {
     description: '',
     price: '',
   });
-
+  const [Modal, setModal] = useState(false);
   const [Category, setCategory] = useState(1);
 
   const { title, description, price } = FormData;
@@ -90,9 +92,20 @@ const AdminUpload = ({ history }) => {
     [title, description, price, dispatch, product.images, history, Category]
   );
 
-  const onCancel = () => {
+  const onRemoveClick = () => {
+    setModal(true);
+  };
+
+  // 모달창에서 확인 누르면 데이터 사라지고 관리자 홈 화면으로 이동
+  const onConfirm = () => {
+    setModal(false);
     dispatch(clearProduct());
     history.push('/admin/home');
+  };
+
+  // 모달창에서 취소 누르면 다시 업로드페이지로 돌아감
+  const onCancel = () => {
+    setModal(false);
   };
 
   useEffect(() => {
@@ -105,6 +118,13 @@ const AdminUpload = ({ history }) => {
     <>
       <AdminHeader />
       <Container>
+        <AskModal
+          title={'취소하시겠습니까?'}
+          description={'작성했던 데이터들이 삭제될 수 있습니다.'}
+          visible={Modal}
+          onConfirm={onConfirm}
+          onCancel={onCancel}
+        />
         <h1 className='page-title'>쇼핑몰 상품 업로드</h1>
         <SForm onFinish={onSubmit}>
           {/* 파일 업로드 */}
@@ -146,7 +166,7 @@ const AdminUpload = ({ history }) => {
           <SButton type='submit' onClick={onSubmit}>
             확인
           </SButton>
-          <SButton className='cancel-btb' onClick={onCancel}>
+          <SButton className='cancel-btb' onClick={onRemoveClick}>
             취소
           </SButton>
         </ButtonWrap>
