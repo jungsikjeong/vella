@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllPosts, removePost } from '../../../../_actions/product';
 import { Redirect } from 'react-router';
 import { DeleteOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 // Components
 import Responsive from '../../../Common/Responsive';
-import { Link } from 'react-router-dom';
+import AskRemoveModal from '../../../Common/AskModal/AskRemoveModal';
 
 const Container = styled(Responsive)`
   overflow-x: hidden;
@@ -19,12 +20,12 @@ const Container = styled(Responsive)`
     object-fit: cover;
   }
 
-  div {
+  /* div {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  }
+  } */
 
   // 테이블 세로 가운데 정렬
   td {
@@ -48,7 +49,6 @@ const Container = styled(Responsive)`
     width: 2.5rem;
     text-align: center;
     font-size: 1rem;
-    cursor: pointer;
   }
 `;
 
@@ -61,6 +61,7 @@ const AdminHome = () => {
 
   const [SelectedRowKeys, setSelectedRowKeys] = useState([]);
   const [CurrentCategory, setCurrentCategory] = useState('All');
+  const [Modal, setModal] = useState(false);
 
   let data = [];
   // 서버에 보내줄 카테고리 넘버, 서버 필터에 넣어줄 데이터
@@ -79,11 +80,21 @@ const AdminHome = () => {
   );
 
   const onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
+    // console.log('selectedRowKeys changed: ', selectedRowKeys);
     setSelectedRowKeys({ selectedRowKeys });
   };
 
-  const onDeleteProduct = (productId) => {
+  const onRemoveClick = () => {
+    if (SelectedRowKeys.selectedRowKeys.length === 0) {
+      return;
+    }
+    setModal(true);
+  };
+  const onCancel = () => {
+    setModal(false);
+  };
+  const onConfirm = (productId) => {
+    setModal(false);
     dispatch(removePost(productId));
   };
 
@@ -232,11 +243,19 @@ const AdminHome = () => {
       ),
     },
     {
+      // 상품 삭제
       title: (
         <DeleteOutlined
-          onClick={() => onDeleteProduct(SelectedRowKeys)}
+          onClick={() => onRemoveClick(SelectedRowKeys)}
           style={{
-            color: SelectedRowKeys.length === 0 ? '#e9e9e9' : 'black',
+            color:
+              SelectedRowKeys.selectedRowKeys.length === 0
+                ? '#e9e9e9'
+                : 'black',
+            display:
+              SelectedRowKeys.selectedRowKeys.length === 0 ? 'none' : 'block',
+            cursor:
+              SelectedRowKeys.selectedRowKeys.length === 0 ? 'none' : 'pointer',
           }}
         />
       ),
@@ -254,8 +273,12 @@ const AdminHome = () => {
         <div style={{ overflow: 'hidden' }}>Loading ...</div>
       ) : (
         <>
+          <AskRemoveModal
+            visible={Modal}
+            onConfirm={onConfirm}
+            onCancel={onCancel}
+          />
           <h1>{CurrentCategory}</h1>
-
           <Table
             rowSelection={rowSelection}
             columns={columns}
