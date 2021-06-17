@@ -3,14 +3,19 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { gsap } from 'gsap';
 import Helmet from 'react-helmet';
-
 import test from '../Common/test.json';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllPosts } from '../../_actions/product';
+
 // Components
 import Categories from './sections/Categories';
 import Responsive from '../Common/Responsive';
 import Footer from '../Footer/Footer';
+import Loading from '../Common/Loading';
 
-const Container = styled(Responsive)``;
+const Container = styled(Responsive)`
+  height: 100vh;
+`;
 
 const CategoryWrapper = styled.div`
   text-align: center;
@@ -51,6 +56,13 @@ const Description = styled.div`
 `;
 
 const All = () => {
+  const dispatch = useDispatch();
+  const { products, loading, error } = useSelector(({ product }) => ({
+    products: product.products,
+    loading: product.loading,
+    error: product.error,
+  }));
+
   // 6개씩 렌더링 되도록
   // 초기값은 6개
   const [Result, setResult] = useState(test.slice(0, 6));
@@ -100,33 +112,91 @@ const All = () => {
     });
   }, [Result]);
 
+  useEffect(() => {
+    dispatch(getAllPosts(''));
+  }, [dispatch]);
+
   return (
-    <Container>
-      <Helmet>
-        <title>Vella | Shop</title>
-      </Helmet>
-      <CategoryWrapper>
-        {/* 카테고리들 */}
-        <Categories />
-      </CategoryWrapper>
+    <>
+      <Container>
+        <Helmet>
+          <title>Vella | Shop</title>
+        </Helmet>
+        <CategoryWrapper>
+          {/* 카테고리들 */}
+          <Categories />
+        </CategoryWrapper>
+        {loading ? (
+          <Loading />
+        ) : (
+          <ProductList ref={revealRefs}>
+            {products.map((product) => (
+              <ProductItem key={product._id}>
+                <Link to={`/product/${product._id}`}>
+                  <img
+                    src={`http://localhost:5000/${product.images[0]}`}
+                    alt=''
+                  />
 
-      <ProductList ref={revealRefs}>
-        {Result.map((item, index) => (
-          <ProductItem key={index}>
-            <Link to='/product/detail'>
-              <img src={item.src} alt='' />
+                  <Description>
+                    <strong className='title'>{product.title}</strong>
+                    <p className='price'>{product.price}</p>
+                  </Description>
+                </Link>
+              </ProductItem>
+            ))}
+            {/* {Result.map((item, index) => (
+  <ProductItem key={index}>
+    <Link to='/product/detail'>
+      <img src={item.src} alt='' />
 
-              <Description>
-                <strong className='title'>{item.title}</strong>
-                <p className='price'>{item.price}</p>
-              </Description>
-            </Link>
-          </ProductItem>
-        ))}
-      </ProductList>
+      <Description>
+        <strong className='title'>{item.title}</strong>
+        <p className='price'>{item.price}</p>
+      </Description>
+    </Link>
+  </ProductItem>
+))} */}
+          </ProductList>
+        )}
+      </Container>
       <Footer />
-    </Container>
+    </>
   );
 };
 
 export default All;
+
+// {loading ? (
+//   <Loading />
+// ) : (
+//   <ProductList ref={revealRefs}>
+//     {products.map((product) => (
+//       <ProductItem key={product._id}>
+//         <Link to={`/product/${product._id}`}>
+//           <img
+//             src={`http://localhost:5000/${product.images[0]}`}
+//             alt=''
+//           />
+
+//           <Description>
+//             <strong className='title'>{product.title}</strong>
+//             <p className='price'>{product.price}</p>
+//           </Description>
+//         </Link>
+//       </ProductItem>
+//     ))}
+//     {/* {Result.map((item, index) => (
+//   <ProductItem key={index}>
+//     <Link to='/product/detail'>
+//       <img src={item.src} alt='' />
+
+//       <Description>
+//         <strong className='title'>{item.title}</strong>
+//         <p className='price'>{item.price}</p>
+//       </Description>
+//     </Link>
+//   </ProductItem>
+// ))} */}
+//   </ProductList>
+// )}

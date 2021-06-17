@@ -151,7 +151,7 @@ const AdminUpload = ({ history }) => {
           />
           <br />
           <br />
-          <label>상품 가격($)</label>
+          <label>상품 가격(₩)</label>
           <Input
             type='number'
             onChange={(e) => onChange(e)}

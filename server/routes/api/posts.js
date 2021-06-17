@@ -60,12 +60,12 @@ router.post(
   [
     auth,
     [
-      check('title', '상품 이름은 최소 두글자, 최대 이십글자 입니다')
+      check('title', '상품 이름은 2~30글자 까지입니다')
         .not()
         .isEmpty()
         .isLength({
           min: 2,
-          max: 20,
+          max: 30,
         }),
       check('description', '상품 설명은 최소 두글자, 최대 이백글자 입니다')
         .not()

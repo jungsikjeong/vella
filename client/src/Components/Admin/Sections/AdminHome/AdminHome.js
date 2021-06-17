@@ -94,8 +94,8 @@ const AdminHome = () => {
     setModal(false);
   };
   const onConfirm = (productId) => {
-    setModal(false);
     dispatch(removePost(productId));
+    setModal(false);
   };
 
   const rowSelection = {
@@ -285,7 +285,7 @@ const AdminHome = () => {
         <>
           <AskRemoveModal
             visible={Modal}
-            onConfirm={onConfirm}
+            onConfirm={() => onConfirm(SelectedRowKeys)}
             onCancel={onCancel}
           />
           <h1>{CurrentCategory}</h1>

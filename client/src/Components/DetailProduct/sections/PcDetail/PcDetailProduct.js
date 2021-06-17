@@ -4,10 +4,14 @@ import styled from 'styled-components';
 //components
 import Footer from '../../../Footer/Footer';
 import Review from './Review';
+import Loading from '../../../Common/Loading';
+import { useDispatch, useSelector } from 'react-redux';
+import { readProduct } from '../../../../_actions/product';
+import { withRouter } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
 `;
 
 const Wrapper = styled.div``;
@@ -171,7 +175,21 @@ const ScrollUp = styled.div`
   }
 `;
 
-const PcDetailProduct = () => {
+const PcDetailProduct = ({ match }) => {
+  const { id } = match.params;
+
+  const dispatch = useDispatch();
+
+  const { title, description, price, images, loading } = useSelector(
+    ({ product }) => ({
+      title: product.product.title,
+      description: product.product.description,
+      price: product.product.price,
+      images: product.product.images,
+      loading: product.loading,
+    })
+  );
+
   const currentRef = useRef();
   const SectionRef = useRef();
 
@@ -192,16 +210,18 @@ const PcDetailProduct = () => {
     });
   };
 
-  const scrollHandler = useCallback(() => {
+  // 스크롤 이벤트
+  const onScrollHandler = useCallback(() => {
     const { pageYOffset } = window;
     setScrollBtn(pageYOffset > 500);
   }, []);
 
-  const onInfiniteScroll = useCallback(() => {
+  // 스크롤이 바닥에 밀접해졌을때 이벤트발생, 양옆의 상품 설명글과 버튼을 없애준다.
+  const onScrollEvent = useCallback(() => {
     setHide(false);
-    scrollHandler();
+    onScrollHandler();
 
-    if (currentRef.current === null) {
+    if (currentRef.current === null || currentRef.current === undefined) {
       return;
     }
 
@@ -215,13 +235,17 @@ const PcDetailProduct = () => {
         setHide(true);
       }
     }
-  }, [currentRef, scrollHandler]);
+  }, [currentRef, onScrollHandler]);
 
   useEffect(() => {
-    window.addEventListener('scroll', onInfiniteScroll, true);
+    window.addEventListener('scroll', onScrollEvent, true);
 
-    return () => window.removeEventListener('scroll', onInfiniteScroll, true);
-  }, [onInfiniteScroll]);
+    return () => window.removeEventListener('scroll', onScrollEvent, true);
+  }, [onScrollEvent]);
+
+  useEffect(() => {
+    dispatch(readProduct(id));
+  }, [dispatch, id]);
 
   return (
     <>
@@ -232,54 +256,47 @@ const PcDetailProduct = () => {
             ^
           </div>
         </ScrollUp>
-        <Wrapper>
-          <LeftScreen className={Hide && 'hide'}>
-            <div className='heading-area'>
-              <h2>GADI 밴드 셔링 미니 원피스</h2>
-            </div>
+        {loading || !title || !description || !price || !images ? (
+          <Loading />
+        ) : (
+          <Wrapper>
+            <LeftScreen className={Hide && 'hide'}>
+              <div className='heading-area'>
+                <h2>{title}</h2>
+              </div>
 
-            <div className='product'>
-              <span className='product-price'>219,000원</span>
-              <br />
-              <br />
-              <p className='product-description'>
-                모달,대나무 원단으로 몸에 착 감기는 촉감.
-                <br />
-                물결무늬처럼 재단된 하단 디테일.
+              <div className='product'>
+                <span className='product-price'>{price}원</span>
                 <br />
                 <br />
-                Model is 159cm / 45kg
-                <br />
-                <br />* 실제 색상은 하단의 제품 단독샷과 가장 흡사합니다.
-              </p>
-            </div>
-          </LeftScreen>
+                <p className='product-description'>
+                  {description}
+                  <br />
+                  <br />
+                  Model is 159cm / 45kg
+                  <br />
+                  <br />* 실제 색상은 하단의 제품 단독샷과 가장 흡사합니다.
+                </p>
+              </div>
+            </LeftScreen>
 
-          <RightScreen className={Hide && 'hide'}>
-            <div className='btn-wrap'>
-              <button>
-                <span>Buy</span>
-              </button>
-              <button>
-                <span>Add to cart</span>
-              </button>
-            </div>
-          </RightScreen>
+            <RightScreen className={Hide && 'hide'}>
+              <div className='btn-wrap'>
+                <button>
+                  <span>Buy</span>
+                </button>
+                <button>
+                  <span>Add to cart</span>
+                </button>
+              </div>
+            </RightScreen>
 
-          <CenterScreen>
-            {/*             
-            <img
-              src='https://nueahmik.com/web/product/big/202103/3ab927ab6a00f07b72b4caca600ba9e4.jpg'
-              alt=''
-            /> */}
+            <CenterScreen>
+              {images.map((image, index) => (
+                <img src={`http://localhost:5000/${image}`} alt='' />
+              ))}
 
-            {/* 
-            <img
-              src='https://nueahmik.com/web/upload/NNEditor/20210327/GADI.JPG'
-              alt=''
-            /> */}
-
-            <img
+              {/* <img
               src='https://cdn.imweb.me/upload/S20200528393091e0c3a75/64f02610ba579.png'
               alt=''
             />
@@ -302,28 +319,29 @@ const PcDetailProduct = () => {
             <img
               src='https://cdn.imweb.me/upload/S20200528393091e0c3a75/0b7b887c9b4bb.png'
               alt=''
-            />
-          </CenterScreen>
+            /> */}
+            </CenterScreen>
 
-          <Bottom ref={currentRef}>
-            <div className='product-review'>
-              <h3>review</h3>
-            </div>
+            <Bottom ref={currentRef}>
+              <div className='product-review'>
+                <h3>review</h3>
+              </div>
 
-            {/* 등록된 리뷰가 없을시 보여질 화면 */}
-            <div className='not-review'>등록된 리뷰가 없습니다.</div>
-            <div className='buttonWrap'>
-              <button>write</button>
-            </div>
+              {/* 등록된 리뷰가 없을시 보여질 화면 */}
+              <div className='not-review'>등록된 리뷰가 없습니다.</div>
+              <div className='buttonWrap'>
+                <button>write</button>
+              </div>
 
-            {/* 리뷰 컴포넌트 */}
-            <Review />
-          </Bottom>
-        </Wrapper>
+              {/* 리뷰 컴포넌트 */}
+              <Review />
+            </Bottom>
+          </Wrapper>
+        )}
+        <Footer />
       </Container>
-      <Footer />
     </>
   );
 };
 
-export default PcDetailProduct;
+export default withRouter(PcDetailProduct);

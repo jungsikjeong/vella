@@ -68,13 +68,7 @@ const App = () => {
               <Route exact path='/product/outer' component={Outer} />
               <Route exact path='/product/proMotion' component={Promotion} />
               <Route exact path='/product/acc' component={Acc} />
-              <Route
-                exact
-                // Todo: 아래로 바꿀 예정
-                // path='/product/:productId'
-                path='/product/detail'
-                component={DetailProduct}
-              />
+              <Route exact path='/product/:id' component={DetailProduct} />
               <Route exact path='/cart' component={Cart} />
               <Route exact path='/admin' component={AdminLogin} />
               <Route exact path='/admin/home' component={Admin} />

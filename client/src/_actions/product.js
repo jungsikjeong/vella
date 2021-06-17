@@ -119,7 +119,6 @@ export const productPostUpload =
 
       if (errors) {
         // 서버에서 오는 에러메시지가 array임
-
         errors.forEach((error) => alert(error.msg));
       }
       dispatch({
@@ -131,7 +130,7 @@ export const productPostUpload =
 
 // id로  상품 가져오기
 export const readProduct = (productId) => async (dispatch) => {
-  dispatch({ type: CLEAR_PRODUCT });
+  // dispatch({ type: CLEAR_PRODUCT });
 
   try {
     const res = await axios.get(`/api/posts/${productId}`);
