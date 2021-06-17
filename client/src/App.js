@@ -32,6 +32,7 @@ import AdminEdit from './Components/Admin/Sections/AdminEdit/AdminEdit';
 import Cart from './Components/Cart/Cart';
 import DetailProduct from './Components/DetailProduct/DetailProduct';
 import ScrollToTop from './utils/scrollToTop';
+import NotFound from './Components/Common/NotFound';
 
 if (localStorage.token) {
   //  글로벌 axios 기본(defaults) 설정
@@ -83,6 +84,9 @@ const App = () => {
                 path='/admin/product/edit/:id'
                 component={AdminEdit}
               />
+
+              {/* 경로 외에 곳으로 갔을때 */}
+              <Route component={NotFound} />
             </Switch>
           </>
         </Router>
