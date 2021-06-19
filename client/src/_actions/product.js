@@ -89,6 +89,7 @@ export const productPostUpload =
   ({ body, history }) =>
   async (dispatch) => {
     try {
+      // const { title, description, price, images, category, productId } = body;
       const { title, description, price, images, category, productId } = body;
 
       const res = await axios.post('/api/posts', {
@@ -109,6 +110,47 @@ export const productPostUpload =
       } else {
         alert('상품 업로드 완료');
       }
+
+      dispatch({ type: CLEAR_PRODUCT });
+      // admin 메인 페이지로 이동
+      history.push('/admin/home');
+    } catch (err) {
+      const errors = err.response.data.errors;
+      console.log(err.response.data.errors);
+
+      if (errors) {
+        // 서버에서 오는 에러메시지가 array임
+        errors.forEach((error) => alert(error.msg));
+      }
+      dispatch({
+        type: PRODUCT_POST_FAILURE,
+        payload: err,
+      });
+    }
+  };
+
+// 게시글 편집
+export const productPostEdit =
+  ({ body, id, history }) =>
+  async (dispatch) => {
+    try {
+      // const { title, description, price, images, category, productId } = body;
+      const { title, description, price, images, category } = body;
+
+      const res = await axios.patch(`/api/posts/${id}`, {
+        title,
+        description,
+        price,
+        images,
+        categories: category,
+      });
+
+      dispatch({
+        type: PRODUCT_POST_SUCCESS,
+        payload: res.data,
+      });
+
+      alert('상품 편집 완료');
 
       dispatch({ type: CLEAR_PRODUCT });
       // admin 메인 페이지로 이동

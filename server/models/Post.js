@@ -25,12 +25,6 @@ const PostSchema = new Schema({
     type: Number,
     default: 1,
   },
-  sold: {
-    type: Number,
-    maxlength: 100,
-    default: 0,
-  },
-
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId,

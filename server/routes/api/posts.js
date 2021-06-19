@@ -5,7 +5,33 @@ const auth = require('../../middleware/auth');
 
 const Post = require('../../models/Post');
 const User = require('../../models/User');
+const sanitizeHtml = require('sanitize-html');
+
 // const upload = require('../../middleware/upload');
+
+const sanitizeOption = {
+  allowedTags: [
+    'h1',
+    'h2',
+    'b',
+    'i',
+    'u',
+    's',
+    'p',
+    'ul',
+    'ol',
+    'li',
+    'blockquote',
+    'a',
+    'img',
+  ],
+  allowedAttributes: {
+    a: ['href', 'name', 'target'],
+    img: ['src'],
+    li: ['class'],
+  },
+  allowedSchemes: ['data', 'http'],
+};
 
 const multer = require('multer');
 var storage = multer.diskStorage({
@@ -84,31 +110,81 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { title, description, price, images, categories, productId } =
-      req.body;
+    const { title, description, price, images, categories } = req.body;
 
     try {
-      const user = await User.findById(req.user.id).select('-password');
-
-      if (productId) {
-        // 상품 편집
-        const newData = { ...req.body };
-        const newPost = await Post.findOneAndUpdate(productId, newData, {
-          new: true,
-        }).exec();
-
-        res.json(newPost);
-        return;
-      }
-
       const newPost = new Post({
         title: title,
-        description: description,
+        description: sanitizeHtml(description, sanitizeOption),
         price: price,
         images: images,
         categories: categories,
         user: req.user.id,
       });
+      const post = await newPost.save();
+
+      res.json(post);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
+// html을 없애고 내용이 너무 길면 200자로 제한하는 함수
+const removeHtmlAndShorten = (body) => {
+  const filtered = sanitizeHtml(body, {
+    allowedTags: [],
+  });
+
+  return filtered.length < 20 ? filtered : `${filtered.slice(0, 20)}...`;
+};
+
+// @route   PATCH api/patch
+// @desc    게시물 편집
+// @access  Private
+router.patch(
+  '/:id',
+  [
+    auth,
+    [
+      check('title', '상품 이름은 2~30글자 까지입니다')
+        .not()
+        .isEmpty()
+        .isLength({
+          min: 2,
+          max: 30,
+        }),
+      check('description', '상품 설명은 최소 두글자, 최대 이백글자 입니다')
+        .not()
+        .isEmpty()
+        .isLength({
+          min: 2,
+          max: 200,
+        }),
+      check('price', '상품 가격을 확인해주세요').not(),
+      check('images', '상품 이미지를 업로드해주세요').not().isEmpty(),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { title, description, price, images, categories } = req.body;
+    const { id } = req.params;
+    try {
+      // 상품 편집
+      const newData = { ...req.body };
+      // body 값이 주어졌으면 HTML 필터링
+      if (nextData.description) {
+        nextData.description = sanitizeHtml(nextData.description);
+      }
+      const newPost = await Post.findOneAndUpdate({ _id: id }, newData, {
+        new: true,
+      }).exec();
+
       const post = await newPost.save();
 
       res.json(post);
@@ -138,15 +214,43 @@ router.post('/products', async (req, res) => {
         date: -1,
       });
 
-      res.json(posts);
+      const newPost = posts.map((post) => ({
+        price: post.price,
+        images: post.images,
+        categories: post.categories,
+        sold: post.sold,
+        reviews: post.reviews,
+        _id: post._id,
+        title: post.title,
+        description: removeHtmlAndShorten(post.description),
+        user: post.user,
+        date: post.date,
+        __v: post.__v,
+      }));
+
+      res.json(newPost);
       return;
     } else {
       posts = await Post.find().sort({
         date: -1,
       });
-    }
 
-    res.json(posts);
+      const newPost = posts.map((post) => ({
+        price: post.price,
+        images: post.images,
+        categories: post.categories,
+        sold: post.sold,
+        reviews: post.reviews,
+        _id: post._id,
+        title: post.title,
+        description: removeHtmlAndShorten(post.description),
+        user: post.user,
+        date: post.date,
+        __v: post.__v,
+      }));
+
+      res.json(newPost);
+    }
   } catch (err) {
     console.error(err.message);
 

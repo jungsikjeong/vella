@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Form, Input, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,13 +6,13 @@ import { productPostUpload } from '../../../../_actions/product';
 import { withRouter } from 'react-router';
 import { categories } from '../../../../utils/categories';
 import { clearProduct } from '../../../../_actions/product';
+import Quill from 'quill';
+import 'quill/dist/quill.bubble.css';
 //Components
 import Responsive from '../../../Common/Responsive';
 import AdminHeader from '../AdminHeader/AdminHeader';
 import FileUpload from './sections/FileUpload';
 import AskModal from '../../../Common/AskModal/AskModal';
-
-const { TextArea } = Input;
 
 const Container = styled(Responsive)`
   .page-title {
@@ -40,19 +40,43 @@ const SButton = styled(Button)`
   }
 `;
 
+const QuillWrapper = styled.div`
+  /* 최소 크기 지정 및 padding 제거 */
+  .ql-editor {
+    border: 2px solid #d9d9d9;
+    padding: 0;
+    min-height: 120px;
+    font-size: 0.89rem;
+    line-height: 1.5;
+    transition: all 0.3s;
+    :focus {
+      border-color: #9fd4ff;
+    }
+    :hover {
+      border-color: #9fd4ff;
+    }
+  }
+  .ql-editor.ql-blank::before {
+    left: 0px;
+  }
+`;
+
 const AdminUpload = ({ history }) => {
+  const quillElement = useRef(null); // Quill을 적용할 DivElement를 설정
+  const quillInstance = useRef(null); // Quill 인스턴스를 설정
+
   const dispatch = useDispatch();
   const product = useSelector((state) => state.product);
 
   const [FormData, setFormData] = useState({
     title: '',
-    description: '',
     price: '',
   });
+  const [Description, setDescription] = useState('');
   const [Modal, setModal] = useState(false);
   const [Category, setCategory] = useState(1);
 
-  const { title, description, price } = FormData;
+  const { title, price } = FormData;
 
   const onChange = useCallback(
     (e) => {
@@ -68,7 +92,7 @@ const AdminUpload = ({ history }) => {
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      if (!title || !description || !price || !product.images || !Category) {
+      if (!title || !Description || !price || !product.images || !Category) {
         alert('빈 칸을 모두 채워주세요');
         return;
       }
@@ -81,7 +105,7 @@ const AdminUpload = ({ history }) => {
 
       const body = {
         title,
-        description,
+        description: Description,
         price,
         images,
         category: Category,
@@ -89,7 +113,7 @@ const AdminUpload = ({ history }) => {
 
       dispatch(productPostUpload({ body, history }));
     },
-    [title, description, price, dispatch, product.images, history, Category]
+    [title, Description, price, dispatch, product.images, history, Category]
   );
 
   const onRemoveClick = () => {
@@ -107,6 +131,34 @@ const AdminUpload = ({ history }) => {
   const onCancel = () => {
     setModal(false);
   };
+
+  useEffect(() => {
+    quillInstance.current = new Quill(quillElement.current, {
+      theme: 'snow',
+      placeholder: '내용을 작성하세요',
+      modules: {
+        // 더 많은 옵션
+        // https://quilljs.com/docs/modules/toolbar/ 참고
+        toolbar: [
+          [{ header: '1' }, { header: '2' }],
+          [{ size: ['small', false, 'large', 'huge'] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          ['blockquote', 'code-block', 'link'],
+        ],
+      },
+    });
+
+    // quill에 text-change 이벤트 핸들러 등록
+    // 참고: https://quilljs.com/docs/api/#events
+    const quill = quillInstance.current;
+    quill.on('text-change', (delta, oldDelta, source) => {
+      if (source === 'user') {
+        setDescription(quill.root.innerHTML);
+        // console.log(description);
+      }
+    });
+  }, [setDescription]);
 
   useEffect(() => {
     return () => {
@@ -144,11 +196,10 @@ const AdminUpload = ({ history }) => {
           <br />
           <br />
           <label>상품 설명</label>
-          <TextArea
-            onChange={(e) => onChange(e)}
-            value={description}
-            name='description'
-          />
+          <QuillWrapper>
+            <div ref={quillElement} />
+          </QuillWrapper>
+
           <br />
           <br />
           <label>상품 가격(₩)</label>
@@ -174,5 +225,4 @@ const AdminUpload = ({ history }) => {
     </>
   );
 };
-
 export default withRouter(AdminUpload);

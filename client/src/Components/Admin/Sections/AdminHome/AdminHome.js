@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 // Components
 import Responsive from '../../../Common/Responsive';
 import AskRemoveModal from '../../../Common/AskModal/AskRemoveModal';
+import Loading from '../../../Common/Loading';
 
 const Container = styled(Responsive)`
   overflow-x: hidden;
@@ -36,7 +37,6 @@ const Container = styled(Responsive)`
 
   // 카테고리 아이콘
   .ant-table-selection-extra {
-    margin-left: 1.7rem;
   }
 
   h1 {
@@ -210,14 +210,20 @@ const AdminHome = () => {
         <Link to={`/admin/product/edit/${id.id}`}>{title}</Link>
       ),
       ellipsis: {
-        showTitle: false,
+        showTitle: true,
       },
     },
     {
       title: 'Description',
       dataIndex: 'description',
       render: (description, id) => (
-        <Link to={`/admin/product/edit/${id.id}`}>{description}</Link>
+        <Link to={`/admin/product/edit/${id.id}`}>
+          <span
+            dangerouslySetInnerHTML={{
+              __html: description,
+            }}
+          ></span>
+        </Link>
       ),
       ellipsis: {
         showTitle: false,
@@ -242,8 +248,8 @@ const AdminHome = () => {
         </Link>
       ),
     },
+    // 상품 삭제
     {
-      // 상품 삭제
       title: (
         <DeleteOutlined
           onClick={() => onRemoveClick(SelectedRowKeys)}
@@ -280,7 +286,7 @@ const AdminHome = () => {
   return (
     <Container>
       {loading ? (
-        <div style={{ overflow: 'hidden' }}>Loading ...</div>
+        <Loading />
       ) : (
         <>
           <AskRemoveModal

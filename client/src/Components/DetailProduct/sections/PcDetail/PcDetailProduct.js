@@ -6,7 +6,7 @@ import Footer from '../../../Footer/Footer';
 import Review from './Review';
 import Loading from '../../../Common/Loading';
 import { useDispatch, useSelector } from 'react-redux';
-import { readProduct } from '../../../../_actions/product';
+import { clearProduct, readProduct } from '../../../../_actions/product';
 import { withRouter } from 'react-router-dom';
 
 const Container = styled.div`
@@ -179,16 +179,7 @@ const PcDetailProduct = ({ match }) => {
   const { id } = match.params;
 
   const dispatch = useDispatch();
-
-  const { title, description, price, images, loading } = useSelector(
-    ({ product }) => ({
-      title: product.product.title,
-      description: product.product.description,
-      price: product.product.price,
-      images: product.product.images,
-      loading: product.loading,
-    })
-  );
+  const product = useSelector((state) => state.product);
 
   const currentRef = useRef();
   const SectionRef = useRef();
@@ -247,30 +238,45 @@ const PcDetailProduct = ({ match }) => {
     dispatch(readProduct(id));
   }, [dispatch, id]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(clearProduct());
+    };
+  }, [dispatch]);
+
   return (
     <>
       <Container ref={SectionRef}>
-        <ScrollUp className={ScrollBtn && 'scrollBtn'}>
-          <span onClick={onScrollToTop}>^</span> <br />
-          <div className='under' onClick={onScrollToUnder}>
-            ^
-          </div>
-        </ScrollUp>
-        {loading || !title || !description || !price || !images ? (
+        {product.loading ||
+        product.product === null ||
+        product.product.title === null ||
+        product.product.description === null ||
+        product.product.price === null ||
+        product.product.images === null ? (
           <Loading />
         ) : (
           <Wrapper>
+            <ScrollUp className={ScrollBtn && 'scrollBtn'}>
+              <span onClick={onScrollToTop}>^</span> <br />
+              <div className='under' onClick={onScrollToUnder}>
+                ^
+              </div>
+            </ScrollUp>
             <LeftScreen className={Hide && 'hide'}>
               <div className='heading-area'>
-                <h2>{title}</h2>
+                <h2>{product.product.title}</h2>
               </div>
 
               <div className='product'>
-                <span className='product-price'>{price}원</span>
+                <span className='product-price'>{product.product.price}원</span>
                 <br />
                 <br />
                 <p className='product-description'>
-                  {description}
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: product.product.description,
+                    }}
+                  ></div>
                   <br />
                   <br />
                   Model is 159cm / 45kg
@@ -292,34 +298,13 @@ const PcDetailProduct = ({ match }) => {
             </RightScreen>
 
             <CenterScreen>
-              {images.map((image, index) => (
-                <img src={`http://localhost:5000/${image}`} alt='' />
+              {product.product.images.map((image, index) => (
+                <img
+                  src={`http://localhost:5000/${image}`}
+                  alt=''
+                  key={index}
+                />
               ))}
-
-              {/* <img
-              src='https://cdn.imweb.me/upload/S20200528393091e0c3a75/64f02610ba579.png'
-              alt=''
-            />
-
-            <img
-              src='https://cdn.imweb.me/upload/S20200528393091e0c3a75/13b3120613b50.png'
-              alt=''
-            />
-
-            <img
-              src='https://cdn.imweb.me/upload/S20200528393091e0c3a75/34db737fa8f0c.png'
-              alt=''
-            />
-
-            <img
-              src='https://cdn.imweb.me/upload/S20200528393091e0c3a75/72fe38abe76f2.png'
-              alt=''
-            />
-
-            <img
-              src='https://cdn.imweb.me/upload/S20200528393091e0c3a75/0b7b887c9b4bb.png'
-              alt=''
-            /> */}
             </CenterScreen>
 
             <Bottom ref={currentRef}>
@@ -327,14 +312,18 @@ const PcDetailProduct = ({ match }) => {
                 <h3>review</h3>
               </div>
 
-              {/* 등록된 리뷰가 없을시 보여질 화면 */}
-              <div className='not-review'>등록된 리뷰가 없습니다.</div>
-              <div className='buttonWrap'>
-                <button>write</button>
-              </div>
-
-              {/* 리뷰 컴포넌트 */}
-              <Review />
+              {product.product === null ||
+              product.product.reviews === null ||
+              product.product.reviews.length === 0 ? (
+                <>
+                  <div className='not-review'>등록된 리뷰가 없습니다.</div>
+                  <div className='buttonWrap'>
+                    <button>write</button>
+                  </div>
+                </>
+              ) : (
+                <Review />
+              )}
             </Bottom>
           </Wrapper>
         )}

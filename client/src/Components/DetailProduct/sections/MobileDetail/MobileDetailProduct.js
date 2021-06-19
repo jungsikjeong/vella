@@ -1,5 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import { clearProduct, readProduct } from '../../../../_actions/product';
+
+//components
+import Loading from '../../../Common/Loading';
 import Footer from '../../../Footer/Footer';
 
 const Container = styled.div`
@@ -61,53 +67,82 @@ const ButtonWrap = styled.div`
   }
 `;
 
-const MobileDetailProduct = () => {
+const MobileDetailProduct = ({ match }) => {
+  const { id } = match.params;
+  const dispatch = useDispatch();
+  const product = useSelector((state) => state.product);
+
+  useEffect(() => {
+    dispatch(readProduct(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearProduct());
+    };
+  }, [dispatch]);
   return (
     <>
       <Container>
-        <Thumbnail>
-          <img
-            src='https://m.nueahmik.com/web/product/big/202103/3ab927ab6a00f07b72b4caca600ba9e4.jpg'
-            alt=''
-          />
-        </Thumbnail>
+        {product.loading ||
+        product.product === null ||
+        product.product.title === null ||
+        product.product.description === null ||
+        product.product.price === null ||
+        product.product.images === null ? (
+          <Loading />
+        ) : (
+          <>
+            <Thumbnail>
+              <img
+                src={`http://localhost:5000/${product.product.images[0]}`}
+                alt=''
+              />
+            </Thumbnail>
 
-        <ProductInfo>
-          <div className='heading-area'>
-            <h2>GADI 밴드 셔링 미니 원피스</h2>
-          </div>
+            <ProductInfo>
+              <div className='heading-area'>
+                <h2>{product.product.title}</h2>
+              </div>
 
-          <div className='product'>
-            <span className='product-price'>219,000원</span>
-            <br />
-            <br />
-            <p className='product-description'>
-              모달,대나무 원단으로 몸에 착 감기는 촉감.
-              <br />
-              물결무늬처럼 재단된 하단 디테일.
-              <br />
-              <br />
-              Model is 159cm / 45kg
-              <br />
-              <br />* 실제 색상은 하단의 제품 단독샷과 가장 흡사합니다.
-            </p>
-          </div>
-        </ProductInfo>
-        <ButtonWrap>
-          <button>Add to cart</button>
-          <button>Buy</button>
-        </ButtonWrap>
+              <div className='product'>
+                <span className='product-price'>{product.product.price}원</span>
+                <br />
+                <br />
+                <p className='product-description'>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: product.product.description,
+                    }}
+                  ></div>
+                  <br />
+                  <br />
+                  Model is 159cm / 45kg
+                  <br />
+                  <br />* 실제 색상은 하단의 제품 단독샷과 가장 흡사합니다.
+                </p>
+              </div>
+            </ProductInfo>
+            <ButtonWrap>
+              <button>Add to cart</button>
+              <button>Buy</button>
+            </ButtonWrap>
 
-        <ProductImages>
-          <img
-            src='https://m.nueahmik.com/web/upload/NNEditor/20210327/GADI.JPG'
-            alt=''
-          />
-        </ProductImages>
+            <ProductImages>
+              {product.product.images.map((image, index) => (
+                <img
+                  src={`http://localhost:5000/${image}`}
+                  alt=''
+                  key={index}
+                />
+              ))}
+            </ProductImages>
+          </>
+        )}
       </Container>
       <Footer />
     </>
   );
 };
 
-export default MobileDetailProduct;
+export default withRouter(MobileDetailProduct);
