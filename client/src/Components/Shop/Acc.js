@@ -54,12 +54,23 @@ const Description = styled.div`
   }
 `;
 
+const NotProduct = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  margin: 10rem 0;
+
+  font-weight: bold;
+  color: #707070;
+  font-size: 0.75rem;
+`;
+
 const Acc = () => {
   const dispatch = useDispatch();
-  const { products, loading, error } = useSelector(({ product }) => ({
+  const { products, loading } = useSelector(({ product }) => ({
     products: product.products,
     loading: product.loading,
-    error: product.error,
   }));
 
   // 6개씩 렌더링 되도록
@@ -111,14 +122,20 @@ const Acc = () => {
     });
   }, [Result]);
 
-  // 인피니티 스크롤 구현을 위해 Result에 products를 담아줌
   useEffect(() => {
-    dispatch(getAllPosts('')).then((response) => {
+    const categoryNumber = '6';
+    let body = {
+      categoryNumber,
+    };
+    dispatch(getAllPosts({ body })).then((response) => {
+      if (!response) return;
       setResult(response.slice(0, 6));
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
+
+  if (loading) return null;
 
   return (
     <>
@@ -130,14 +147,7 @@ const Acc = () => {
           {/* 카테고리들 */}
           <Categories />
         </CategoryWrapper>
-        {loading ||
-        error ||
-        !products ||
-        !Result ||
-        Result.length === 0 ||
-        Result === null ? (
-          <Loading />
-        ) : (
+        {products && Result && Result.length !== 0 && Result !== null ? (
           <ProductList ref={revealRefs}>
             {Result.map((product) => (
               <ProductItem key={product._id}>
@@ -155,6 +165,8 @@ const Acc = () => {
               </ProductItem>
             ))}
           </ProductList>
+        ) : (
+          <NotProduct>등록된 상품이 없습니다.</NotProduct>
         )}
       </Container>
       <Footer />

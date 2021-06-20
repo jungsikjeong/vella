@@ -12,7 +12,9 @@ import Responsive from '../Common/Responsive';
 import Footer from '../Footer/Footer';
 import Loading from '../Common/Loading';
 
-const Container = styled(Responsive)``;
+const Container = styled(Responsive)`
+  /* height: 100vh; */
+`;
 
 const CategoryWrapper = styled.div`
   text-align: center;
@@ -52,12 +54,23 @@ const Description = styled.div`
   }
 `;
 
+const NotProduct = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  margin: 10rem 0;
+
+  font-weight: bold;
+  color: #707070;
+  font-size: 0.75rem;
+`;
+
 const All = () => {
   const dispatch = useDispatch();
-  const { products, loading, error } = useSelector(({ product }) => ({
+  const { products, loading } = useSelector(({ product }) => ({
     products: product.products,
     loading: product.loading,
-    error: product.error,
   }));
 
   // 6개씩 렌더링 되도록
@@ -82,10 +95,7 @@ const All = () => {
 
     if (Math.floor(sum) === scrollHeight) {
       setItemIndex(ItemIndex + 6);
-      if (Result) {
-        setResult(Result.concat(products.slice(ItemIndex + 6, ItemIndex + 12)));
-      }
-      console.log(Result);
+      setResult(Result.concat(products.slice(ItemIndex + 6, ItemIndex + 12)));
     }
   }, [ItemIndex, Result, products]);
 
@@ -112,12 +122,10 @@ const All = () => {
     });
   }, [Result]);
 
-  // 인피니티 스크롤 구현을 위해 Result에 products를 담아줌
   useEffect(() => {
     dispatch(getAllPosts('')).then((response) => {
-      if (response) {
-        setResult(response.slice(0, 6));
-      }
+      if (!response) return;
+      setResult(response.slice(0, 6));
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -133,14 +141,8 @@ const All = () => {
           {/* 카테고리들 */}
           <Categories />
         </CategoryWrapper>
-        {loading ||
-        error ||
-        !products ||
-        !Result ||
-        Result.length === 0 ||
-        Result === null ? (
-          <Loading />
-        ) : (
+        {loading && <Loading />}
+        {products && Result && Result.length !== 0 && Result !== null ? (
           <ProductList ref={revealRefs}>
             {Result.map((product) => (
               <ProductItem key={product._id}>
@@ -158,6 +160,8 @@ const All = () => {
               </ProductItem>
             ))}
           </ProductList>
+        ) : (
+          <NotProduct>등록된 상품이 없습니다.</NotProduct>
         )}
       </Container>
       <Footer />
@@ -166,37 +170,3 @@ const All = () => {
 };
 
 export default All;
-
-// {loading ? (
-//   <Loading />
-// ) : (
-//   <ProductList ref={revealRefs}>
-//     {products.map((product) => (
-//       <ProductItem key={product._id}>
-//         <Link to={`/product/${product._id}`}>
-//           <img
-//             src={`http://localhost:5000/${product.images[0]}`}
-//             alt=''
-//           />
-
-//           <Description>
-//             <strong className='title'>{product.title}</strong>
-//             <p className='price'>{product.price}</p>
-//           </Description>
-//         </Link>
-//       </ProductItem>
-//     ))}
-//     {/* {Result.map((item, index) => (
-//   <ProductItem key={index}>
-//     <Link to='/product/detail'>
-//       <img src={item.src} alt='' />
-
-//       <Description>
-//         <strong className='title'>{item.title}</strong>
-//         <p className='price'>{item.price}</p>
-//       </Description>
-//     </Link>
-//   </ProductItem>
-// ))} */}
-//   </ProductList>
-// )}

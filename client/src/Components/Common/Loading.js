@@ -11,6 +11,7 @@ const animate = keyframes`
 `;
 
 const LoadingContainer = styled.div`
+  height: 100vh;
   .loading {
     background-color: gray;
     position: absolute;
