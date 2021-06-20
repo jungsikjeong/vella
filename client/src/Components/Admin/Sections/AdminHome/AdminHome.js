@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllPosts, removePost } from '../../../../_actions/product';
-import { Redirect } from 'react-router';
 import { DeleteOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
@@ -53,7 +52,6 @@ const Container = styled(Responsive)`
 `;
 
 const AdminHome = () => {
-  const user = useSelector((state) => state.auth.user);
   const product = useSelector((state) => state.product);
   const loading = useSelector((state) => state.product.loading);
 
@@ -278,10 +276,6 @@ const AdminHome = () => {
       dataIndex: 'remove',
     },
   ];
-
-  if (!user || !user.admin || user.admin === null) {
-    return <Redirect to='/admin' />;
-  }
 
   return (
     <Container>
