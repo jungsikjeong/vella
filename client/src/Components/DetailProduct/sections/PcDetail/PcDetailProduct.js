@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 //components
 import Footer from '../../../Footer/Footer';
@@ -8,6 +10,8 @@ import Loading from '../../../Common/Loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearProduct, readProduct } from '../../../../_actions/product';
 import { withRouter } from 'react-router-dom';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Container = styled.div`
   width: 100%;
@@ -215,16 +219,17 @@ const PcDetailProduct = ({ match }) => {
     if (currentRef.current === null || currentRef.current === undefined) {
       return;
     }
+    // 현재 스크롤 위치, 뷰포트 높이, 해당 엘리먼트의 위치
+    let scrollTop = document.documentElement.scrollTop;
+    let viewportHeight = window.innerHeight;
+    let offsetTop = currentRef.current.offsetTop;
+    let elementHeight = currentRef.current.clientHeight;
 
-    if (currentRef.current.offsetTop) {
-      const { offsetTop } = currentRef.current;
-      const { pageYOffset } = window;
-      const { scrollHeight } = currentRef.current;
-      const sum = pageYOffset + scrollHeight + 300;
-
-      if (offsetTop < sum) {
-        setHide(true);
-      }
+    if (
+      offsetTop < viewportHeight + scrollTop &&
+      offsetTop > scrollTop - elementHeight
+    ) {
+      setHide(true);
     }
   }, [currentRef, onScrollHandler]);
 
@@ -271,12 +276,13 @@ const PcDetailProduct = ({ match }) => {
                 <span className='product-price'>{product.product.price}원</span>
                 <br />
                 <br />
+
                 <p className='product-description'>
-                  <div
+                  <span
                     dangerouslySetInnerHTML={{
                       __html: product.product.description,
                     }}
-                  ></div>
+                  />
                   <br />
                   <br />
                   Model is 159cm / 45kg

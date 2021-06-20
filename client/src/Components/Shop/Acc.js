@@ -3,14 +3,18 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { gsap } from 'gsap';
 import Helmet from 'react-helmet';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllPosts } from '../../_actions/product';
 
+// Components
 import Categories from './sections/Categories';
 import Responsive from '../Common/Responsive';
 import Footer from '../Footer/Footer';
+import Loading from '../Common/Loading';
 
-import test from '../Common/test.json';
-
-const Container = styled(Responsive)``;
+const Container = styled(Responsive)`
+  /* height: 100vh; */
+`;
 
 const CategoryWrapper = styled.div`
   text-align: center;
@@ -31,7 +35,7 @@ const ProductItem = styled.li`
   img {
     max-width: 100%;
     width: 100%;
-    height: auto;
+    height: 450px;
   }
 `;
 
@@ -51,9 +55,16 @@ const Description = styled.div`
 `;
 
 const Acc = () => {
+  const dispatch = useDispatch();
+  const { products, loading, error } = useSelector(({ product }) => ({
+    products: product.products,
+    loading: product.loading,
+    error: product.error,
+  }));
+
   // 6개씩 렌더링 되도록
   // 초기값은 6개
-  const [Result, setResult] = useState(test.slice(0, 6));
+  const [Result, setResult] = useState();
   const [ItemIndex, setItemIndex] = useState(0);
 
   const revealRefs = useRef();
@@ -73,9 +84,9 @@ const Acc = () => {
 
     if (Math.floor(sum) === scrollHeight) {
       setItemIndex(ItemIndex + 6);
-      setResult(Result.concat(test.slice(ItemIndex + 6, ItemIndex + 12)));
+      setResult(Result.concat(products.slice(ItemIndex + 6, ItemIndex + 12)));
     }
-  }, [ItemIndex, Result]);
+  }, [ItemIndex, Result, products]);
 
   useEffect(() => {
     window.addEventListener('scroll', onInfiniteScroll, true);
@@ -84,48 +95,70 @@ const Acc = () => {
 
   useEffect(() => {
     gsap.from(revealRefs.current, {
-      duration: 2.5,
+      duration: 1,
       autoAlpha: 0,
       transform: 'translateY(20px)',
-      ease: 'power4.inOut',
+      ease: 'none',
     });
   }, []);
 
   useEffect(() => {
     // 인피니티 스크롤로 데이터 새롭게 불러왔을때 작동하는 애니메이션
     gsap.from(revealRefs.current, {
-      duration: 2.5,
+      duration: 1,
       transform: 'translateY(20px)',
-      ease: 'power4.inOut',
+      ease: 'none',
     });
   }, [Result]);
 
+  // 인피니티 스크롤 구현을 위해 Result에 products를 담아줌
+  useEffect(() => {
+    dispatch(getAllPosts('')).then((response) => {
+      setResult(response.slice(0, 6));
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+
   return (
-    <Container>
-      <Helmet>
-        <title>Vella | Shop</title>
-      </Helmet>
-      <CategoryWrapper>
-        {/* 카테고리들 */}
-        <Categories />
-      </CategoryWrapper>
+    <>
+      <Container>
+        <Helmet>
+          <title>Vella | Shop</title>
+        </Helmet>
+        <CategoryWrapper>
+          {/* 카테고리들 */}
+          <Categories />
+        </CategoryWrapper>
+        {loading ||
+        error ||
+        !products ||
+        !Result ||
+        Result.length === 0 ||
+        Result === null ? (
+          <Loading />
+        ) : (
+          <ProductList ref={revealRefs}>
+            {Result.map((product) => (
+              <ProductItem key={product._id}>
+                <Link to={`/product/${product._id}`}>
+                  <img
+                    src={`http://localhost:5000/${product.images[0]}`}
+                    alt=''
+                  />
 
-      <ProductList ref={revealRefs}>
-        {Result.map((item, index) => (
-          <ProductItem key={index}>
-            <Link to='#'>
-              <img src={item.src} alt='' />
-
-              <Description>
-                <strong className='title'>{item.title}</strong>
-                <p className='price'>{item.price}</p>
-              </Description>
-            </Link>
-          </ProductItem>
-        ))}
-      </ProductList>
+                  <Description>
+                    <strong className='title'>{product.title}</strong>
+                    <p className='price'>{product.price}</p>
+                  </Description>
+                </Link>
+              </ProductItem>
+            ))}
+          </ProductList>
+        )}
+      </Container>
       <Footer />
-    </Container>
+    </>
   );
 };
 

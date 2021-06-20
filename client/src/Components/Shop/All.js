@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { gsap } from 'gsap';
 import Helmet from 'react-helmet';
-import test from '../Common/test.json';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllPosts } from '../../_actions/product';
 
@@ -13,9 +12,7 @@ import Responsive from '../Common/Responsive';
 import Footer from '../Footer/Footer';
 import Loading from '../Common/Loading';
 
-const Container = styled(Responsive)`
-  height: 100vh;
-`;
+const Container = styled(Responsive)``;
 
 const CategoryWrapper = styled.div`
   text-align: center;
@@ -36,7 +33,7 @@ const ProductItem = styled.li`
   img {
     max-width: 100%;
     width: 100%;
-    height: auto;
+    height: 450px;
   }
 `;
 
@@ -65,7 +62,7 @@ const All = () => {
 
   // 6개씩 렌더링 되도록
   // 초기값은 6개
-  const [Result, setResult] = useState(test.slice(0, 6));
+  const [Result, setResult] = useState();
   const [ItemIndex, setItemIndex] = useState(0);
 
   const revealRefs = useRef();
@@ -85,9 +82,12 @@ const All = () => {
 
     if (Math.floor(sum) === scrollHeight) {
       setItemIndex(ItemIndex + 6);
-      setResult(Result.concat(test.slice(ItemIndex + 6, ItemIndex + 12)));
+      if (Result) {
+        setResult(Result.concat(products.slice(ItemIndex + 6, ItemIndex + 12)));
+      }
+      console.log(Result);
     }
-  }, [ItemIndex, Result]);
+  }, [ItemIndex, Result, products]);
 
   useEffect(() => {
     window.addEventListener('scroll', onInfiniteScroll, true);
@@ -96,24 +96,31 @@ const All = () => {
 
   useEffect(() => {
     gsap.from(revealRefs.current, {
-      duration: 2.5,
+      duration: 1,
       autoAlpha: 0,
       transform: 'translateY(20px)',
-      ease: 'power4.inOut',
+      ease: 'none',
     });
   }, []);
 
   useEffect(() => {
     // 인피니티 스크롤로 데이터 새롭게 불러왔을때 작동하는 애니메이션
     gsap.from(revealRefs.current, {
-      duration: 2.5,
+      duration: 1,
       transform: 'translateY(20px)',
-      ease: 'power4.inOut',
+      ease: 'none',
     });
   }, [Result]);
 
+  // 인피니티 스크롤 구현을 위해 Result에 products를 담아줌
   useEffect(() => {
-    dispatch(getAllPosts(''));
+    dispatch(getAllPosts('')).then((response) => {
+      if (response) {
+        setResult(response.slice(0, 6));
+      }
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   return (
@@ -126,11 +133,16 @@ const All = () => {
           {/* 카테고리들 */}
           <Categories />
         </CategoryWrapper>
-        {loading ? (
+        {loading ||
+        error ||
+        !products ||
+        !Result ||
+        Result.length === 0 ||
+        Result === null ? (
           <Loading />
         ) : (
           <ProductList ref={revealRefs}>
-            {products.map((product) => (
+            {Result.map((product) => (
               <ProductItem key={product._id}>
                 <Link to={`/product/${product._id}`}>
                   <img
@@ -145,18 +157,6 @@ const All = () => {
                 </Link>
               </ProductItem>
             ))}
-            {/* {Result.map((item, index) => (
-  <ProductItem key={index}>
-    <Link to='/product/detail'>
-      <img src={item.src} alt='' />
-
-      <Description>
-        <strong className='title'>{item.title}</strong>
-        <p className='price'>{item.price}</p>
-      </Description>
-    </Link>
-  </ProductItem>
-))} */}
           </ProductList>
         )}
       </Container>

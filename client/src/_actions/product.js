@@ -202,6 +202,8 @@ export const getAllPosts =
         type: GET_ALL_PRODUCT,
         payload: res.data,
       });
+
+      return res.data;
     } catch (err) {
       dispatch({
         type: GET_ALL_PRODUCT_FAILURE,
