@@ -34,6 +34,7 @@ import DetailProduct from './Components/DetailProduct/DetailProduct';
 import ScrollToTop from './utils/scrollToTop';
 import NotFound from './Components/Common/NotFound';
 
+console.log(localStorage);
 if (localStorage.token) {
   //  글로벌 axios 기본(defaults) 설정
   setAuthToken(localStorage.token);

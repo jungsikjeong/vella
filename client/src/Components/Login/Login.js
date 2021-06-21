@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Redirect, withRouter } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { login } from '../../_actions/auth';
 import Helmet from 'react-helmet';
@@ -111,8 +111,9 @@ const Button = styled.button`
   }
 `;
 
-const Login = ({ history }) => {
+const Login = () => {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -130,6 +131,9 @@ const Login = ({ history }) => {
     dispatch(login(email, password));
   };
 
+  if (isAuthenticated) {
+    return <Redirect to='/' />;
+  }
   return (
     <Container>
       <Helmet>
@@ -175,4 +179,4 @@ const Login = ({ history }) => {
   );
 };
 
-export default withRouter(Login);
+export default Login;

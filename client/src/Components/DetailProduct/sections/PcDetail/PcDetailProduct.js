@@ -247,6 +247,7 @@ const PcDetailProduct = ({ match, user, history }) => {
   const onInspection = (user) => {
     if (!user || user === null) {
       alert('로그인이 필요합니다');
+
       return history.push('/login');
     }
     dispatch(addToCart(id));
