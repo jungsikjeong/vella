@@ -67,6 +67,14 @@ const ButtonWrap = styled.div`
   }
 `;
 
+const NotPost = styled.div`
+  display: flex;
+  padding: 5rem 0 0;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
 const MobileDetailProduct = ({ match }) => {
   const { id } = match.params;
   const dispatch = useDispatch();
@@ -81,6 +89,14 @@ const MobileDetailProduct = ({ match }) => {
       dispatch(clearProduct());
     };
   }, [dispatch]);
+
+  // 에러 발생시
+  if (product.error) {
+    if (product.error.response && product.error.response.status === 404) {
+      return <NotPost>존재하지 않는 포스트 입니다.</NotPost>;
+    }
+    return <NotPost>오류 발생!</NotPost>;
+  }
   return (
     <>
       <Container>

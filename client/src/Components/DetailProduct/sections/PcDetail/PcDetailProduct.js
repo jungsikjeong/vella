@@ -9,7 +9,7 @@ import Review from './Review';
 import Loading from '../../../Common/Loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearProduct, readProduct } from '../../../../_actions/product';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -179,7 +179,15 @@ const ScrollUp = styled.div`
   }
 `;
 
-const PcDetailProduct = ({ match }) => {
+const NotPost = styled.div`
+  display: flex;
+  padding: 5rem 0 0;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
+const PcDetailProduct = ({ match, user }) => {
   const { id } = match.params;
 
   const dispatch = useDispatch();
@@ -233,21 +241,37 @@ const PcDetailProduct = ({ match }) => {
     }
   }, [currentRef, onScrollHandler]);
 
+  // 카트 페이지로 가기전에 user로그인이 되어있는지 검사
+  // 로그인 안되어있으면 경고알람 후, 로그인 페이지로 이동
+  const onInspection = () => {
+    console.log(user);
+  };
+
   useEffect(() => {
     window.addEventListener('scroll', onScrollEvent, true);
 
     return () => window.removeEventListener('scroll', onScrollEvent, true);
   }, [onScrollEvent]);
 
+  // 페이지에 들어왔을때 페이지의 데이터를 가져와줌
   useEffect(() => {
     dispatch(readProduct(id));
   }, [dispatch, id]);
 
+  // 페이지 떠날시 리덕스 state를 비워줌
   useEffect(() => {
     return () => {
       dispatch(clearProduct());
     };
   }, [dispatch]);
+
+  // 에러 발생시
+  if (product.error) {
+    if (product.error.response && product.error.response.status === 404) {
+      return <NotPost>존재하지 않는 포스트 입니다.</NotPost>;
+    }
+    return <NotPost>오류 발생!</NotPost>;
+  }
 
   return (
     <>
@@ -298,7 +322,9 @@ const PcDetailProduct = ({ match }) => {
                   <span>Buy</span>
                 </button>
                 <button>
-                  <span>Add to cart</span>
+                  <Link to='#'>
+                    <span onClick={onInspection}>Add to cart</span>
+                  </Link>
                 </button>
               </div>
             </RightScreen>

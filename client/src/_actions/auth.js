@@ -70,7 +70,7 @@ export const register =
   };
 
 // Login User
-export const login = (email, password) => async (dispatch) => {
+export const login = (email, password, history) => async (dispatch) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -88,22 +88,28 @@ export const login = (email, password) => async (dispatch) => {
     });
 
     dispatch(loadUser());
+    history.goBack();
   } catch (err) {
     console.error(err);
+
     const errors = err.response.data.errors;
 
     if (errors) {
       // 서버에서 오는 에러메시지가 array임
       errors.forEach((error) => alert(error.msg));
     }
+
     dispatch({
       type: LOGIN_FAIL,
+      payload: { msg: err },
     });
   }
 };
 
 // 로그아웃
 export const logout = () => async (dispatch) => {
+  axios.defaults.headers.common['x-auth-token'] = '';
+
   dispatch({ type: LOGOUT });
 
   alert('로그아웃 되었습니다');

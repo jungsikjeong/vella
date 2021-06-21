@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { login } from '../../_actions/auth';
 import Helmet from 'react-helmet';
@@ -111,7 +111,7 @@ const Button = styled.button`
   }
 `;
 
-const Login = () => {
+const Login = ({ history }) => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
@@ -128,7 +128,7 @@ const Login = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(login(email, password));
+    dispatch(login(email, password, history));
   };
 
   if (isAuthenticated) {
@@ -137,9 +137,9 @@ const Login = () => {
 
   return (
     <Container>
-       <Helmet>
-          <title>Vella | Login</title>
-        </Helmet>
+      <Helmet>
+        <title>Vella | Login</title>
+      </Helmet>
       <Title>
         <h2>login</h2>
       </Title>
@@ -179,4 +179,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withRouter(Login);
