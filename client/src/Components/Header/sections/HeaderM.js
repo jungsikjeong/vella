@@ -46,7 +46,7 @@ const Menu = styled.div`
 
 const SLink = styled(Link)``;
 
-const HeaderM = ({ pathname }) => {
+const HeaderM = ({ pathname, user }) => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const MenuToggle = useSelector((state) => state.toggle.MenuToggle);
@@ -57,8 +57,8 @@ const HeaderM = ({ pathname }) => {
   };
 
   const onLogout = () => {
+    dispatch(logout());
     MenuToggleHandler();
-    dispatch(logout);
   };
 
   return (
@@ -79,6 +79,7 @@ const HeaderM = ({ pathname }) => {
         isAuthenticated={isAuthenticated}
         onLogout={onLogout}
         onClick={MenuToggleHandler}
+        user={user}
       />
 
       <Logo>

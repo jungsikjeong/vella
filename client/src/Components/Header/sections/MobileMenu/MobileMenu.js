@@ -102,6 +102,7 @@ const MobileMenu = ({
   MenuToggleHandler,
   isAuthenticated,
   onLogout,
+  user,
 }) => {
   const [LookMenuToggle, setLookMenuToggle] = useState(false);
   const [ShopMenuToggle, setShopMenuToggle] = useState(false);
@@ -134,7 +135,7 @@ const MobileMenu = ({
             </SLink>
           </li>
           <li>
-            <SLink to='/cart' onClick={MenuToggleHandler}>
+            <SLink to={`/cart/${user._id}`} onClick={MenuToggleHandler}>
               Cart
             </SLink>
           </li>

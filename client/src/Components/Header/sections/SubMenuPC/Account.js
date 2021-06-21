@@ -61,7 +61,7 @@ const SLink = styled(Link)`
   }
 `;
 
-const Account = ({ DropdownOpen3 }) => {
+const Account = ({ DropdownOpen3, user }) => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
 
@@ -69,7 +69,7 @@ const Account = ({ DropdownOpen3 }) => {
 
   return (
     <>
-      {isAuthenticated ? (
+      {isAuthenticated && user ? (
         <SubMenuList
           className={DropdownOpen3 && 'DropdownOpen3'}
           style={{ paddingTop: '3.8rem' }}
@@ -82,7 +82,7 @@ const Account = ({ DropdownOpen3 }) => {
             <SLink to='/profile/:id'>Profile</SLink>
           </SubMenuItem>
           <SubMenuItem>
-            <SLink to='/cart'>Cart</SLink>
+            <SLink to={`/cart/${user._id}`}>Cart</SLink>
           </SubMenuItem>
         </SubMenuList>
       ) : (

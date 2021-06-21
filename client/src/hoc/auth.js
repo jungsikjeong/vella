@@ -14,33 +14,34 @@ export default function (SpecificComponent, option, adminRoute = null) {
     useEffect(() => {
       // 현재 상태를 확인하려고 Auth 요청을 보냄
       dispatch(loadUser());
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-      // 로그인되지 않은 상태
-      if (!auth.isAuthenticated) {
-        if (option) {
-          if (adminRoute) {
-            props.history.push('/admin');
-            return;
-          }
-          props.history.push('/login');
-          return;
-        }
-        // 로그인 상태
-      } else {
-        // 관리자 페이지에 관리자만 들어갈 수 있다.
-        // 관리자가 아닐시, 관리자 로그인페이지로 이동
-        if (adminRoute && auth.user.admin === null && !auth.user.admin) {
+    // 로그인되지 않은 상태
+    if (!auth.isAuthenticated) {
+      if (option) {
+        if (adminRoute) {
           props.history.push('/admin');
           return;
-        } else {
-          // 로그인한 유저는 접근할 수 없는 페이지
-          if (option === false) {
-            props.history.push('/');
-            return;
-          }
+        }
+        props.history.push('/login');
+        return;
+      }
+      // 로그인 상태
+    } else {
+      // 관리자 페이지에 관리자만 들어갈 수 있다.
+      // 관리자가 아닐시, 관리자 로그인페이지로 이동
+      if (adminRoute && auth.user.admin === null && !auth.user.admin) {
+        props.history.push('/admin');
+        return;
+      } else {
+        // 로그인한 유저는 접근할 수 없는 페이지
+        if (option === false) {
+          props.history.push('/');
+          return;
         }
       }
-    }, []);
+    }
 
     return <SpecificComponent {...props} user={auth.user} />;
   }

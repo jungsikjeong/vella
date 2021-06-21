@@ -7,6 +7,9 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  GET_CART_ITEMS,
+  ADD_TO_CART,
+  CART_FAILURE,
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
@@ -70,7 +73,7 @@ export const register =
   };
 
 // Login User
-export const login = (email, password, history) => async (dispatch) => {
+export const login = (email, password) => async (dispatch) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -88,14 +91,15 @@ export const login = (email, password, history) => async (dispatch) => {
     });
 
     dispatch(loadUser());
-    history.goBack();
+
+    // history.goBack();
   } catch (err) {
     console.error(err);
-
     const errors = err.response.data.errors;
 
     if (errors) {
       // 서버에서 오는 에러메시지가 array임
+
       errors.forEach((error) => alert(error.msg));
     }
 
@@ -113,4 +117,42 @@ export const logout = () => async (dispatch) => {
   dispatch({ type: LOGOUT });
 
   alert('로그아웃 되었습니다');
+};
+
+// 카트에 상품 담기
+export const addToCart = (productId) => async (dispatch) => {
+  try {
+    let body = {
+      productId,
+    };
+    const res = await axios.post('/api/users/addToCart', body);
+
+    dispatch({
+      type: ADD_TO_CART,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: CART_FAILURE,
+    });
+  }
+};
+
+// 카트에 담긴 상품 가져오기
+export const getCartItems = (cartItems) => async (dispatch) => {
+  try {
+    console.log(cartItems);
+    const res = await axios.get(`/api/posts/cart?id=${cartItems}`);
+
+    dispatch({
+      type: GET_CART_ITEMS,
+      payload: res.data,
+    });
+  } catch (err) {
+    console.error(err);
+    dispatch({
+      type: CART_FAILURE,
+      payload: err,
+    });
+  }
 };

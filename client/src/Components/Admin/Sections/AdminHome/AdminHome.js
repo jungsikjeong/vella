@@ -284,6 +284,8 @@ const AdminHome = () => {
       ) : (
         <>
           <AskRemoveModal
+            title='포스트 삭제'
+            description='포스트를 정말 삭제하시겠습니까?'
             visible={Modal}
             onConfirm={() => onConfirm(SelectedRowKeys)}
             onCancel={onCancel}

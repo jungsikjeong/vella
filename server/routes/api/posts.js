@@ -196,7 +196,7 @@ router.patch(
 );
 
 // @route   GET api/posts
-// @desc    모든 게시물 가져 오기
+// @desc    모든 게시물 가져 오기 혹은 카테고리에 맞는 게시물 가져오기
 // @access  Public
 router.post('/products', async (req, res) => {
   let categoryNumber = req.body.categoryNumber
@@ -267,6 +267,37 @@ router.get('/:id', async (req, res) => {
 
     if (!post) {
       return res.status(404).json({ msg: '게시글을 찾을 수 없습니다' });
+    }
+
+    res.json(post);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: '게시글을 찾을 수 없습니다' });
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   GET api/posts/cart/products
+// @desc    유저의 장바구니에 담긴 상품들 가져오기
+// @access  Public
+router.get('/cart', auth, async (req, res) => {
+  let productIds = req.query.id;
+  try {
+    if (productIds) {
+      let ids = req.query.id.split(',');
+      productIds = ids.map((item) => {
+        return item;
+      });
+    }
+
+    const post = await Post.find({ _id: { $in: productIds } });
+
+    if (!post) {
+      return res
+        .status(404)
+        .json({ msg: '장바구니에 담긴 목록들을 찾을 수 없습니다.' });
     }
 
     res.json(post);

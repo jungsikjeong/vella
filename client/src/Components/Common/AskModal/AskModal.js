@@ -22,13 +22,13 @@ const AskModalBlock = styled.div`
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.125);
   h2 {
     font-weight: bold;
-    font-size: 1.25rem;
+    font-size: 1.12rem;
     margin-top: 0;
     margin-bottom: 1rem;
   }
   p {
-    font-size: 0.8rem;
-    margin-bottom: 2.3rem;
+    font-size: 0.7rem;
+    margin-bottom: 1.3rem;
   }
   .buttons {
     display: flex;

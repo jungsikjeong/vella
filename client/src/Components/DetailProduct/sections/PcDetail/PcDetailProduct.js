@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { addToCart } from '../../../../_actions/auth';
 
 //components
 import Footer from '../../../Footer/Footer';
@@ -9,7 +10,7 @@ import Review from './Review';
 import Loading from '../../../Common/Loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearProduct, readProduct } from '../../../../_actions/product';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -187,7 +188,7 @@ const NotPost = styled.div`
   height: 100vh;
 `;
 
-const PcDetailProduct = ({ match, user }) => {
+const PcDetailProduct = ({ match, user, history }) => {
   const { id } = match.params;
 
   const dispatch = useDispatch();
@@ -243,8 +244,22 @@ const PcDetailProduct = ({ match, user }) => {
 
   // 카트 페이지로 가기전에 user로그인이 되어있는지 검사
   // 로그인 안되어있으면 경고알람 후, 로그인 페이지로 이동
-  const onInspection = () => {
-    console.log(user);
+  const onInspection = (user) => {
+    if (!user || user === null) {
+      alert('로그인이 필요합니다');
+      return history.push('/login');
+    }
+    dispatch(addToCart(id));
+
+    if (
+      window.confirm(
+        '장바구니에 상품이 담겼습니다. 장바구니를 확인하러 가시겠습니까?'
+      ) === true
+    ) {
+      history.push(`/cart/${id}`);
+    } else {
+      return;
+    }
   };
 
   useEffect(() => {
@@ -322,9 +337,9 @@ const PcDetailProduct = ({ match, user }) => {
                   <span>Buy</span>
                 </button>
                 <button>
-                  <Link to='#'>
-                    <span onClick={onInspection}>Add to cart</span>
-                  </Link>
+                  <span onClick={() => onInspection(user, id)}>
+                    Add to cart
+                  </span>
                 </button>
               </div>
             </RightScreen>

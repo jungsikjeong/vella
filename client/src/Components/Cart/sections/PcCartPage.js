@@ -1,6 +1,7 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { getCartItems } from '../../../_actions/auth';
 
 //Components
 import Responsive from '../../Common/Responsive';
@@ -58,12 +59,27 @@ const Submit = styled.div`
     letter-spacing: 1px;
   }
 `;
+const PcCartPage = ({ user }) => {
+  const dispatch = useDispatch();
 
-const PcCartPage = () => {
-  const { user } = useSelector(({ auth }) => ({
-    user: auth.user,
-  }));
+  // useEffect(() => {
+  //   let cartItems = [];
+  //   if (!user || !user.cart || user.cart === null) return;
 
+  //   if (user && user.cart) {
+  //     if (user.cart.length > 0) {
+  //       user.cart.forEach((item) => {
+  //         cartItems.push(item.id);
+
+  //         dispatch(getCartItems(cartItems));
+  //       });
+  //     }
+  //   }
+  // }, [user, user.cart, dispatch]);
+
+  useEffect(() => {
+    dispatch(getCartItems('60ceed2d38a2cd56b0dae279'));
+  }, [dispatch]);
   return (
     <>
       <Container>

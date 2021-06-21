@@ -34,3 +34,8 @@ export const GET_ALL_PRODUCT = 'GET_ALL_PRODUCT';
 export const GET_ALL_PRODUCT_FAILURE = 'GET_ALL_PRODUCT_FAILURE';
 export const PRODUCT_READ = 'PRODUCT_READ';
 export const PRODUCT_READ_FAILURE = 'PRODUCT_READ_FAILURE';
+
+// user cart
+export const ADD_TO_CART = 'ADD_TO_CART';
+export const GET_CART_ITEMS = 'GET_CART_ITEMS';
+export const CART_FAILURE = 'CART_FAILURE';

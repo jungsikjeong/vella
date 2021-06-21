@@ -6,6 +6,9 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  ADD_TO_CART,
+  GET_CART_ITEMS,
+  CART_FAILURE,
 } from '../_actions/types';
 
 const initialState = {
@@ -26,6 +29,7 @@ export default function (state = initialState, action) {
         isAuthenticated: true,
         loading: false,
         user: payload,
+        error: '',
       };
 
     case REGISTER_SUCCESS:
@@ -49,6 +53,35 @@ export default function (state = initialState, action) {
         isAuthenticated: false,
         loading: false,
         user: null,
+      };
+
+    case ADD_TO_CART:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          cart: payload,
+        },
+      };
+
+    case GET_CART_ITEMS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          cart: payload,
+        },
+        error: '',
+      };
+
+    case CART_FAILURE:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          cart: '',
+        },
+        error: payload,
       };
 
     default:

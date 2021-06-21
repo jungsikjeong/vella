@@ -90,6 +90,57 @@ router.post(
   }
 );
 
+// @route   POST api/users/cart
+// @desc    카트에 담기
+// @access  Private
+router.post('/addToCart', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    const post = await Post.findById(req.body.productId);
+    console.log(post);
+    // 카트 유무
+    let isCart = false;
+
+    if (user.cart.length !== 0) {
+      user.cart.forEach((item) => {
+        if (item.id === req.body.productId) {
+          isCart = true;
+        }
+      });
+    }
+    // 상품이 이미 있을때
+    // 'cart.$.quantity': Cart라는 Array안의
+    // quantity 중에서 업데이트할 요소를 식별해줌
+    if (isCart) {
+      User.findOneAndUpdate(
+        { _id: user._id, 'cart.id': req.body.productId },
+        { $inc: { 'cart.$.quantity': 1 } },
+        { new: true }
+      ).exec();
+      return res.status(200).json(user.cart);
+    } else {
+      // 상품이 이미 있지 않을때
+      User.findOneAndUpdate(
+        { _id: user._id },
+        {
+          $push: {
+            cart: {
+              id: req.body.productId,
+              quantity: 1,
+              Date: Date.now(),
+            },
+          },
+        },
+        { new: true }
+      ).exec();
+      return res.status(200).json(user.cart);
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route   POST api/users/edit/ (유저 정보 변경)
 // @desc    User information change
 // @access  Private

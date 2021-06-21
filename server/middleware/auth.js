@@ -8,7 +8,6 @@ module.exports = function (req, res, next) {
   // console.log('토큰 ?', token);
   // 토큰 확인
   if (!token) {
-    console.log('토큰 확인완료 토큰 없음');
     return res.status(401).json({ msg: '토큰 없음, 승인 거부 됨' });
   }
 

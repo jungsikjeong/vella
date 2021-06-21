@@ -141,7 +141,7 @@ export const sections = [
   },
 ];
 
-const HeaderPC = ({ pathname }) => {
+const HeaderPC = ({ pathname, user }) => {
   const revealRefs = useRef([]);
   revealRefs.current = [];
 
@@ -254,7 +254,7 @@ const HeaderPC = ({ pathname }) => {
             >
               <SLink to='#'>Account</SLink>
               {/* 서브메뉴 */}
-              <Account DropdownOpen3={IsHovering.DropdownOpen3} />
+              <Account DropdownOpen3={IsHovering.DropdownOpen3} user={user} />
             </li>
 
             <li className='item'>

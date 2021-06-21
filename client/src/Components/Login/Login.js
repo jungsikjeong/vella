@@ -113,7 +113,6 @@ const Button = styled.button`
 
 const Login = ({ history }) => {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -128,12 +127,8 @@ const Login = ({ history }) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(login(email, password, history));
+    dispatch(login(email, password));
   };
-
-  if (isAuthenticated) {
-    return <Redirect to='/' />;
-  }
 
   return (
     <Container>
@@ -144,13 +139,14 @@ const Login = ({ history }) => {
         <h2>login</h2>
       </Title>
 
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit} autocomplete='on'>
         <FormContents>
           <p className='label'>이메일</p>
           <Input name='email' value={email} onChange={(e) => onChange(e)} />
 
           <p className='label'>비밀번호</p>
           <Input
+            className='sc-jNnpgg hvTazZ'
             name='password'
             type='password'
             value={password}
