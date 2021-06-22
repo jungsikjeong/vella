@@ -112,7 +112,7 @@ router.post('/addToCart', auth, async (req, res) => {
         }
       });
     }
-    // 상품이 이미 있을때
+    // 상품이 이미 카트에 있을때
     // 'cart.$.quantity': Cart라는 Array안의
     // quantity 중에서 업데이트할 요소를 식별해줌
     if (isCart) {
@@ -123,7 +123,7 @@ router.post('/addToCart', auth, async (req, res) => {
         },
         { new: true }
       ).exec();
-      console.log(user.cart);
+
       return res.status(200).json(user.cart);
     } else {
       // 상품이 이미 있지 않을때
@@ -144,11 +144,62 @@ router.post('/addToCart', auth, async (req, res) => {
         },
         { new: true }
       ).exec();
-      console.log(user.cart);
+
       return res.status(200).json(user.cart);
     }
   } catch (err) {
     console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   POST api/posts/cart
+// @desc    해당 유저의 장바구니에 담긴 상품들 가져오기
+// @access  Private
+router.get('/getCart', auth, async (req, res) => {
+  let productIds;
+
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+      return res.status(400).json({ msg: '로그인을 해주세요.' });
+    }
+
+    if (!user.cart || user.cart.length === 0) {
+      return res.status(400).json({ msg: '장바구니에 담긴 상품이 없습니다.' });
+    }
+
+    // if (user.cart && user.cart.length > 0) {
+    //   // 유저 카트에 담긴 상품아이디를 찾은후
+    //   productIds = user.cart.map((item) => {
+    //     return item.id;
+    //   });
+    //   // 상품을 조회해준다
+    //   const post = await Post.find({ _id: { $in: productIds } });
+
+    //   // 상품이 없다면
+    //   // (관리자가 상품을 삭제하면, 유저카트에는 상품 정보가 남아있는경우가 있어서..)
+    //   if (!post || post.length === 0) {
+    //     const posts = await Post.find().sort({
+    //       date: -1,
+    //     });
+    //     console.log('posts', posts);
+    //     const newPost = post.filter((item) => {
+    //       return item.id !== productIds;
+    //     });
+
+    //     console.log('newPost', newPost);
+
+    //     // res.json()
+    //   }
+
+    // }
+    res.json(user.cart);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: '게시글을 찾을 수 없습니다' });
+    }
     res.status(500).send('Server Error');
   }
 });
@@ -191,56 +242,6 @@ router.post('/edit/profile', auth, async (req, res) => {
     }
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-// @route   POST api/posts/cart
-// @desc    해당 유저의 장바구니에 담긴 상품들 가져오기
-// @access  Private
-router.get('/getCart', auth, async (req, res) => {
-  let productIds;
-
-  try {
-    const user = await User.findById(req.user.id).select('-password');
-    if (!user) {
-      return res.status(400).json({ msg: '로그인을 해주세요.' });
-    }
-
-    if (!user.cart || user.cart.length === 0) {
-      return res.status(400).json({ msg: '장바구니에 담긴 상품이 없습니다.' });
-    }
-
-    if (user.cart && user.cart.length > 0) {
-      // 유저 카트에 담긴 상품아이디를 찾은후
-      productIds = user.cart.map((item) => {
-        return item.id;
-      });
-
-      // 상품을 조회해준다
-      const post = await Post.find({ _id: { $in: productIds } });
-
-      // 상품이 없다면
-      // (관리자가 상품을 삭제하면, 유저카트에는 상품 정보가 남아있는경우가 있어서..)
-      if (!post) {
-        const post = await Post.find();
-
-        const newPost = post.filter((item) => {
-          return item.id === productIds;
-        });
-
-        console.log('newPost', newPost);
-
-        // res.json()
-      }
-
-      // res.json(user.cart);
-    }
-  } catch (err) {
-    console.error(err.message);
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({ msg: '게시글을 찾을 수 없습니다' });
-    }
     res.status(500).send('Server Error');
   }
 });

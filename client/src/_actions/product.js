@@ -183,10 +183,14 @@ export const readProduct = (productId) => async (dispatch) => {
     });
   } catch (err) {
     console.error(err);
+    const errors = err.response.data.msg;
 
+    if (errors) {
+      alert(errors);
+    }
     dispatch({
       type: PRODUCT_READ_FAILURE,
-      payload: { msg: err },
+      payload: { msg: err.response },
     });
   }
 };

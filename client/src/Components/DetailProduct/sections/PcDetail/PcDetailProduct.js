@@ -273,8 +273,8 @@ const PcDetailProduct = ({ match, user, history }) => {
 
   // 에러 발생시
   if (product.error) {
-    if (product.error.response && product.error.response.status === 404) {
-      return <NotPost>존재하지 않는 포스트 입니다.</NotPost>;
+    if (product.error && product.error.msg.status === 404) {
+      return <NotPost>존재하지 않는 상품 입니다.</NotPost>;
     }
     return <NotPost>오류 발생!</NotPost>;
   }
