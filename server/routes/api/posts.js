@@ -205,11 +205,17 @@ router.post('/products', async (req, res) => {
   let categoryNumber = req.body.categoryNumber
     ? parseInt(req.body.categoryNumber)
     : '';
-
   let posts;
   let findArgs = {};
+  let term = req.body.searchTerm;
 
   try {
+    if (term) {
+      const findPost = await Post.find().find({ $text: { $search: term } });
+
+      return res.status(200).json(findPost);
+    }
+
     if (categoryNumber) {
       findArgs['categories'] = categoryNumber;
 

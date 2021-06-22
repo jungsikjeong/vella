@@ -35,7 +35,13 @@ const ProductItem = styled.li`
   img {
     max-width: 100%;
     width: 100%;
-    height: 450px;
+    height: auto;
+
+    @media (min-width: 800px) {
+      max-width: 100%;
+      width: 100%;
+      height: 450px;
+    }
   }
 `;
 

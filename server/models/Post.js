@@ -38,4 +38,17 @@ const PostSchema = new Schema({
   },
 });
 
+// $text , 검색 중요도
+// 검색할때 조금 더 신경써서 해줬으면 좋겠는것들
+PostSchema.index(
+  {
+    title: 'text',
+  },
+  {
+    weights: {
+      title: 5,
+    },
+  }
+);
+
 module.exports = mongoose.model('post', PostSchema);

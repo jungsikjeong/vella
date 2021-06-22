@@ -237,6 +237,27 @@ export const removePost = (productIds) => async (dispatch) => {
   }
 };
 
+// 상품 검색
+export const searchProduct =
+  ({ body }) =>
+  async (dispatch) => {
+    try {
+      const res = await axios.post('/api/posts/products', body);
+
+      dispatch({
+        type: GET_ALL_PRODUCT,
+        payload: res.data,
+      });
+
+      return res.data;
+    } catch (err) {
+      dispatch({
+        type: GET_ALL_PRODUCT_FAILURE,
+        payload: { msg: err },
+      });
+    }
+  };
+
 // CLEAR_PRODUCT
 export const clearProduct = () => async (dispatch) => {
   dispatch({

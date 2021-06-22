@@ -1,5 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { searchProduct } from '../../../../_actions/product';
 
 const Container = styled.div`
   position: fixed;
@@ -52,6 +54,22 @@ const Text = styled.div`
 
 const Search = ({ onOpenSearch, OpenSearch }) => {
   const CloseRef = useRef();
+  const dispatch = useDispatch();
+
+  const [SearchValue, setSearchValue] = useState('');
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    let body = {
+      searchTerm: SearchValue,
+    };
+
+    dispatch(searchProduct({ body }));
+  };
+
+  const onChangeSearch = (e) => {
+    setSearchValue(e.target.value);
+  };
 
   const onClickOutside = ({ target }) => {
     if (OpenSearch && !CloseRef.current.contains(target)) onOpenSearch();
@@ -62,12 +80,19 @@ const Search = ({ onOpenSearch, OpenSearch }) => {
     return () => {
       window.removeEventListener('click', onClickOutside);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Container className={OpenSearch && 'openSearch'} onClick={onClickOutside}>
       <SearchWrap>
-        <input type='text' ref={CloseRef} />
+        <form onSubmit={onSubmit}>
+          <input
+            type='text'
+            ref={CloseRef}
+            onChange={(e) => onChangeSearch(e)}
+          />
+        </form>
       </SearchWrap>
       <Text>Press Enter to Search</Text>
     </Container>
