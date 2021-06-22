@@ -250,17 +250,7 @@ const PcDetailProduct = ({ match, user, history }) => {
 
       return history.push('/login');
     }
-    dispatch(addToCart(id));
-
-    if (
-      window.confirm(
-        '장바구니에 상품이 담겼습니다. 장바구니를 확인하러 가시겠습니까?'
-      ) === true
-    ) {
-      history.push(`/cart/${id}`);
-    } else {
-      return;
-    }
+    dispatch(addToCart(id, history));
   };
 
   useEffect(() => {

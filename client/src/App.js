@@ -34,7 +34,6 @@ import DetailProduct from './Components/DetailProduct/DetailProduct';
 import ScrollToTop from './utils/scrollToTop';
 import NotFound from './Components/Common/NotFound';
 
-console.log(localStorage);
 if (localStorage.token) {
   //  글로벌 axios 기본(defaults) 설정
   setAuthToken(localStorage.token);
@@ -45,9 +44,6 @@ const App = () => {
     store.dispatch(loadUser());
   }, []);
 
-  // null 누구나 들어갈 수 있음
-  // true 로그인 한 사용자 만 들어갈 수 있음
-  // false 로그인 한 사용자는 안으로 들어갈 수 없음.
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Provider store={store}>

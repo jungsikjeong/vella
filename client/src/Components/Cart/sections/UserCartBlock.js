@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div``;
@@ -59,31 +60,29 @@ const Tbody = styled.tbody`
   }
 `;
 
-const UserCardBlock = ({ products, removeItem }) => {
-  //   const renderCartImage = (images) => {
-  //     if (images.length > 0) {
-  //       let image = images[0];
-  //       return `http://localhost:5000/${image}`;
-  //     }
-  //   };
+const UserCardBlock = ({ products, removeItem, cart }) => {
+  const renderItems = ({ cart }) => (
+    <>
+      {cart.map((item) => (
+        <tr key={item.id}>
+          <td>
+            <Link to={`/product/${item.id}`}>
+              <img
+                alt='product'
+                src={`http://localhost:5000/${item.images[0]}`}
+              />
+            </Link>
+          </td>
+          <td>{item.title}</td>
+          <td>{item.price}</td>
+          <td>{item.quantity}</td>
 
-  const renderItems = () => (
-    // To do:: 링크걸어서 해당 상품으로 이동하게끔 해줄것
-    <tr>
-      <td>
-        <img
-          alt='product'
-          src='https://nueahmik.com/web/product/tiny/202010/7712cb38e7b68324c7c6284a80199322.jpg'
-        />
-      </td>
-      <td>VIIR 텐셀 옥스퍼드 랩 스커트</td>
-      <td>19200원</td>
-      <td>1개</td>
-
-      <td>
-        <button>delete</button>
-      </td>
-    </tr>
+          <td>
+            <button>delete</button>
+          </td>
+        </tr>
+      ))}
+    </>
   );
   return (
     <Container>
@@ -98,7 +97,7 @@ const UserCardBlock = ({ products, removeItem }) => {
           </tr>
         </thead>
 
-        <Tbody>{renderItems()}</Tbody>
+        <Tbody>{renderItems({ cart })}</Tbody>
       </Table>
     </Container>
   );

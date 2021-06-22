@@ -91,8 +91,6 @@ export const login = (email, password) => async (dispatch) => {
     });
 
     dispatch(loadUser());
-
-    // history.goBack();
   } catch (err) {
     console.error(err);
     const errors = err.response.data.errors;
@@ -120,18 +118,29 @@ export const logout = () => async (dispatch) => {
 };
 
 // 카트에 상품 담기
-export const addToCart = (productId) => async (dispatch) => {
+export const addToCart = (productId, history) => async (dispatch) => {
   try {
     let body = {
       productId,
     };
+
     const res = await axios.post('/api/users/addToCart', body);
 
     dispatch({
       type: ADD_TO_CART,
       payload: res.data,
     });
+    if (
+      window.confirm(
+        '장바구니에 상품이 담겼습니다. 장바구니를 확인하러 가시겠습니까?'
+      ) === true
+    ) {
+      history.push(`/cart/${productId}`);
+    } else {
+      return;
+    }
   } catch (err) {
+    alert('에러발생으로 장바구니에 상품이 안담겼습니다. 다시 시도해주세요.');
     dispatch({
       type: CART_FAILURE,
     });
@@ -139,10 +148,9 @@ export const addToCart = (productId) => async (dispatch) => {
 };
 
 // 카트에 담긴 상품 가져오기
-export const getCartItems = (cartItems) => async (dispatch) => {
+export const getCartItems = () => async (dispatch) => {
   try {
-    console.log(cartItems);
-    const res = await axios.get(`/api/posts/cart?id=${cartItems}`);
+    const res = await axios.get('/api/users/getCart');
 
     dispatch({
       type: GET_CART_ITEMS,

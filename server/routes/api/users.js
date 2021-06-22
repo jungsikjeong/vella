@@ -97,11 +97,15 @@ router.post('/addToCart', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
     const post = await Post.findById(req.body.productId);
-    console.log(post);
+
+    if (!post) {
+      return res.status(400).json({ msg: '게시글이 존재하지 않습니다.' });
+    }
+
     // 카트 유무
     let isCart = false;
 
-    if (user.cart.length !== 0) {
+    if (user.cart.length > 0) {
       user.cart.forEach((item) => {
         if (item.id === req.body.productId) {
           isCart = true;
@@ -114,9 +118,12 @@ router.post('/addToCart', auth, async (req, res) => {
     if (isCart) {
       User.findOneAndUpdate(
         { _id: user._id, 'cart.id': req.body.productId },
-        { $inc: { 'cart.$.quantity': 1 } },
+        {
+          $inc: { 'cart.$.quantity': 1 },
+        },
         { new: true }
       ).exec();
+      console.log(user.cart);
       return res.status(200).json(user.cart);
     } else {
       // 상품이 이미 있지 않을때
@@ -126,6 +133,10 @@ router.post('/addToCart', auth, async (req, res) => {
           $push: {
             cart: {
               id: req.body.productId,
+              price: post.price,
+              images: post.images,
+              title: post.title,
+              description: post.description,
               quantity: 1,
               Date: Date.now(),
             },
@@ -133,6 +144,7 @@ router.post('/addToCart', auth, async (req, res) => {
         },
         { new: true }
       ).exec();
+      console.log(user.cart);
       return res.status(200).json(user.cart);
     }
   } catch (err) {
@@ -179,6 +191,32 @@ router.post('/edit/profile', auth, async (req, res) => {
     }
   } catch (err) {
     console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   POST api/posts/cart
+// @desc    해당 유저의 장바구니에 담긴 상품들 가져오기
+// @access  Private
+router.get('/getCart', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+
+    if (!user) {
+      return res.status(400).json({ msg: '로그인을 해주세요.' });
+    }
+
+    if (!user.cart || user.cart.length === 0) {
+      return res.status(400).json({ msg: '장바구니에 담긴 상품이 없습니다.' });
+    }
+    if (user.cart && user.cart.length > 0) {
+      res.json(user.cart);
+    }
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: '게시글을 찾을 수 없습니다' });
+    }
     res.status(500).send('Server Error');
   }
 });

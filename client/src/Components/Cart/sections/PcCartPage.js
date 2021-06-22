@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { getCartItems } from '../../../_actions/auth';
 
@@ -59,27 +60,18 @@ const Submit = styled.div`
     letter-spacing: 1px;
   }
 `;
-const PcCartPage = ({ user }) => {
+const PcCartPage = ({ user, isAuthenticated }) => {
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   let cartItems = [];
-  //   if (!user || !user.cart || user.cart === null) return;
-
-  //   if (user && user.cart) {
-  //     if (user.cart.length > 0) {
-  //       user.cart.forEach((item) => {
-  //         cartItems.push(item.id);
-
-  //         dispatch(getCartItems(cartItems));
-  //       });
-  //     }
-  //   }
-  // }, [user, user.cart, dispatch]);
-
   useEffect(() => {
-    dispatch(getCartItems('60ceed2d38a2cd56b0dae279'));
+    dispatch(getCartItems());
   }, [dispatch]);
+
+  // console.log(user.cart);
+
+  // if (!isAuthenticated) {
+  //   return <Redirect to='/login' />;
+  // }
   return (
     <>
       <Container>
@@ -90,7 +82,7 @@ const PcCartPage = ({ user }) => {
         <Wrapper>
           {user && user.cart && user.cart.length !== 0 ? (
             <>
-              <UserCardBlock />
+              <UserCardBlock cart={user.cart} />
 
               <Total>
                 <h2>Total Amount:&nbsp;</h2>

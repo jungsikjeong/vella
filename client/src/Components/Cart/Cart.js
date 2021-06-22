@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
+import Loading from '../Common/Loading';
 
 //Components
 import Footer from '../Footer/Footer';
@@ -8,8 +9,10 @@ import MobileCartPage from './sections/MobileCartPage';
 import PcCartPage from './sections/PcCartPage';
 
 const Cart = () => {
-  const { user } = useSelector(({ auth }) => ({
+  const { user, isAuthenticated, loading } = useSelector(({ auth }) => ({
     user: auth.user,
+    isAuthenticated: auth.isAuthenticated,
+    loading: auth.loading,
   }));
 
   const isMobile = useMediaQuery({
@@ -18,11 +21,21 @@ const Cart = () => {
 
   return (
     <>
-      {isMobile ? (
-        <MobileCartPage user={user && user} />
+      {loading ? (
+        <Loading />
       ) : (
-        <PcCartPage user={user && user} />
+        <>
+          {isMobile ? (
+            <MobileCartPage
+              user={user && user}
+              isAuthenticated={isAuthenticated}
+            />
+          ) : (
+            <PcCartPage user={user && user} isAuthenticated={isAuthenticated} />
+          )}
+        </>
       )}
+
       <Footer />
     </>
   );
