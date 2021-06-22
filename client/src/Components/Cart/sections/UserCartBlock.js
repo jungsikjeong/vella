@@ -1,6 +1,8 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { removeCartItem } from '../../../_actions/auth';
 
 const Container = styled.div``;
 
@@ -61,7 +63,13 @@ const Tbody = styled.tbody`
 `;
 
 const UserCardBlock = ({ products, removeItem, cart }) => {
-  const renderItems = ({ cart }) => (
+  const dispatch = useDispatch();
+
+  const onRemoveCart = (id) => {
+    dispatch(removeCartItem(id));
+  };
+
+  const renderItems = () => (
     <>
       {cart.map((item) => (
         <tr key={item.id}>
@@ -78,7 +86,7 @@ const UserCardBlock = ({ products, removeItem, cart }) => {
           <td>{item.quantity}</td>
 
           <td>
-            <button>delete</button>
+            <button onClick={() => onRemoveCart(item.id)}>delete</button>
           </td>
         </tr>
       ))}
@@ -97,7 +105,7 @@ const UserCardBlock = ({ products, removeItem, cart }) => {
           </tr>
         </thead>
 
-        <Tbody>{renderItems({ cart })}</Tbody>
+        <Tbody>{renderItems()}</Tbody>
       </Table>
     </Container>
   );

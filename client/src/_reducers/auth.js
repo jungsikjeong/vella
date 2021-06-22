@@ -9,6 +9,7 @@ import {
   ADD_TO_CART,
   GET_CART_ITEMS,
   CART_FAILURE,
+  REMOVE_CART_ITEM,
 } from '../_actions/types';
 
 const initialState = {
@@ -66,6 +67,16 @@ export default function (state = initialState, action) {
       };
 
     case GET_CART_ITEMS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          cart: payload,
+        },
+        error: '',
+      };
+
+    case REMOVE_CART_ITEM:
       return {
         ...state,
         user: {

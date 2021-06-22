@@ -39,3 +39,4 @@ export const PRODUCT_READ_FAILURE = 'PRODUCT_READ_FAILURE';
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const GET_CART_ITEMS = 'GET_CART_ITEMS';
 export const CART_FAILURE = 'CART_FAILURE';
+export const REMOVE_CART_ITEM = 'REMOVE_CART_ITEM';

@@ -10,6 +10,7 @@ import {
   GET_CART_ITEMS,
   ADD_TO_CART,
   CART_FAILURE,
+  REMOVE_CART_ITEM,
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
@@ -204,5 +205,19 @@ export const getCartItems = () => async (dispatch) => {
       type: CART_FAILURE,
       payload: err,
     });
+  }
+};
+
+// 카트에 담긴 상품 지우기
+export const removeCartItem = (id) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`/api/users/removeCart?id=${id}`);
+
+    dispatch({
+      type: REMOVE_CART_ITEM,
+      payload: res.data,
+    });
+  } catch (err) {
+    console.error(err);
   }
 };
