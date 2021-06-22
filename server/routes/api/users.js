@@ -199,9 +199,10 @@ router.post('/edit/profile', auth, async (req, res) => {
 // @desc    해당 유저의 장바구니에 담긴 상품들 가져오기
 // @access  Private
 router.get('/getCart', auth, async (req, res) => {
+  let productIds;
+
   try {
     const user = await User.findById(req.user.id).select('-password');
-
     if (!user) {
       return res.status(400).json({ msg: '로그인을 해주세요.' });
     }
@@ -209,8 +210,31 @@ router.get('/getCart', auth, async (req, res) => {
     if (!user.cart || user.cart.length === 0) {
       return res.status(400).json({ msg: '장바구니에 담긴 상품이 없습니다.' });
     }
+
     if (user.cart && user.cart.length > 0) {
-      res.json(user.cart);
+      // 유저 카트에 담긴 상품아이디를 찾은후
+      productIds = user.cart.map((item) => {
+        return item.id;
+      });
+
+      // 상품을 조회해준다
+      const post = await Post.find({ _id: { $in: productIds } });
+
+      // 상품이 없다면
+      // (관리자가 상품을 삭제하면, 유저카트에는 상품 정보가 남아있는경우가 있어서..)
+      if (!post) {
+        const post = await Post.find();
+
+        const newPost = post.filter((item) => {
+          return item.id === productIds;
+        });
+
+        console.log('newPost', newPost);
+
+        // res.json()
+      }
+
+      // res.json(user.cart);
     }
   } catch (err) {
     console.error(err.message);

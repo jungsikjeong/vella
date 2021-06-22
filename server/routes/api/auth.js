@@ -82,4 +82,70 @@ router.post(
   }
 );
 
+// @route   POST api/auth/admin (로그인)
+// @desc    관리자계정인지 인증 및 토큰 받기
+// @access  Public
+router.post(
+  '/admin',
+  [
+    check('email', '유효한 이메일을 입력해주세요').isEmail(),
+    check('password', '비밀번호를 입력해주세요').exists(),
+  ],
+  async (req, res) => {
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email, password } = req.body;
+
+    try {
+      // 사용자가 있는지 확인
+      let user = await User.findOne({ email });
+
+      if (!user) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: '등록된 email이 없습니다.' }] });
+      }
+
+      if (!user.admin) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: '등록된 관리자 email이 아닙니다.' }] });
+      }
+
+      const isMatch = await bcrypt.compare(password, user.password);
+
+      if (!isMatch) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: '비밀번호가 일치하지 않습니다.' }] });
+      }
+
+      await user.save();
+
+      // Return jsonwebtoken
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        { expiresIn: 360000 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
 module.exports = router;

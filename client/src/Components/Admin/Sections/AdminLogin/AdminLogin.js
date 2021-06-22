@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { login } from '../../../../_actions/auth';
+import { adminLogin } from '../../../../_actions/auth';
 import Helmet from 'react-helmet';
 
 const Container = styled.div`
@@ -128,7 +128,7 @@ const AdminLogin = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(login(email, password));
+    dispatch(adminLogin(email, password));
   };
 
   if (user && user !== null && user.admin) {

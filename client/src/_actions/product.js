@@ -220,11 +220,16 @@ export const removePost = (productIds) => async (dispatch) => {
     dispatch(getAllPosts(''));
     alert('상품 삭제 완료');
   } catch (err) {
-    console.log('err:', err);
-    // dispatch({
-    //   type: PRODUCT_POST_FAILURE,
-    //   payload: { msg: err },
-    // });
+    console.error(err);
+    const errors = err.response.data.msg;
+
+    if (errors) {
+      alert(errors);
+    }
+    dispatch({
+      type: PRODUCT_POST_FAILURE,
+      payload: { msg: err },
+    });
   }
 };
 
