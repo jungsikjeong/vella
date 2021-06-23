@@ -48,7 +48,6 @@ const SLink = styled(Link)``;
 
 const HeaderM = ({ pathname, user }) => {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const MenuToggle = useSelector((state) => state.toggle.MenuToggle);
 
   //  모바일 메뉴 on & off 결정이벤트
@@ -76,7 +75,6 @@ const HeaderM = ({ pathname, user }) => {
       <MobileMenu
         MenuToggle={MenuToggle}
         MenuToggleHandler={MenuToggleHandler}
-        isAuthenticated={isAuthenticated}
         onLogout={onLogout}
         onClick={MenuToggleHandler}
         user={user}
@@ -89,12 +87,14 @@ const HeaderM = ({ pathname, user }) => {
       </Logo>
 
       <Menu>
-        <div>
-          <SLink to='#'>
-            {/* 장바구니 아이콘 */}
-            <FiShoppingBag className='icons' />
-          </SLink>
-        </div>
+        {user && (
+          <div>
+            <SLink to={`/cart/${user._id}`}>
+              {/* 장바구니 아이콘 */}
+              <FiShoppingBag className='icons' />
+            </SLink>
+          </div>
+        )}
 
         <div style={{ marginLeft: '.4rem' }}>
           {/* 메뉴 아이콘 */}

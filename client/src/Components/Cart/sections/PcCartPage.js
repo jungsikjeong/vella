@@ -67,11 +67,9 @@ const PcCartPage = ({ user, isAuthenticated }) => {
     dispatch(getCartItems());
   }, [dispatch]);
 
-  // console.log(user.cart);
-
-  // if (!isAuthenticated) {
-  //   return <Redirect to='/login' />;
-  // }
+  if (!isAuthenticated) {
+    return <Redirect to='/login' />;
+  }
   return (
     <>
       <Container>

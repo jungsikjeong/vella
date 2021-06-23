@@ -2,12 +2,16 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { withRouter } from 'react-router';
+import Loading from '../Common/Loading';
 
 import HeaderM from './sections/HeaderM';
 import HeaderPC from './sections/HeaderPC';
 
 const Header = ({ location: { pathname } }) => {
-  const auth = useSelector((state) => state.auth);
+  const { user, loading } = useSelector(({ auth }) => ({
+    user: auth.user,
+    loading: auth.loading,
+  }));
 
   const isMobile = useMediaQuery({
     query: '(max-width:800px)',
@@ -15,10 +19,16 @@ const Header = ({ location: { pathname } }) => {
 
   return (
     <>
-      {isMobile ? (
-        <HeaderM pathname={pathname} user={auth.user} />
+      {loading ? (
+        <Loading />
       ) : (
-        <HeaderPC pathname={pathname} user={auth.user} />
+        <>
+          {isMobile ? (
+            <HeaderM pathname={pathname} user={user && user} />
+          ) : (
+            <HeaderPC pathname={pathname} user={user && user} />
+          )}
+        </>
       )}
     </>
   );

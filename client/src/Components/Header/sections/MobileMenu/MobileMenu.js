@@ -97,13 +97,7 @@ const SLink = styled(Link)`
   font-size: 0.6rem;
 `;
 
-const MobileMenu = ({
-  MenuToggle,
-  MenuToggleHandler,
-  isAuthenticated,
-  onLogout,
-  user,
-}) => {
+const MobileMenu = ({ MenuToggle, MenuToggleHandler, onLogout, user }) => {
   const [LookMenuToggle, setLookMenuToggle] = useState(false);
   const [ShopMenuToggle, setShopMenuToggle] = useState(false);
 
@@ -121,7 +115,7 @@ const MobileMenu = ({
         <GrClose onClick={MenuToggleHandler} />
       </CloseBtn>
 
-      {isAuthenticated ? (
+      {user ? (
         <SIGN_SIGNUP_CART>
           <li>
             <SLink to='#' onClick={onLogout}>
@@ -150,11 +144,6 @@ const MobileMenu = ({
           <li>
             <SLink to='/join' onClick={MenuToggleHandler}>
               Join us
-            </SLink>
-          </li>
-          <li>
-            <SLink to='#' onClick={MenuToggleHandler}>
-              Cart
             </SLink>
           </li>
         </SIGN_SIGNUP_CART>

@@ -1,6 +1,8 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
+import { getCartItems, removeCartItem } from '../../../_actions/auth';
 
 //components
 import Responsive from '../../Common/Responsive';
@@ -52,20 +54,18 @@ const TextWrap = styled.div`
 
 const ProductTitle = styled.div`
   display: flex;
-
+  justify-content: space-between;
   button {
     color: #1b1b1b;
     background: 0 0;
     border: none;
-    margin-left: auto;
+    padding: 0%;
   }
 `;
 
 const ProductPrice = styled.div`
   display: flex;
-  .product-count {
-    margin-left: auto;
-  }
+  justify-content: space-between;
 `;
 
 const Total = styled.div`
@@ -99,11 +99,20 @@ const Submit = styled.div`
   }
 `;
 
-const MobileCartPage = () => {
-  const { user } = useSelector(({ auth }) => ({
-    user: auth.user,
-  }));
+const MobileCartPage = ({ user, isAuthenticated }) => {
+  const dispatch = useDispatch();
 
+  const onRemoveCart = (id) => {
+    dispatch(removeCartItem(id));
+  };
+
+  useEffect(() => {
+    dispatch(getCartItems());
+  }, [dispatch]);
+
+  if (!isAuthenticated) {
+    return <Redirect to='/login' />;
+  }
   return (
     <Container>
       <PageTitle>
@@ -113,27 +122,31 @@ const MobileCartPage = () => {
       <Wrapper>
         {user && user.cart && user.cart.length !== 0 ? (
           <>
-            <Contents>
-              <Image>
-                <img
-                  src='https://nueahmik.com/web/product/tiny/202010/7712cb38e7b68324c7c6284a80199322.jpg'
-                  alt=''
-                />
-              </Image>
+            {user.cart.map((cart) => (
+              <Contents key={cart.id}>
+                <Link to={`/product/${cart.id}`}>
+                  <Image>
+                    <img
+                      src={`http://localhost:5000/${cart.images[0]}`}
+                      alt=''
+                    />
+                  </Image>
+                </Link>
 
-              <TextWrap>
-                <ProductTitle>
-                  <strong>VIIR 텐셀 옥스퍼드 랩 스커트</strong>
+                <TextWrap>
+                  <ProductTitle>
+                    <strong>{cart.title}</strong>
 
-                  <button>X</button>
-                </ProductTitle>
+                    <button onClick={() => onRemoveCart(cart.id)}>X</button>
+                  </ProductTitle>
 
-                <ProductPrice>
-                  <strong>19200원</strong>
-                  <div className='product-count'>1개</div>
-                </ProductPrice>
-              </TextWrap>
-            </Contents>
+                  <ProductPrice>
+                    <strong>{cart.price}</strong>
+                    <div className='product-count'>{cart.quantity}</div>
+                  </ProductPrice>
+                </TextWrap>
+              </Contents>
+            ))}
 
             <Total>
               <h2>Total</h2>

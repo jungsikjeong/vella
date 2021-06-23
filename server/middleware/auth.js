@@ -8,7 +8,7 @@ module.exports = function (req, res, next) {
   // console.log('토큰 ?', token);
   // 토큰 확인
   if (!token) {
-    return res.status(401).json({ msg: '토큰 없음, 승인 거부 됨' });
+    return res.status(401).json({ msg: '로그인이 필요합니다.' });
   }
 
   // Verify token

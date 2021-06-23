@@ -158,15 +158,20 @@ router.post('/addToCart', auth, async (req, res) => {
 // @access  Private
 router.get('/getCart', auth, async (req, res) => {
   let productIds;
+  const errors = [];
 
   try {
     const user = await User.findById(req.user.id).select('-password');
     if (!user) {
-      return res.status(400).json({ msg: '로그인을 해주세요.' });
+      return res
+        .status(400)
+        .json({ errors: [{ msg: '로그인이 필요합니다.' }] });
     }
 
     if (!user.cart || user.cart.length === 0) {
-      return;
+      return res
+        .status(400)
+        .json({ errors: [{ msg: '카트가 비어있습니다.' }] });
     }
 
     // 나중에 다시 해볼 예정

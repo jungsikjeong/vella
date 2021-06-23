@@ -88,17 +88,7 @@ const MobileDetailProduct = ({ match, user, history }) => {
       alert('로그인이 필요합니다');
       return history.push('/login');
     }
-    dispatch(addToCart(id));
-
-    if (
-      window.confirm(
-        '장바구니에 상품이 담겼습니다. 장바구니를 확인하러 가시겠습니까?'
-      ) === true
-    ) {
-      history.push(`/cart/${id}`);
-    } else {
-      return;
-    }
+    dispatch(addToCart(id, history));
   };
 
   useEffect(() => {
@@ -147,11 +137,11 @@ const MobileDetailProduct = ({ match, user, history }) => {
                 <br />
                 <br />
                 <p className='product-description'>
-                  <div
+                  <span
                     dangerouslySetInnerHTML={{
                       __html: product.product.description,
                     }}
-                  ></div>
+                  />
                   <br />
                   <br />
                   Model is 159cm / 45kg

@@ -63,7 +63,6 @@ export const register =
 
       if (errors) {
         // 서버에서 오는 에러메시지가 array임
-
         errors.forEach((error) => alert(error.msg));
       }
 
@@ -167,6 +166,7 @@ export const addToCart = (productId, history) => async (dispatch) => {
       type: ADD_TO_CART,
       payload: res.data,
     });
+
     if (
       window.confirm(
         '장바구니에 상품이 담겼습니다. 장바구니를 확인하러 가시겠습니까?'
@@ -194,7 +194,7 @@ export const getCartItems = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
-    console.error(err);
+    console.error('카트 담아오던중 에러발생:', err);
     const errors = err.response.data.msg;
 
     if (errors) {
