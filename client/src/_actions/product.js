@@ -89,8 +89,7 @@ export const productPostUpload =
   ({ body, history }) =>
   async (dispatch) => {
     try {
-      // const { title, description, price, images, category, productId } = body;
-      const { title, description, price, images, category, productId } = body;
+      const { title, description, price, images, category } = body;
 
       const res = await axios.post('/api/posts', {
         title,
@@ -98,18 +97,14 @@ export const productPostUpload =
         price,
         images,
         categories: category,
-        productId,
       });
 
       dispatch({
         type: PRODUCT_POST_SUCCESS,
         payload: res.data,
       });
-      if (productId) {
-        alert('상품 편집 완료');
-      } else {
-        alert('상품 업로드 완료');
-      }
+
+      alert('상품 업로드 완료');
 
       dispatch({ type: CLEAR_PRODUCT });
       // admin 메인 페이지로 이동
@@ -190,7 +185,7 @@ export const readProduct = (productId) => async (dispatch) => {
     }
     dispatch({
       type: PRODUCT_READ_FAILURE,
-      payload: { msg: err.response },
+      payload: { msg: err },
     });
   }
 };

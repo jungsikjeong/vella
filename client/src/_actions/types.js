@@ -40,3 +40,8 @@ export const ADD_TO_CART = 'ADD_TO_CART';
 export const GET_CART_ITEMS = 'GET_CART_ITEMS';
 export const CART_FAILURE = 'CART_FAILURE';
 export const REMOVE_CART_ITEM = 'REMOVE_CART_ITEM';
+
+// reviews
+export const REVIEW_POST_SUCCESS = 'REVIEW_POST_SUCCESS';
+export const REVIEW_POST_FAILURE = 'REVIEW_POST_FAILURE';
+export const CLEAR_REVIEW = 'CLEAR_REVIEW';

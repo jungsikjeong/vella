@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { addToCart } from '../../../../_actions/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearProduct, readProduct } from '../../../../_actions/product';
+import { Link, withRouter } from 'react-router-dom';
 
 //components
 import Footer from '../../../Footer/Footer';
 import Review from './Review';
 import Loading from '../../../Common/Loading';
-import { useDispatch, useSelector } from 'react-redux';
-import { clearProduct, readProduct } from '../../../../_actions/product';
-import { withRouter } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -273,7 +273,7 @@ const PcDetailProduct = ({ match, user, history }) => {
 
   // 에러 발생시
   if (product.error) {
-    if (product.error && product.error.msg.status === 404) {
+    if (product.error.response && product.error.response.status === 404) {
       return <NotPost>존재하지 않는 상품 입니다.</NotPost>;
     }
     return <NotPost>오류 발생!</NotPost>;
@@ -356,7 +356,9 @@ const PcDetailProduct = ({ match, user, history }) => {
                 <>
                   <div className='not-review'>등록된 리뷰가 없습니다.</div>
                   <div className='buttonWrap'>
-                    <button>write</button>
+                    <Link to={`/review/${id}`}>
+                      <button>write</button>
+                    </Link>
                   </div>
                 </>
               ) : (
