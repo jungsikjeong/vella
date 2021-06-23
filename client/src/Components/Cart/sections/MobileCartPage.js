@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
@@ -102,13 +102,28 @@ const Submit = styled.div`
 const MobileCartPage = ({ user, isAuthenticated }) => {
   const dispatch = useDispatch();
 
+  const [TotalNumber, setTotalNumber] = useState(0);
+
   const onRemoveCart = (id) => {
     dispatch(removeCartItem(id));
   };
 
+  const calculateTotal = useCallback(() => {
+    let total = 0;
+
+    user.cart.map(
+      (item) => (total += parseInt(item.price, 10) * item.quantity)
+    );
+    setTotalNumber(total.toLocaleString());
+  }, [user]);
+
   useEffect(() => {
     dispatch(getCartItems());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (user && user.cart !== null && user.cart.length > 0) calculateTotal();
+  }, [user, calculateTotal]);
 
   if (!isAuthenticated) {
     return <Redirect to='/login' />;
@@ -132,7 +147,6 @@ const MobileCartPage = ({ user, isAuthenticated }) => {
                     />
                   </Image>
                 </Link>
-
                 <TextWrap>
                   <ProductTitle>
                     <strong>{cart.title}</strong>
@@ -150,7 +164,7 @@ const MobileCartPage = ({ user, isAuthenticated }) => {
 
             <Total>
               <h2>Total</h2>
-              <div className='total-num'>19200원</div>
+              <div className='total-num'>{TotalNumber}원</div>
             </Total>
 
             <Submit>

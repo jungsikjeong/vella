@@ -54,7 +54,7 @@ const Description = styled.div`
   }
   .price {
     padding: 0.4rem;
-    font-size: 0.67rem;
+    font-size: 0.6rem;
     color: #333;
     opacity: 0.8;
   }
@@ -160,7 +160,7 @@ const All = () => {
 
                   <Description>
                     <strong className='title'>{product.title}</strong>
-                    <p className='price'>{product.price}</p>
+                    <p className='price'>{product.price.toLocaleString()}원</p>
                   </Description>
                 </Link>
               </ProductItem>

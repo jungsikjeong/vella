@@ -158,7 +158,7 @@ router.post('/addToCart', auth, async (req, res) => {
 // @access  Private
 router.get('/getCart', auth, async (req, res) => {
   let productIds;
-  const errors = [];
+  let errors = [];
 
   try {
     const user = await User.findById(req.user.id).select('-password');

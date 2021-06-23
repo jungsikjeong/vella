@@ -35,7 +35,13 @@ const ProductItem = styled.li`
   img {
     max-width: 100%;
     width: 100%;
-    height: 450px;
+    height: auto;
+
+    @media (min-width: 800px) {
+      max-width: 100%;
+      width: 100%;
+      height: 450px;
+    }
   }
 `;
 
@@ -48,7 +54,7 @@ const Description = styled.div`
   }
   .price {
     padding: 0.4rem;
-    font-size: 0.67rem;
+    font-size: 0.6rem;
     color: #333;
     opacity: 0.8;
   }
@@ -159,7 +165,7 @@ const Acc = () => {
 
                   <Description>
                     <strong className='title'>{product.title}</strong>
-                    <p className='price'>{product.price}</p>
+                    <p className='price'>{product.price.toLocaleString()}원</p>
                   </Description>
                 </Link>
               </ProductItem>

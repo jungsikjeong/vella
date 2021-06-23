@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
@@ -63,9 +63,24 @@ const Submit = styled.div`
 const PcCartPage = ({ user, isAuthenticated }) => {
   const dispatch = useDispatch();
 
+  const [TotalNumber, setTotalNumber] = useState(0);
+
+  const calculateTotal = useCallback(() => {
+    let total = 0;
+
+    user.cart.map(
+      (item) => (total += parseInt(item.price, 10) * item.quantity)
+    );
+    setTotalNumber(total.toLocaleString());
+  }, [user]);
+
   useEffect(() => {
     dispatch(getCartItems());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (user && user.cart !== null && user.cart.length > 0) calculateTotal();
+  }, [user, calculateTotal]);
 
   if (!isAuthenticated) {
     return <Redirect to='/login' />;
@@ -84,7 +99,7 @@ const PcCartPage = ({ user, isAuthenticated }) => {
 
               <Total>
                 <h2>Total Amount:&nbsp;</h2>
-                <div className='total-num'> 19,200원</div>
+                <div className='total-num'> {TotalNumber}원</div>
               </Total>
 
               <Submit>
