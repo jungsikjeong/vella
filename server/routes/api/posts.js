@@ -276,7 +276,7 @@ router.get('/:id', async (req, res) => {
       'reviews.user',
       'nickname'
     );
-    console.log(post);
+
     if (!post) {
       return res.status(404).json({ msg: '게시글을 찾을 수 없습니다' });
     }

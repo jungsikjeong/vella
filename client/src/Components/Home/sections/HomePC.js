@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import Footer from '../../Footer/Footer';
 
 const Container = styled.div`
-  /* 임시 */
-  /* padding-top: 10rem; */
   width: 100%;
   margin-top: 2rem;
   margin-bottom: 15px;
