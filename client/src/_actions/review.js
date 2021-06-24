@@ -94,6 +94,32 @@ export const readReview = (reviewId) => async (dispatch) => {
   }
 };
 
+// 특정 리뷰 지우기
+export const removeReview =
+  ({ history, id }) =>
+  async (dispatch) => {
+    try {
+      await axios.delete(`/api/reviews/delete?id=${id}`);
+
+      alert('상품 삭제 완료');
+
+      history.goBack();
+    } catch (err) {
+      console.error(err);
+      if (err.response) {
+        const errors = err.response.data.msg;
+
+        if (errors) {
+          alert(errors);
+        }
+      }
+      dispatch({
+        type: REVIEW_POST_FAILURE,
+        payload: { msg: err },
+      });
+    }
+  };
+
 // CLEAR_REVIEW
 export const clearReview = () => async (dispatch) => {
   dispatch({

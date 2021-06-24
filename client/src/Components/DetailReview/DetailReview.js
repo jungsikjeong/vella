@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { Link, withRouter } from 'react-router-dom';
-import { readReview } from '../../_actions/review';
+import { readReview, removeReview } from '../../_actions/review';
 import styled from 'styled-components';
 
 import Loading from '../Common/Loading';
@@ -154,21 +154,24 @@ const Contents = styled.div`
   }
 `;
 
+const ButtonWrap = styled.div`
+  display: flex;
+  padding: 0 0.5rem;
+  .button-right {
+    margin-left: auto;
+  }
+`;
+
 const Button = styled.button`
   cursor: pointer;
   width: 3rem;
   margin-top: 0.5rem;
   border: 1px solid #bbb;
-  padding: 0.15rem 0.5rem;
+  padding: 0.3rem 0.5rem;
   color: #4a4a4a;
   background: 0 0;
   font-size: 0.75rem;
-
-  &.list-btn {
-    color: #000;
-    margin-left: 0.5rem;
-    padding: 0.3rem 0.5rem;
-  }
+  color: #000;
 `;
 
 const DetailReview = ({ history, match }) => {
@@ -181,7 +184,15 @@ const DetailReview = ({ history, match }) => {
     loading: review.loading,
   }));
 
+  const { user } = useSelector(({ auth }) => ({
+    user: auth.user,
+  }));
+
   const { id } = match.params;
+
+  const onRemove = (id) => {
+    dispatch(removeReview(id));
+  };
 
   useEffect(() => {
     dispatch(readReview(id));
@@ -254,16 +265,21 @@ const DetailReview = ({ history, match }) => {
                       }}
                     ></p>
                   </Contents>
-                  {isMobile ? (
-                    <Button
-                      onClick={() => history.goBack()}
-                      className='list-btn'
-                    >
-                      목록
-                    </Button>
-                  ) : (
+                  <ButtonWrap>
                     <Button onClick={() => history.goBack()}>목록</Button>
-                  )}
+
+                    {user && user !== null && user._id === item.user._id && (
+                      <div className='button-right'>
+                        <Button>수정</Button>
+                        <Button
+                          onClick={() => onRemove({ history, id })}
+                          style={{ marginLeft: '.5rem' }}
+                        >
+                          삭제
+                        </Button>
+                      </div>
+                    )}
+                  </ButtonWrap>
                 </PostWrap>
               </>
             ))}

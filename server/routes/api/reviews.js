@@ -129,12 +129,56 @@ router.get('/:id', async (req, res) => {
       return res.status(404).json({ msg: '리뷰를 찾을 수 없습니다' });
     }
 
-    console.log(post);
     res.json(post[0].reviews);
   } catch (err) {
     console.error(err.message);
     if (err.kind === 'ObjectId') {
       return res.status(404).json({ msg: '게시글을 찾을 수 없습니다' });
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   DELETE api/reviews/:id
+// @desc    해당 리뷰 지우기
+// @access  Private
+router.delete('/delete', auth, async (req, res) => {
+  let owner = '';
+
+  try {
+    // 해당 리뷰가 담겨있는 게시물을 불러온다.
+    const post = await Post.find({ 'reviews._id': req.query.id }).populate(
+      'reviews.user',
+      'nickname'
+    );
+
+    if (!post) {
+      return res.status(404).json({ msg: '해당 리뷰가 없습니다.' });
+    }
+
+    post[0].reviews.map((review) => (owner = review.user._id.toString()));
+
+    // 리뷰를 작성한 유저인지 확인한다.
+    if (owner !== req.user.id) {
+      return res.status(401).json({ msg: '리뷰를 작성한 유저가 아닙니다.' });
+    }
+    // console.log(post[0].reviews[0]);
+    // console.log(post[0].reviews);
+
+    // Get remove index
+    // 리뷰 삭제
+    const removeIndex = post[0].reviews
+      .map((review) => review._id)
+      .indexOf(req.query.id);
+
+    post[0].reviews.splice(removeIndex, 1);
+
+    await post[0].save();
+
+    res.json({ msg: '리뷰 삭제 완료' });
+  } catch (err) {
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: '리뷰를 찾을 수 없습니다.' });
     }
     res.status(500).send('Server Error');
   }
