@@ -356,13 +356,13 @@ const PcDetailProduct = ({ match, user, history }) => {
                 <>
                   <div className='not-review'>등록된 리뷰가 없습니다.</div>
                   <div className='buttonWrap'>
-                    <Link to={`/review/${id}`}>
+                    <Link to={`/product/review/${id}`}>
                       <button>write</button>
                     </Link>
                   </div>
                 </>
               ) : (
-                <Review />
+                <Review id={id} reviews={product.product.reviews} />
               )}
             </Bottom>
           </Wrapper>

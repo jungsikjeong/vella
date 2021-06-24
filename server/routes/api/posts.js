@@ -198,7 +198,7 @@ router.patch(
   }
 );
 
-// @route   GET api/posts
+// @route   POST api/posts
 // @desc    모든 게시물 가져 오기 혹은 카테고리에 맞는 게시물 가져오기
 // @access  Public
 router.post('/products', async (req, res) => {
@@ -272,8 +272,11 @@ router.post('/products', async (req, res) => {
 // @access  Public
 router.get('/:id', async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
-
+    const post = await Post.findById(req.params.id).populate(
+      'reviews.user',
+      'nickname'
+    );
+    console.log(post);
     if (!post) {
       return res.status(404).json({ msg: '게시글을 찾을 수 없습니다' });
     }

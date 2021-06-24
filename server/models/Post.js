@@ -25,10 +25,36 @@ const PostSchema = new Schema({
     type: Number,
     default: 1,
   },
+
   reviews: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'review',
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
+      },
+      title: {
+        type: String,
+        required: true,
+      },
+      images: {
+        type: Array,
+        default: [],
+      },
+      description: {
+        type: String,
+        required: true,
+      },
+      productId: {
+        type: String,
+      },
+      views: {
+        type: Number,
+        default: 0,
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
     },
   ],
 

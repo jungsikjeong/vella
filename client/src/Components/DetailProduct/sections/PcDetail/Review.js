@@ -1,9 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Pagination } from 'antd';
+import { Link } from 'react-router-dom';
+
+const Container = styled.div``;
+
+const Wrapper = styled.div`
+  margin: 0 auto;
+  width: 742.125px;
+`;
 
 const Table = styled.table`
-  /* width: 100%; */
+  width: 100%;
   border-top-color: #afafaf;
   font-size: 0.55rem;
   border-top: 1px solid #d7d5d5;
@@ -42,9 +50,10 @@ const SPagination = styled(Pagination)`
 `;
 
 const ButtonWrap = styled.div`
+  display: flex;
+  justify-content: flex-start;
   font-size: 0.55rem;
   text-align: center;
-  margin-right: 19rem;
 
   button {
     letter-spacing: 1px;
@@ -57,49 +66,66 @@ const ButtonWrap = styled.div`
   }
 `;
 
-const Review = () => {
+const Review = ({ id, reviews }) => {
+  let i = 1;
+
   const renderItems = () => (
-    // To do:: 링크걸어서 해당 리뷰로 이동하게끔 해줄것
-    <tr>
-      <td>{/* no */}1</td>
-      <td>시원시원한 원피스</td>
-      <td>정중식</td>
-      <td>2021-06-16</td>
-      <td>{/* hit 조회수 */}0</td>
-    </tr>
+    <>
+      {reviews.map((review) => (
+        <tr key={review._id}>
+          <td>{i++}</td>
+          <td>
+            <Link to={`/review/${review._id}`}>
+              {/* {review.title} */}
+              {review.title.length > 20
+                ? `${review.title.substring(0, 15)}...`
+                : review.title}
+            </Link>
+          </td>
+          <td>{review.user.nickname}</td>
+          <td>{review.date.substring(0, 10)}</td>
+          <td>{review.views}</td>
+        </tr>
+      ))}
+    </>
   );
 
   return (
-    <>
-      <Table>
-        <colgroup>
-          <col style={{ width: '70px' }}></col>
-          <col style={{ width: 'auto' }}></col>
-          <col style={{ width: '100px' }}></col>
-          <col style={{ width: '100px' }}></col>
-          <col style={{ width: '80px' }}></col>
-        </colgroup>
+    <Container>
+      <Wrapper>
+        <Table>
+          <colgroup>
+            <col style={{ width: '70px' }}></col>
+            <col style={{ width: 'auto' }}></col>
+            <col style={{ width: '100px' }}></col>
+            <col style={{ width: '100px' }}></col>
+            <col style={{ width: '80px' }}></col>
+          </colgroup>
 
-        <thead>
-          <tr>
-            <th scope='col'>no</th>
-            <th scope='col'>title</th>
-            <th scope='col'>writer</th>
-            <th scope='col'>date</th>
-            <th scope='col'>hit</th>
-          </tr>
-        </thead>
+          <thead>
+            <tr>
+              <th scope='col'>no</th>
+              <th scope='col'>title</th>
+              <th scope='col'>writer</th>
+              <th scope='col'>date</th>
+              <th scope='col'>hit</th>
+            </tr>
+          </thead>
 
-        <Tbody>{renderItems()}</Tbody>
-      </Table>
-      <ButtonWrap>
-        <button>write</button>
-      </ButtonWrap>
+          <Tbody>{renderItems()}</Tbody>
+        </Table>
+
+        <ButtonWrap>
+          <Link to={`/product/review/${id}`}>
+            <button>write</button>
+          </Link>
+        </ButtonWrap>
+      </Wrapper>
 
       <Page>
-        <SPagination size='small' total={50} />
+        <SPagination size='small' total={reviews.length} />
       </Page>
-    </>
+    </Container>
   );
 };
 

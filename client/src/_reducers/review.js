@@ -2,6 +2,10 @@ import {
   REVIEW_POST_SUCCESS,
   REVIEW_POST_FAILURE,
   CLEAR_REVIEW,
+  GET_ALL_REVIEWS,
+  GET_ALL_REVIEWS_FAILURE,
+  REVIEW_READ,
+  REVIEW_READ_FAILURE,
 } from '../_actions/types';
 
 const initialState = {
@@ -16,10 +20,18 @@ export default function (state = initialState, action) {
 
   switch (type) {
     case REVIEW_POST_SUCCESS:
-      // case PRODUCT_READ:
+    case REVIEW_READ:
       return {
         ...state,
         review: payload,
+        loading: false,
+        error: '',
+      };
+
+    case GET_ALL_REVIEWS:
+      return {
+        ...state,
+        reviews: payload,
         loading: false,
         error: '',
       };
@@ -34,6 +46,8 @@ export default function (state = initialState, action) {
       };
 
     case REVIEW_POST_FAILURE:
+    case GET_ALL_REVIEWS_FAILURE:
+    case REVIEW_READ_FAILURE:
       return {
         ...state,
         error: payload,

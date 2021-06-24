@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { Form, Input, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
+import { clearReview, reviewPostUpload } from '../../_actions/review';
 import Quill from 'quill';
 
 // components
 import Responsive from '../Common/Responsive';
-import { reviewPostUpload } from '../../_actions/review';
 
 const Container = styled(Responsive)`
   .page-title {
@@ -57,14 +57,13 @@ const QuillWrapper = styled.div`
 `;
 
 const ReviewPost = ({ history, match }) => {
-  const dispatch = useDispatch();
   const { id } = match.params;
+  const dispatch = useDispatch();
 
   const quillElement = useRef(null); // Quill을 적용할 DivElement를 설정
   const quillInstance = useRef(null); // Quill 인스턴스를 설정
 
-  const { user, isAuthenticated } = useSelector(({ auth }) => ({
-    user: auth.user,
+  const { isAuthenticated } = useSelector(({ auth }) => ({
     isAuthenticated: auth.isAuthenticated,
   }));
 
@@ -83,12 +82,19 @@ const ReviewPost = ({ history, match }) => {
       const body = {
         title: Title,
         description: Description,
+        productId: id,
       };
 
       dispatch(reviewPostUpload({ body, history }));
     },
-    [Title, Description, dispatch, history]
+    [Title, Description, dispatch, history, id]
   );
+
+  const onCancel = () => {
+    dispatch(clearReview());
+    history.goBack();
+  };
+
   const onChange = useCallback((e) => {
     setTitle(e.target.value);
   }, []);
@@ -137,7 +143,7 @@ const ReviewPost = ({ history, match }) => {
   return (
     <>
       <Container>
-        <h1 className='page-title'>상품 사용후기</h1>
+        <h1 className='page-title'>상품 사용 후기 작성</h1>
         <SForm onFinish={onSubmit}>
           <br />
           <label>리뷰 제목</label>
@@ -158,7 +164,9 @@ const ReviewPost = ({ history, match }) => {
             확인
           </SButton>
 
-          <SButton className='cancel-btb'>취소</SButton>
+          <SButton className='cancel-btb' onClick={onCancel}>
+            취소
+          </SButton>
         </ButtonWrap>
       </Container>
     </>

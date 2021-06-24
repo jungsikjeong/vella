@@ -29,8 +29,6 @@ const Container = styled(Responsive)`
 
   // 테이블 세로 가운데 정렬
   td {
-    height: 130px;
-    display: table-cell;
     vertical-align: middle;
   }
 

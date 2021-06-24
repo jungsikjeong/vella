@@ -14,10 +14,20 @@ const ReviewSchema = new Schema({
     type: String,
     required: true,
   },
+  images: {
+    type: Array,
+    default: [],
+  },
   views: {
     type: Number,
     default: 0,
   },
+  posts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'post',
+    },
+  ],
   comments: [
     {
       user: {
