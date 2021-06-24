@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { Link, withRouter } from 'react-router-dom';
-import { readReview, removeReview } from '../../_actions/review';
+import { clearReview, readReview, removeReview } from '../../_actions/review';
 import styled from 'styled-components';
 
 import Loading from '../Common/Loading';
@@ -198,6 +198,12 @@ const DetailReview = ({ history, match }) => {
     dispatch(readReview(id));
   }, [dispatch, id]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(clearReview());
+    };
+  }, [dispatch]);
+
   return (
     <>
       <Container>
@@ -207,82 +213,78 @@ const DetailReview = ({ history, match }) => {
           <Loading />
         ) : (
           <Wrapper>
-            {review.map((item) => (
-              <>
-                <ProductWrap key={item._id}>
-                  <div className='innerBox'>
-                    <div className='imageWrap'>
-                      <img
-                        src={`http://localhost:5000/${item.images[0]}`}
-                        alt=''
-                      />
+            <ProductWrap key={review._id}>
+              <div className='innerBox'>
+                <div className='imageWrap'>
+                  <img
+                    src={`http://localhost:5000/${review.images[0]}`}
+                    alt=''
+                  />
+                </div>
+
+                <div className='product'>
+                  <h3>GADI 밴드 셔링 미니 원피스</h3>
+                  <p className='price'>219,000원</p>
+                  <Link to={`/product/${review.productId}`}>
+                    <Button>view</Button>
+                  </Link>
+                </div>
+              </div>
+            </ProductWrap>
+
+            <PostWrap>
+              <div className='post-inner'>
+                <Title>
+                  {!isMobile && <div className='title'>제목</div>}
+                  <div className='title-contents'>{review.title}</div>
+                </Title>
+
+                {isMobile ? (
+                  <Writer>
+                    <div className='writer-contents'>
+                      <span className='writer-text'>
+                        {review.user.nickname}
+                      </span>
+                      <span className='writer-text'>
+                        {review.date.substring(0, 10)}
+                      </span>
+                      <span className='writer-text'>조회 {review.views}</span>
                     </div>
-
-                    <div className='product'>
-                      <h3>GADI 밴드 셔링 미니 원피스</h3>
-                      <p className='price'>219,000원</p>
-                      <Link to={`/product/${item.productId}`}>
-                        <Button>view</Button>
-                      </Link>
+                  </Writer>
+                ) : (
+                  <Writer>
+                    <div className='writer'>작성자</div>
+                    <div className='writer-contents'>
+                      {review.user.nickname}
                     </div>
+                  </Writer>
+                )}
+              </div>
+
+              <Contents>
+                <p
+                  className='contents-text'
+                  dangerouslySetInnerHTML={{
+                    __html: review.description,
+                  }}
+                ></p>
+              </Contents>
+              <ButtonWrap>
+                <Button onClick={() => history.goBack()}>목록</Button>
+
+                {user && user !== null && user._id === review.user._id && (
+                  <div className='button-right'>
+                    <Button>수정</Button>
+                    <Button
+                      onClick={() => onRemove({ history, id })}
+                      style={{ marginLeft: '.5rem' }}
+                    >
+                      삭제
+                    </Button>
                   </div>
-                </ProductWrap>
-
-                <PostWrap>
-                  <div className='post-inner'>
-                    <Title>
-                      {!isMobile && <div className='title'>제목</div>}
-                      <div className='title-contents'>{item.title}</div>
-                    </Title>
-
-                    {isMobile ? (
-                      <Writer>
-                        <div className='writer-contents'>
-                          <span className='writer-text'>
-                            {item.user.nickname}
-                          </span>
-                          <span className='writer-text'>
-                            {item.date.substring(0, 10)}
-                          </span>
-                          <span className='writer-text'>조회 {item.views}</span>
-                        </div>
-                      </Writer>
-                    ) : (
-                      <Writer>
-                        <div className='writer'>작성자</div>
-                        <div className='writer-contents'>
-                          {item.user.nickname}
-                        </div>
-                      </Writer>
-                    )}
-                  </div>
-
-                  <Contents>
-                    <p
-                      className='contents-text'
-                      dangerouslySetInnerHTML={{
-                        __html: item.description,
-                      }}
-                    ></p>
-                  </Contents>
-                  <ButtonWrap>
-                    <Button onClick={() => history.goBack()}>목록</Button>
-
-                    {user && user !== null && user._id === item.user._id && (
-                      <div className='button-right'>
-                        <Button>수정</Button>
-                        <Button
-                          onClick={() => onRemove({ history, id })}
-                          style={{ marginLeft: '.5rem' }}
-                        >
-                          삭제
-                        </Button>
-                      </div>
-                    )}
-                  </ButtonWrap>
-                </PostWrap>
-              </>
-            ))}
+                )}
+              </ButtonWrap>
+            </PostWrap>
           </Wrapper>
         )}
       </Container>

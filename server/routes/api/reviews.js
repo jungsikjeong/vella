@@ -119,17 +119,28 @@ router.get('/', async (req, res) => {
 // @desc    ID로 해당 리뷰 받기
 // @access  Public
 router.get('/:id', async (req, res) => {
+  let findReview;
   try {
     const post = await Post.find({ 'reviews._id': req.params.id }).populate(
       'reviews.user',
       'nickname'
     );
 
+    // console.log(post[0].reviews);
+
     if (!post) {
       return res.status(404).json({ msg: '리뷰를 찾을 수 없습니다' });
     }
 
-    res.json(post[0].reviews);
+    // console.log(post[0].reviews);
+
+    post[0].reviews.map((review) => {
+      if (review._id.toString() === req.params.id) {
+        return (findReview = review);
+      }
+    });
+
+    res.json(findReview);
   } catch (err) {
     console.error(err.message);
     if (err.kind === 'ObjectId') {
