@@ -3,7 +3,11 @@ import styled from 'styled-components';
 import { Form, Input, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
-import { clearReview, reviewPostUpload } from '../../_actions/review';
+import {
+  clearReview,
+  readReview,
+  reviewPostUpload,
+} from '../../_actions/review';
 import Quill from 'quill';
 
 // components
@@ -56,9 +60,16 @@ const QuillWrapper = styled.div`
   }
 `;
 
-const ReviewPost = ({ history, match }) => {
+const ReviewEdit = ({ history, match }) => {
   const { id } = match.params;
   const dispatch = useDispatch();
+
+  const mounted = useRef(false);
+
+  const { review, loading } = useSelector(({ review }) => ({
+    review: review.review,
+    loading: review.loading,
+  }));
 
   const quillElement = useRef(null); // Quill을 적용할 DivElement를 설정
   const quillInstance = useRef(null); // Quill 인스턴스를 설정
@@ -97,6 +108,7 @@ const ReviewPost = ({ history, match }) => {
 
   const onChange = useCallback((e) => {
     setTitle(e.target.value);
+    mounted.current = true;
   }, []);
 
   useEffect(() => {
@@ -135,6 +147,19 @@ const ReviewPost = ({ history, match }) => {
   }, [setDescription]);
 
   useEffect(() => {
+    if (mounted.current) return;
+
+    if (review) {
+      setTitle(review.title);
+      quillInstance.current.root.innerHTML = review.description;
+    }
+  }, [review]);
+
+  useEffect(() => {
+    dispatch(readReview(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
     return () => {
       dispatch(clearReview());
     };
@@ -149,14 +174,14 @@ const ReviewPost = ({ history, match }) => {
   return (
     <>
       <Container>
-        <h1 className='page-title'>Write a review</h1>
+        <h1 className='page-title'>Edit Review</h1>
         <SForm onFinish={onSubmit}>
           <br />
-          <label>리뷰 제목</label>
+          <label>Review Title</label>
           <Input onChange={(e) => onChange(e)} value={Title} name='title' />
           <br />
           <br />
-          <label>리뷰 내용</label>
+          <label>Review content</label>
           <QuillWrapper>
             <div ref={quillElement} />
           </QuillWrapper>
@@ -167,11 +192,11 @@ const ReviewPost = ({ history, match }) => {
 
         <ButtonWrap>
           <SButton type='submit' onClick={onSubmit}>
-            확인
+            Confirm
           </SButton>
 
           <SButton className='cancel-btb' onClick={onCancel}>
-            취소
+            Cancel
           </SButton>
         </ButtonWrap>
       </Container>
@@ -179,4 +204,4 @@ const ReviewPost = ({ history, match }) => {
   );
 };
 
-export default withRouter(ReviewPost);
+export default withRouter(ReviewEdit);

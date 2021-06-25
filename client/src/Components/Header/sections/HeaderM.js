@@ -42,6 +42,17 @@ const Menu = styled.div`
   .icons {
     color: #89857a;
   }
+
+  .cartWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .user-cart-text {
+      margin-right: 0.2rem;
+      font-size: 0.7rem;
+    }
+  }
 `;
 
 const SLink = styled(Link)``;
@@ -91,7 +102,14 @@ const HeaderM = ({ pathname, user }) => {
           <div>
             <SLink to={`/cart/${user._id}`}>
               {/* 장바구니 아이콘 */}
-              <FiShoppingBag className='icons' />
+              {user.cart && user.cart.length > 0 ? (
+                <div className='cartWrap'>
+                  <span className='user-cart-text'>{user.cart.length}</span>
+                  <FiShoppingBag className='icons' />
+                </div>
+              ) : (
+                <FiShoppingBag className='icons' />
+              )}
             </SLink>
           </div>
         )}

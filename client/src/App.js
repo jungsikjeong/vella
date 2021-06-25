@@ -36,6 +36,8 @@ import NotFound from './Components/Common/NotFound';
 import ReviewPost from './Components/ReviewPost/ReviewPost';
 import Reviews from './Components/Reviews/Reviews';
 import DetailReview from './Components/DetailReview/DetailReview';
+import ReviewEdit from './Components/ReviewEdit/ReviewEdit';
+import MyProfile from './Components/MyProfile/MyProfile';
 
 if (localStorage.token) {
   //  글로벌 axios 기본(defaults) 설정
@@ -75,7 +77,9 @@ const App = () => {
               <Route exact path='/product/review/:id' component={ReviewPost} />
               <Route exact path='/review/:id' component={DetailReview} />
               <Route exact path='/reviews' component={Reviews} />
+              <Route exact path='/review/edit/:id' component={ReviewEdit} />
               <Route exact path='/cart/:id' component={Cart} />
+              <Route exact path='/my/profile/:id' component={MyProfile} />
               <Route exact path='/admin' component={AdminLogin} />
               <Route exact path='/admin/home' component={Admin} />
               <Route exact path='/admin/upload' component={AdminUpload} />

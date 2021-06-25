@@ -93,6 +93,8 @@ const Title = styled.div`
   @media (min-width: 800px) {
     padding: 0.5rem 0;
     border: 1px solid #e8e8e8;
+    border-left: 0;
+    border-right: 0;
   }
   .title {
     padding: 0 3.6rem 0 1rem;
@@ -274,7 +276,9 @@ const DetailReview = ({ history, match }) => {
 
                 {user && user !== null && user._id === review.user._id && (
                   <div className='button-right'>
-                    <Button>수정</Button>
+                    <Link to={`/review/edit/${id}`}>
+                      <Button>수정</Button>
+                    </Link>
                     <Button
                       onClick={() => onRemove({ history, id })}
                       style={{ marginLeft: '.5rem' }}

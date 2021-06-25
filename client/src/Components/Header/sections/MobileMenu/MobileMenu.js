@@ -123,14 +123,13 @@ const MobileMenu = ({ MenuToggle, MenuToggleHandler, onLogout, user }) => {
             </SLink>
           </li>
           <li>
-            {/* 마찬가지로 user.id로 수정예정 */}
-            <SLink to='/profile:id' onClick={MenuToggleHandler}>
+            <SLink to={`/my/profile/${user._id}`} onClick={MenuToggleHandler}>
               My Profile
             </SLink>
           </li>
           <li>
             <SLink to={`/cart/${user._id}`} onClick={MenuToggleHandler}>
-              Cart
+              {user.cart.length > 0 ? `Cart(${user.cart.length})` : 'Cart'}
             </SLink>
           </li>
         </SIGN_SIGNUP_CART>

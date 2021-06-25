@@ -78,11 +78,14 @@ const Account = ({ DropdownOpen3, user }) => {
             <SLink to='#'>Logout</SLink>
           </SubMenuItem>
           <SubMenuItem>
-            {/* id는 user.id로 수정예정 */}
-            <SLink to='/profile/:id'>Profile</SLink>
+            <SLink to={`/my/profile/${user._id}`}>Profile</SLink>
           </SubMenuItem>
           <SubMenuItem>
-            <SLink to={`/cart/${user._id}`}>Cart</SLink>
+            <SLink to={`/cart/${user._id}`}>
+              {user.cart && user.cart.length > 0
+                ? `Cart${user.cart.length}`
+                : 'Cart'}
+            </SLink>
           </SubMenuItem>
         </SubMenuList>
       ) : (
