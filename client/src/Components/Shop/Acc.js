@@ -29,9 +29,13 @@ const ProductList = styled.ul`
   @media (min-width: 800px) {
     grid-template-columns: repeat(3, 1fr);
   }
+  @media (max-width: 1022px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const ProductItem = styled.li`
+  margin-bottom: 1rem;
   img {
     max-width: 100%;
     width: 100%;
@@ -48,13 +52,13 @@ const ProductItem = styled.li`
 const Description = styled.div`
   text-align: center;
   padding: 0.4rem;
-  font-size: 0.65rem;
 
   .title {
+    font-size: 1vw;
   }
   .price {
     padding: 0.4rem;
-    font-size: 0.6rem;
+    font-size: 0.8vw;
     color: #333;
     opacity: 0.8;
   }

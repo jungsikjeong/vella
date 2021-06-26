@@ -167,7 +167,7 @@ export const productPostEdit =
 
 // id로  상품 가져오기
 export const readProduct = (productId) => async (dispatch) => {
-  // dispatch({ type: CLEAR_PRODUCT });
+  dispatch({ type: CLEAR_PRODUCT });
 
   try {
     const res = await axios.get(`/api/posts/${productId}`);
@@ -236,7 +236,7 @@ export const removePost = (productIds) => async (dispatch) => {
 
 // 상품 검색
 export const searchProduct =
-  ({ body }) =>
+  ({ body, history }) =>
   async (dispatch) => {
     try {
       const res = await axios.post('/api/posts/products', body);
@@ -245,9 +245,11 @@ export const searchProduct =
         type: GET_ALL_PRODUCT,
         payload: res.data,
       });
-
+      history.push('/search');
       return res.data;
     } catch (err) {
+      console.log(err);
+
       dispatch({
         type: GET_ALL_PRODUCT_FAILURE,
         payload: { msg: err },

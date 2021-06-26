@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { searchProduct } from '../../../../_actions/product';
 
@@ -52,7 +53,7 @@ const Text = styled.div`
   color: #000;
 `;
 
-const Search = ({ onOpenSearch, OpenSearch }) => {
+const Search = ({ onOpenSearch, OpenSearch, history }) => {
   const CloseRef = useRef();
   const dispatch = useDispatch();
 
@@ -60,11 +61,16 @@ const Search = ({ onOpenSearch, OpenSearch }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
+    if (!SearchValue) {
+      return alert('검색어를 입력해주세요');
+    }
     let body = {
       searchTerm: SearchValue,
     };
 
-    dispatch(searchProduct({ body }));
+    dispatch(searchProduct({ body, history }));
+    // onOpenSearch();
   };
 
   const onChangeSearch = (e) => {
@@ -103,4 +109,4 @@ const Search = ({ onOpenSearch, OpenSearch }) => {
   );
 };
 
-export default Search;
+export default withRouter(Search);

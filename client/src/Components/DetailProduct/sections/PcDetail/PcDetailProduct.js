@@ -264,13 +264,6 @@ const PcDetailProduct = ({ match, user, history }) => {
     dispatch(readProduct(id));
   }, [dispatch, id]);
 
-  // 페이지 떠날시 리덕스 state를 비워줌
-  useEffect(() => {
-    return () => {
-      dispatch(clearProduct());
-    };
-  }, [dispatch]);
-
   // 에러 발생시
   if (product.error) {
     if (product.error.response && product.error.response.status === 404) {

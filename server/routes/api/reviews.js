@@ -99,15 +99,20 @@ router.post(
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    let reviews = [];
+    let reviews;
     const posts = await Post.find().populate('reviews.user');
+    // console.log(posts);
 
-    posts.map((post) => (reviews = post.reviews));
+    posts.filter((post) => {
+      if (post.reviews.length > 0) {
+        reviews = post.reviews;
+      }
+    });
 
     if (!reviews || reviews.length === 0) {
       return res.status(404).json({ msg: '등록된 리뷰 없음' });
     }
-
+    // console.log(reviews);
     res.json(reviews);
   } catch (err) {
     console.error(err.message);

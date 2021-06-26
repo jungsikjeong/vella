@@ -38,6 +38,7 @@ import ReviewListPage from './Components/Reviews/Reviews';
 import DetailReview from './Components/DetailReview/DetailReview';
 import ReviewEdit from './Components/ReviewEdit/ReviewEdit';
 import MyProfile from './Components/MyProfile/MyProfile';
+import SearchResult from './Components/SearchResult/SearchResult';
 
 if (localStorage.token) {
   //  글로벌 axios 기본(defaults) 설정
@@ -79,6 +80,9 @@ const App = () => {
               <Route exact path='/reviews' component={ReviewListPage} />
               <Route exact path='/review/edit/:id' component={ReviewEdit} />
               <Route exact path='/cart/:id' component={Cart} />
+              {/* 이거로 변경 예정 */}
+              {/* <Route exact path='/search/:id' component={Cart} /> */}
+              <Route exact path='/search' component={SearchResult} />
               <Route exact path='/my/profile/:id' component={MyProfile} />
               <Route exact path='/admin' component={AdminLogin} />
               <Route exact path='/admin/home' component={Admin} />

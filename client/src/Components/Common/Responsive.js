@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ResponsiveBlock = styled.div`
-  text-align: center;
+  text-align: left;
   margin: 0 auto;
   padding: 5rem 0 0;
   width: 1024px;

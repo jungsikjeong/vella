@@ -15,7 +15,7 @@ const Container = styled(Responsive)`
   .page-title {
     /* font-size: 0.6rem; */
     font-weight: bold;
-    text-align: center;
+    /* text-align: center; */
     padding: 2rem;
     /* margin-bottom: 2rem; */
   }
