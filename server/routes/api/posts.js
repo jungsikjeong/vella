@@ -208,15 +208,15 @@ router.post('/products', async (req, res) => {
   let posts;
   let findArgs = {};
   let term = req.body.searchTerm;
-  console.log(term);
+
   try {
     if (term) {
       const findPost = await Post.find({ title: new RegExp(term) });
       // const findPost = await Post.find({
       //   $text: { $search: term },
       // });
-
-      console.log(findPost);
+      console.log('term', term);
+      console.log('findPost', findPost);
       return res.status(200).json(findPost);
     }
 

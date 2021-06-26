@@ -245,6 +245,12 @@ export const searchProduct =
         type: GET_ALL_PRODUCT,
         payload: res.data,
       });
+
+      // 입력된 데이터가 없을때, 빈 배열로 리턴됨
+      if (!res.data || res.data.length === 0) {
+        return res.data;
+      }
+
       history.push('/search');
       return res.data;
     } catch (err) {

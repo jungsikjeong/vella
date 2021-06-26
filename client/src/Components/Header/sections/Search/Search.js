@@ -1,8 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { searchProduct } from '../../../../_actions/product';
+
+const blinkEffect = keyframes`
+  50% {
+    opacity: 0;
+  }
+`;
 
 const Container = styled.div`
   position: fixed;
@@ -53,25 +59,42 @@ const Text = styled.div`
   color: #000;
 `;
 
+const Message = styled.div`
+  margin-top: 0.5rem;
+  animation: ${blinkEffect} 1s step-end 3;
+`;
+
 const Search = ({ onOpenSearch, OpenSearch, history }) => {
   const CloseRef = useRef();
   const dispatch = useDispatch();
 
   const [SearchValue, setSearchValue] = useState('');
+  const [NotResult, setNotResult] = useState(false);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    if (!SearchValue) {
-      return alert('검색어를 입력해주세요');
-    }
-    let body = {
-      searchTerm: SearchValue,
-    };
+      if (!SearchValue) {
+        return alert('검색어를 입력해주세요');
+      }
+      let body = {
+        searchTerm: SearchValue,
+      };
 
-    dispatch(searchProduct({ body, history }));
-    // onOpenSearch();
-  };
+      // 검색 결과가 없으면 에러메시지 송출
+      dispatch(searchProduct({ body, history })).then((res) => {
+        if (res.length === 0) {
+          return setNotResult(true);
+        }
+        if (res.length > 0) {
+          setNotResult(false);
+          return onOpenSearch();
+        }
+      });
+    },
+    [dispatch, history, SearchValue, onOpenSearch]
+  );
 
   const onChangeSearch = (e) => {
     setSearchValue(e.target.value);
@@ -105,6 +128,12 @@ const Search = ({ onOpenSearch, OpenSearch, history }) => {
         </form>
       </SearchWrap>
       <Text>Press Enter to Search</Text>
+
+      {NotResult && (
+        <Message>
+          <Text>No results were found for your search.</Text>
+        </Message>
+      )}
     </Container>
   );
 };

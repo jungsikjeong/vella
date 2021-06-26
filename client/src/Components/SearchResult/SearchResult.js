@@ -6,9 +6,13 @@ import Responsive from '../Common/Responsive';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useRef } from 'react';
+
 import Footer from '../Footer/Footer';
+import Loading from '../Common/Loading';
+import product from '../../_reducers/product';
 
 const Container = styled(Responsive)`
+  text-align: center;
   h2 {
     padding-bottom: 2rem;
     text-transform: uppercase;
@@ -20,7 +24,6 @@ const Container = styled(Responsive)`
 `;
 
 const ProductList = styled.ul`
-  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
@@ -34,6 +37,7 @@ const ProductList = styled.ul`
 
 const ProductItem = styled.li`
   margin-bottom: 1rem;
+
   img {
     max-width: 100%;
     width: 100%;
@@ -79,19 +83,24 @@ const SPagination = styled(Pagination)`
   }
 `;
 
-const NotPost = styled.div`
+const Message = styled.div`
   display: flex;
-  padding: 5rem 0 0;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  color: #555555;
+  h2 {
+    text-transform: none;
+    font-size: 1.5rem;
+    margin-bottom: 20rem;
+    color: #555555;
+  }
 `;
 
 const SearchResult = () => {
   const revealRefs = useRef();
 
   const dispatch = useDispatch();
+
   const { products, loading, error } = useSelector(({ product }) => ({
     products: product.products,
     loading: product.loading,
@@ -99,120 +108,50 @@ const SearchResult = () => {
   }));
 
   console.log(products);
-  if (error.msg === 404) {
-    return (
-      <>
-        <NotPost>작성된 리뷰가 없습니다..</NotPost>
-        <Footer />
-      </>
-    );
-  }
+
   return (
     <Container>
-      <h2>Search</h2>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          {products && products.length > 0 && (
+            <>
+              <h2>Search</h2>
+              <ProductList ref={revealRefs}>
+                <>
+                  {products.map((product) => (
+                    <ProductItem key={product._id}>
+                      <Link to={`/product/${product._id}`}>
+                        <img
+                          src={`http://localhost:5000/${product.images[0]}`}
+                          alt=''
+                        />
 
-      <ProductList ref={revealRefs}>
-        <ProductItem>
-          <Link to='#'>
-            <img
-              src='https://cdn.imweb.me/thumbnail/20210320/8039b01fb16de.jpg'
-              alt=''
-            />
+                        <Description>
+                          <strong className='title'>{product.title}</strong>
+                          <p className='price'>
+                            {product.price.toLocaleString()}원
+                          </p>
+                        </Description>
+                      </Link>
+                    </ProductItem>
+                  ))}
+                </>
+              </ProductList>
+              <Page>
+                <SPagination size='small' total={products.length} />
+              </Page>
+            </>
+          )}
+          {products && products.length === 0 && (
+            <Message>
+              <h2>Nothing found..</h2>
+            </Message>
+          )}
+        </>
+      )}
 
-            <Description>
-              <strong className='title'>하늘하늘 하얀 원피스</strong>
-              <p className='price'>19,200원</p>
-            </Description>
-          </Link>
-        </ProductItem>
-
-        <ProductItem>
-          <Link to='#'>
-            <img
-              src='https://cdn.imweb.me/thumbnail/20210320/8039b01fb16de.jpg'
-              alt=''
-            />
-
-            <Description>
-              <strong className='title'>하늘하늘 하얀 원피스</strong>
-              <p className='price'>19,200원</p>
-            </Description>
-          </Link>
-        </ProductItem>
-
-        <ProductItem>
-          <Link to='#'>
-            <img
-              src='https://cdn.imweb.me/thumbnail/20210320/8039b01fb16de.jpg'
-              alt=''
-            />
-
-            <Description>
-              <strong className='title'>하늘하늘 하얀 원피스</strong>
-              <p className='price'>19,200원</p>
-            </Description>
-          </Link>
-        </ProductItem>
-        <ProductItem>
-          <Link to='#'>
-            <img
-              src='https://cdn.imweb.me/thumbnail/20210320/8039b01fb16de.jpg'
-              alt=''
-            />
-
-            <Description>
-              <strong className='title'>하늘하늘 하얀 원피스</strong>
-              <p className='price'>19,200원</p>
-            </Description>
-          </Link>
-        </ProductItem>
-        <ProductItem>
-          <Link to='#'>
-            <img
-              src='https://cdn.imweb.me/thumbnail/20210320/8039b01fb16de.jpg'
-              alt=''
-            />
-
-            <Description>
-              <strong className='title'>하늘하늘 하얀 원피스</strong>
-              <p className='price'>19,200원</p>
-            </Description>
-          </Link>
-        </ProductItem>
-        <ProductItem>
-          <Link to='#'>
-            <img
-              src='https://cdn.imweb.me/thumbnail/20210320/8039b01fb16de.jpg'
-              alt=''
-            />
-
-            <Description>
-              <strong className='title'>하늘하늘 하얀 원피스</strong>
-              <p className='price'>19,200원</p>
-            </Description>
-          </Link>
-        </ProductItem>
-
-        {/* {Result.map((product) => (
-              <ProductItem key={product._id}>
-                <Link to={`/product/${product._id}`}>
-                  <img
-                    src={`http://localhost:5000/${product.images[0]}`}
-                    alt=''
-                  />
-
-                  <Description>
-                    <strong className='title'>{product.title}</strong>
-                    <p className='price'>{product.price.toLocaleString()}원</p>
-                  </Description>
-                </Link>
-              </ProductItem>
-            ))} */}
-      </ProductList>
-
-      <Page>
-        <SPagination size='small' total={50} />
-      </Page>
       <Footer />
     </Container>
   );
