@@ -155,7 +155,7 @@ const MobileCartPage = ({ user, isAuthenticated }) => {
                   </ProductTitle>
 
                   <ProductPrice>
-                    <strong>{cart.price}</strong>
+                    <strong>{cart.price.toLocaleString()}원</strong>
                     <div className='product-count'>{cart.quantity}</div>
                   </ProductPrice>
                 </TextWrap>

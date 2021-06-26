@@ -82,7 +82,7 @@ const UserCardBlock = ({ products, removeItem, cart }) => {
             </Link>
           </td>
           <td>{item.title}</td>
-          <td>{item.price}</td>
+          <td>{item.price.toLocaleString()}원</td>
           <td>{item.quantity}</td>
 
           <td>

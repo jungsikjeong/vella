@@ -212,7 +212,7 @@ router.post('/products', async (req, res) => {
   try {
     if (term) {
       const findPost = await Post.find().find({ $text: { $search: term } });
-
+      console.log(findPost);
       return res.status(200).json(findPost);
     }
 

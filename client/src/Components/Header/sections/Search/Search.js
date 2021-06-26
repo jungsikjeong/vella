@@ -72,7 +72,10 @@ const Search = ({ onOpenSearch, OpenSearch }) => {
   };
 
   const onClickOutside = ({ target }) => {
-    if (OpenSearch && !CloseRef.current.contains(target)) onOpenSearch();
+    if (OpenSearch && !CloseRef.current.contains(target)) {
+      setSearchValue('');
+      onOpenSearch();
+    }
   };
 
   useEffect(() => {
@@ -90,6 +93,7 @@ const Search = ({ onOpenSearch, OpenSearch }) => {
           <input
             type='text'
             ref={CloseRef}
+            value={SearchValue}
             onChange={(e) => onChangeSearch(e)}
           />
         </form>
