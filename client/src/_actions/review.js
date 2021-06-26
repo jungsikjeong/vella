@@ -31,7 +31,7 @@ export const reviewPostUpload =
 
       dispatch({ type: CLEAR_REVIEW });
       // 리뷰 모음 페이지로 이동
-      history.goBack();
+      history.push('/reviews');
     } catch (err) {
       const errors = err.response.data.errors;
       console.log(err.response.data.errors);
@@ -71,7 +71,7 @@ export const getAllReviews = () => async (dispatch) => {
 // id로 해당 리뷰 가져오기
 export const readReview = (reviewId) => async (dispatch) => {
   try {
-    const res = await axios.get(`/api/reviews/${reviewId}`);
+    const res = await axios.post(`/api/reviews/${reviewId}`);
 
     dispatch({
       type: REVIEW_READ,

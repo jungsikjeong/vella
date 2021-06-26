@@ -19,7 +19,7 @@ const SubMenuList = styled.ul`
   position: absolute;
   top: 100%;
   left: 0;
-  padding-top: 2.8rem;
+  padding-top: 3.8rem;
   display: flex;
   flex-direction: column;
   opacity: 0;
@@ -72,7 +72,7 @@ const Account = ({ DropdownOpen3, user }) => {
       {isAuthenticated && user ? (
         <SubMenuList
           className={DropdownOpen3 && 'DropdownOpen3'}
-          style={{ paddingTop: '3.8rem' }}
+          style={{ paddingTop: '5rem' }}
         >
           <SubMenuItem onClick={onLogout}>
             <SLink to='#'>Logout</SLink>
@@ -87,6 +87,9 @@ const Account = ({ DropdownOpen3, user }) => {
                 : 'Cart'}
             </SLink>
           </SubMenuItem>
+          <SubMenuItem>
+            <SLink to='/reviews'>Removes</SLink>
+          </SubMenuItem>
         </SubMenuList>
       ) : (
         <SubMenuList className={DropdownOpen3 && 'DropdownOpen3'}>
@@ -95,6 +98,9 @@ const Account = ({ DropdownOpen3, user }) => {
           </SubMenuItem>
           <SubMenuItem>
             <SLink to='/join'>Join us</SLink>
+          </SubMenuItem>
+          <SubMenuItem>
+            <SLink to='/reviews'>Removes</SLink>
           </SubMenuItem>
         </SubMenuList>
       )}

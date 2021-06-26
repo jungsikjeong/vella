@@ -66,7 +66,7 @@ const RightMenu = styled.div`
   padding-right: 1.2rem;
 
   ul {
-    width: 100%;
+    /* width: 100%; */
     height: 100%;
     display: flex;
     justify-content: flex-end;

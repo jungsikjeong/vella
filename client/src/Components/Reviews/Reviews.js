@@ -13,7 +13,7 @@ const Container = styled(Responsive)`
   /* margin-top: 2rem; */
 
   .page-title {
-    font-size: 0.6rem;
+    /* font-size: 0.6rem; */
     font-weight: bold;
     text-align: center;
     padding: 2rem;
@@ -95,9 +95,9 @@ const NotPost = styled.div`
 
 /**
  *
- * 전체 리뷰를 보여주는 페이지
+ * 모든 리뷰를 보여주는 페이지 (다른 사용자들이 남긴 리뷰도 볼 수 있는 페이지)
  */
-const Reviews = () => {
+const ReviewListPage = () => {
   const dispatch = useDispatch();
   const { reviews, loading, error } = useSelector(({ review }) => ({
     reviews: review.reviews,
@@ -133,7 +133,7 @@ const Reviews = () => {
           </td>
           <td>{review.user.nickname}</td>
           <td>{review.date.substring(0, 10)}</td>
-          <td>{/* hit 조회수 */}0</td>
+          <td>{review.views}</td>
         </tr>
       ))}
     </>
@@ -142,7 +142,7 @@ const Reviews = () => {
   return (
     <>
       <Container>
-        <h1 className='page-title'>Reviews</h1>
+        <h1 className='page-title'>All reviews</h1>
         {loading ? (
           <Loading />
         ) : (
@@ -182,4 +182,4 @@ const Reviews = () => {
   );
 };
 
-export default Reviews;
+export default ReviewListPage;

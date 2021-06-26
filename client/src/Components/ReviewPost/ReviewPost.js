@@ -10,6 +10,7 @@ import Quill from 'quill';
 import Responsive from '../Common/Responsive';
 
 const Container = styled(Responsive)`
+  text-align: left;
   .page-title {
     text-align: center;
     padding: 2rem;

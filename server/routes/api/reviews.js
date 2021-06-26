@@ -98,11 +98,11 @@ router.post(
 // @desc    모든 리뷰 가져 오기
 // @access  Public
 router.get('/', async (req, res) => {
-  let reviews = [];
   try {
-    const reviews = await Review.find().populate('user', 'nickname').sort({
-      date: -1,
-    });
+    let reviews = [];
+    const posts = await Post.find().populate('reviews.user');
+
+    posts.map((post) => (reviews = post.reviews));
 
     if (!reviews || reviews.length === 0) {
       return res.status(404).json({ msg: '등록된 리뷰 없음' });
@@ -118,7 +118,7 @@ router.get('/', async (req, res) => {
 // @route   GET api/reviews/:id
 // @desc    ID로 해당 리뷰 받기
 // @access  Public
-router.get('/:id', async (req, res) => {
+router.post('/:id', async (req, res) => {
   let findReview;
   try {
     const post = await Post.find({ 'reviews._id': req.params.id }).populate(
@@ -136,9 +136,11 @@ router.get('/:id', async (req, res) => {
 
     post[0].reviews.map((review) => {
       if (review._id.toString() === req.params.id) {
-        return (findReview = review);
+        return review.views++, (findReview = review);
       }
     });
+
+    await post[0].save();
 
     res.json(findReview);
   } catch (err) {
