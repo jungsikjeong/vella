@@ -52,6 +52,8 @@ const Form = styled.form`
   }
 
   span {
+    color: #000000;
+    font-weight: bold;
     border-bottom: 1px solid #000;
   }
 

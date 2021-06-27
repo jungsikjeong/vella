@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Auth from './hoc/auth';
 
 //Redux
 import store from './store';
@@ -85,12 +86,16 @@ const App = () => {
               <Route exact path='/search' component={SearchResult} />
               <Route exact path='/my/profile/:id' component={MyProfile} />
               <Route exact path='/admin' component={AdminLogin} />
-              <Route exact path='/admin/home' component={Admin} />
-              <Route exact path='/admin/upload' component={AdminUpload} />
+              <Route exact path='/admin/home' component={Auth(Admin, true)} />
+              <Route
+                exact
+                path='/admin/upload'
+                component={Auth(AdminUpload, true)}
+              />
               <Route
                 exact
                 path='/admin/product/edit/:id'
-                component={AdminEdit}
+                component={Auth(AdminEdit, true)}
               />
 
               {/* 경로 외에 곳으로 갔을때 */}

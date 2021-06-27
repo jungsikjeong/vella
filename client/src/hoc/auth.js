@@ -1,49 +1,33 @@
-/* eslint-disable import/no-anonymous-default-export */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { loadUser } from '../_actions/auth';
 import { useSelector, useDispatch } from 'react-redux';
 
 // null 누구나 들어갈 수 있음
 // true 로그인 한 사용자 만 들어갈 수 있음
-// false 로그인 한 사용자는 안으로 들어갈 수 없음.
-export default function (SpecificComponent, option, adminRoute = null) {
+// false 로그인 한 사용자는 안으로 들어갈 수 없음
+
+// eslint-disable-next-line import/no-anonymous-default-export
+export default function (SpecificComponent, adminRoute = null) {
   function AuthenticationCheck(props) {
     const dispatch = useDispatch();
-    const auth = useSelector((state) => state.auth);
+
+    let user = useSelector((state) => state.auth);
 
     useEffect(() => {
-      // 현재 상태를 확인하려고 Auth 요청을 보냄
-      dispatch(loadUser());
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      dispatch(loadUser()).then((response) => {
+        console.log('response', response);
+
+        //로그인 되지 않았다면 어드민 로그인 페이지로 돌려보냄
+        if (!response) {
+          props.history.push('/admin');
+        } else if (adminRoute && response && !response.admin) {
+          props.history.push('/admin');
+        }
+      });
     }, []);
 
-    // 로그인되지 않은 상태
-    if (!auth.isAuthenticated) {
-      if (option) {
-        if (adminRoute) {
-          props.history.push('/admin');
-          return;
-        }
-        props.history.push('/login');
-        return;
-      }
-      // 로그인 상태
-    } else {
-      // 관리자 페이지에 관리자만 들어갈 수 있다.
-      // 관리자가 아닐시, 관리자 로그인페이지로 이동
-      if (adminRoute && auth.user.admin === null && !auth.user.admin) {
-        props.history.push('/admin');
-        return;
-      } else {
-        // 로그인한 유저는 접근할 수 없는 페이지
-        if (option === false) {
-          props.history.push('/');
-          return;
-        }
-      }
-    }
-
-    return <SpecificComponent {...props} user={auth.user} />;
+    return <SpecificComponent {...props} user={user} />;
   }
   return AuthenticationCheck;
 }

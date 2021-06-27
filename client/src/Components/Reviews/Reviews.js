@@ -10,14 +10,10 @@ import Footer from '../Footer/Footer';
 import { Link } from 'react-router-dom';
 
 const Container = styled(Responsive)`
-  /* margin-top: 2rem; */
-
+  text-align: center;
   .page-title {
-    /* font-size: 0.6rem; */
     font-weight: bold;
-    /* text-align: center; */
     padding: 2rem;
-    /* margin-bottom: 2rem; */
   }
 `;
 
