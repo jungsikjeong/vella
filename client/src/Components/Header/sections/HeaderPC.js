@@ -201,7 +201,7 @@ const HeaderPC = ({ pathname, user }) => {
           pathname === '/admin/upload' ||
           pathname === '/admin/' ||
           pathname === '/admin/products' ||
-          pathname === '/admin/review'
+          pathname === '/admin/reviews'
         }
         onClick={onSearchFalse}
       >

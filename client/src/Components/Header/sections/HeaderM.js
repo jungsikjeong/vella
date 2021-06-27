@@ -79,7 +79,7 @@ const HeaderM = ({ pathname, user }) => {
         pathname === '/admin/upload' ||
         pathname === '/admin/' ||
         pathname === '/admin/products' ||
-        pathname === '/admin/review'
+        pathname === '/admin/reviews'
       }
     >
       {/* 메뉴 버튼클릭시 활성화 됨 */}

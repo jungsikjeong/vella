@@ -8,6 +8,7 @@ import { getAllReviews } from '../../_actions/review';
 import Loading from '../Common/Loading';
 import Footer from '../Footer/Footer';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const Container = styled(Responsive)`
   text-align: center;
@@ -22,7 +23,7 @@ const Table = styled.table`
   border-top-color: #afafaf;
   font-size: 0.55rem;
   border-top: 1px solid #d7d5d5;
-  border-bottom: 1px solid #f1f1f1;
+  /* border-bottom: 1px solid #f1f1f1; */
   line-height: 1.5;
   margin: 0 auto;
   thead {
@@ -37,6 +38,7 @@ const Tbody = styled.tbody`
   border-top: 1px solid #d7d5d5;
 
   tr {
+    border-bottom: 1px solid #f1f1f1;
   }
   td {
     vertical-align: middle;
@@ -114,6 +116,7 @@ const ReviewListPage = () => {
       </>
     );
   }
+
   const renderItems = () => (
     <>
       {reviews.map((review) => (
@@ -137,6 +140,9 @@ const ReviewListPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Vella | Reviews</title>
+      </Helmet>
       <Container>
         <h1 className='page-title'>All reviews</h1>
         {loading ? (

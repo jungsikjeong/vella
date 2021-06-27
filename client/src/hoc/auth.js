@@ -16,8 +16,6 @@ export default function (SpecificComponent, adminRoute = null) {
 
     useEffect(() => {
       dispatch(loadUser()).then((response) => {
-        console.log('response', response);
-
         //로그인 되지 않았다면 어드민 로그인 페이지로 돌려보냄
         if (!response) {
           props.history.push('/admin');

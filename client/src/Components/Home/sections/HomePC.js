@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 
 import Footer from '../../Footer/Footer';
@@ -22,6 +23,9 @@ const MainImage = styled.div`
 const HomePC = () => {
   return (
     <>
+      <Helmet>
+        <title>Vella | Home</title>
+      </Helmet>
       <Container>
         <MainImage>
           <img

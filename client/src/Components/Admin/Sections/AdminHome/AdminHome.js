@@ -17,7 +17,11 @@ const Container = styled(Responsive)`
   img {
     width: 50px;
     height: 100px;
-    object-fit: cover;
+    object-fit: contain;
+
+    @media (min-width: 800px) {
+      width: inherit;
+    }
   }
 
   /* div {
@@ -26,6 +30,24 @@ const Container = styled(Responsive)`
     align-items: center;
     justify-content: center;
   } */
+
+  .ant-table-thead > tr > th {
+    font-size: 0.55rem;
+    @media (min-width: 800px) {
+      font-size: 0.7rem;
+    }
+  }
+  th {
+    vertical-align: middle;
+  }
+
+  // remove 컬럼
+  th:nth-child(6) {
+    width: 2.5rem;
+    text-align: center;
+    font-size: 1rem;
+    vertical-align: middle;
+  }
 
   // 테이블 세로 가운데 정렬
   td {
@@ -39,13 +61,6 @@ const Container = styled(Responsive)`
   h1 {
     text-align: center;
     padding-bottom: 1rem;
-  }
-
-  // remove 컬럼
-  th:nth-child(6) {
-    width: 2.5rem;
-    text-align: center;
-    font-size: 1rem;
   }
 `;
 
@@ -200,6 +215,15 @@ const AdminHome = () => {
 
   const columns = [
     {
+      title: 'Images',
+      dataIndex: 'images',
+      render: (images, id) => (
+        <Link to={`/admin/product/edit/${id.id}`}>
+          <img src={`http://localhost:5000/${images[0]}`} alt='' />
+        </Link>
+      ),
+    },
+    {
       title: 'Title',
       dataIndex: 'title',
       render: (title, id) => (
@@ -235,15 +259,7 @@ const AdminHome = () => {
         showTitle: false,
       },
     },
-    {
-      title: 'Images',
-      dataIndex: 'images',
-      render: (images, id) => (
-        <Link to={`/admin/product/edit/${id.id}`}>
-          <img src={`http://localhost:5000/${images[0]}`} alt='' />
-        </Link>
-      ),
-    },
+
     // 상품 삭제
     {
       title: (

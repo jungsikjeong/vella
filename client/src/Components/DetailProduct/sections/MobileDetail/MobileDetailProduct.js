@@ -133,7 +133,9 @@ const MobileDetailProduct = ({ match, user, history }) => {
               </div>
 
               <div className='product'>
-                <span className='product-price'>{product.product.price}원</span>
+                <span className='product-price'>
+                  {product.product.price.toLocaleString()}원
+                </span>
                 <br />
                 <br />
                 <p className='product-description'>

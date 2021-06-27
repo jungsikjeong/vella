@@ -12,6 +12,7 @@ import Quill from 'quill';
 
 // components
 import Responsive from '../Common/Responsive';
+import { Helmet } from 'react-helmet';
 
 const Container = styled(Responsive)`
   text-align: left;
@@ -174,6 +175,9 @@ const ReviewEdit = ({ history, match }) => {
   }, [isAuthenticated, history]);
   return (
     <>
+      <Helmet>
+        <title>Vella | ReviewEdit</title>
+      </Helmet>
       <Container>
         <h1 className='page-title'>Edit Review</h1>
         <SForm onFinish={onSubmit}>

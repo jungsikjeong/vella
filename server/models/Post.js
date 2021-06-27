@@ -47,6 +47,12 @@ const PostSchema = new Schema({
       productId: {
         type: String,
       },
+      productTitle: {
+        type: String,
+      },
+      productPrice: {
+        type: Number,
+      },
       views: {
         type: Number,
         default: 0,

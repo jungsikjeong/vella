@@ -8,6 +8,7 @@ import Quill from 'quill';
 
 // components
 import Responsive from '../Common/Responsive';
+import { Helmet } from 'react-helmet';
 
 const Container = styled(Responsive)`
   text-align: left;
@@ -149,6 +150,9 @@ const ReviewPost = ({ history, match }) => {
   }, [isAuthenticated, history]);
   return (
     <>
+      <Helmet>
+        <title>Vella | ReviewPost</title>
+      </Helmet>
       <Container>
         <h1 className='page-title'>Write a review</h1>
         <SForm onFinish={onSubmit}>

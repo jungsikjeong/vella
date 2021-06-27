@@ -63,7 +63,7 @@ export const getAllReviews = () => async (dispatch) => {
 
     dispatch({
       type: GET_ALL_REVIEWS_FAILURE,
-      payload: { msg: err.response.status },
+      payload: { msg: err },
     });
   }
 };
@@ -95,30 +95,51 @@ export const readReview = (reviewId) => async (dispatch) => {
 };
 
 // 특정 리뷰 지우기
-export const removeReview =
-  ({ history, id }) =>
-  async (dispatch) => {
-    try {
-      await axios.delete(`/api/reviews/delete?id=${id}`);
+export const removeReview = (history, id) => async (dispatch) => {
+  try {
+    await axios.delete(`/api/reviews/delete?id=${id}`);
 
-      alert('상품 삭제 완료');
+    alert('상품 삭제 완료');
 
-      history.goBack();
-    } catch (err) {
-      console.error(err);
-      if (err.response) {
-        const errors = err.response.data.msg;
+    history.goBack();
+  } catch (err) {
+    console.error(err);
+    if (err.response) {
+      const errors = err.response.data.msg;
 
-        if (errors) {
-          alert(errors);
-        }
+      if (errors) {
+        alert(errors);
       }
-      dispatch({
-        type: REVIEW_POST_FAILURE,
-        payload: { msg: err },
-      });
     }
-  };
+    dispatch({
+      type: REVIEW_POST_FAILURE,
+      payload: { msg: err },
+    });
+  }
+};
+
+// 관리자- 리뷰 삭제
+export const removeReviews = (ids) => async (dispatch) => {
+  try {
+    await axios.delete(`/api/reviews/delete?id=${ids.selectedRowKeys}`);
+
+    // dispatch(getAllReviews());
+    alert('상품 삭제 완료');
+  } catch (err) {
+    console.error(err);
+    if (err.response) {
+      const errors = err.response.data.msg;
+
+      if (errors) {
+        alert(errors);
+      }
+    }
+    dispatch({
+      type: REVIEW_POST_FAILURE,
+      payload: { msg: err },
+    });
+  }
+};
 
 // CLEAR_REVIEW
 export const clearReview = () => async (dispatch) => {

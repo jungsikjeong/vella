@@ -75,15 +75,16 @@ router.post(
         description: sanitizeHtml(description, sanitizeOption),
         images: post.images[0],
         productId: productId,
+        productTitle: post.title,
+        productPrice: post.price,
         user: user,
       };
 
-      // const review = new Review(newReview);
+      const review = new Review(newReview);
 
-      // review.posts.unshift(post._id);
-      post.reviews.unshift(newReview);
+      post.reviews.unshift(review);
 
-      // await review.save();
+      await review.save();
       await post.save();
 
       res.json(post.reviews);
@@ -99,21 +100,33 @@ router.post(
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    let reviews;
-    const posts = await Post.find().populate('reviews.user');
-    // console.log(posts);
-
-    posts.filter((post) => {
-      if (post.reviews.length > 0) {
-        reviews = post.reviews;
-      }
-    });
+    const reviews = await Review.find().populate('user', 'nickname');
 
     if (!reviews || reviews.length === 0) {
       return res.status(404).json({ msg: '등록된 리뷰 없음' });
     }
-    // console.log(reviews);
+    console.log(reviews);
     res.json(reviews);
+
+    // let reviews;
+    // const posts = await Post.find().populate('reviews.user', 'nickname');
+    // // console.log('posts', posts);
+
+    // reviews = posts.filter((post) => {
+    //   if (post.reviews.length > 0) {
+    //     return post.reviews;
+    //   }
+    // });
+
+    // let test = [];
+    // reviews.map((review) => test.unshift(review.reviews));
+
+    // if (!reviews || reviews.length === 0) {
+    //   return res.status(404).json({ msg: '등록된 리뷰 없음' });
+    // }
+    // // console.log(reviews);
+
+    // res.json(reviews);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -170,13 +183,18 @@ router.delete('/delete', auth, async (req, res) => {
       'nickname'
     );
 
-    if (!post) {
+    // const review = await Review.find({ _id: req.query.id });
+    const review = await Review.find({ _id: { $in: req.query.id } });
+    // console.log('post', post);
+    // console.log('review', review);
+
+    if (!post || !review) {
       return res.status(404).json({ msg: '해당 리뷰가 없습니다.' });
     }
 
     post[0].reviews.map((review) => (owner = review.user._id.toString()));
 
-    // 리뷰를 작성한 유저인지 확인한다.
+    // // 리뷰를 작성한 유저인지 확인한다.
     if (owner !== req.user.id) {
       return res.status(401).json({ msg: '리뷰를 작성한 유저가 아닙니다.' });
     }
@@ -191,6 +209,7 @@ router.delete('/delete', auth, async (req, res) => {
 
     post[0].reviews.splice(removeIndex, 1);
 
+    await Review.deleteMany({ _id: review });
     await post[0].save();
 
     res.json({ msg: '리뷰 삭제 완료' });

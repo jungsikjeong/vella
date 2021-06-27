@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Loading from '../Common/Loading';
 import Responsive from '../Common/Responsive';
 import Footer from '../Footer/Footer';
+import { Helmet } from 'react-helmet';
 
 const Container = styled(Responsive)`
   text-align: center;
@@ -192,8 +193,8 @@ const DetailReview = ({ history, match }) => {
 
   const { id } = match.params;
 
-  const onRemove = (id) => {
-    dispatch(removeReview(id));
+  const onRemove = (history, id) => {
+    dispatch(removeReview(history, id));
   };
 
   useEffect(() => {
@@ -208,6 +209,9 @@ const DetailReview = ({ history, match }) => {
 
   return (
     <>
+      <Helmet>
+        <title>Vella | DetailReview</title>
+      </Helmet>
       <Container>
         <h2>Review</h2>
 
@@ -225,8 +229,10 @@ const DetailReview = ({ history, match }) => {
                 </div>
 
                 <div className='product'>
-                  <h3>GADI 밴드 셔링 미니 원피스</h3>
-                  <p className='price'>219,000원</p>
+                  <h3>{review.productTitle}</h3>
+                  <p className='price'>
+                    {review.productPrice.toLocaleString()}원
+                  </p>
                   <Link to={`/product/${review.productId}`}>
                     <Button>view</Button>
                   </Link>
@@ -280,7 +286,7 @@ const DetailReview = ({ history, match }) => {
                       <Button>수정</Button>
                     </Link>
                     <Button
-                      onClick={() => onRemove({ history, id })}
+                      onClick={() => onRemove(history, id)}
                       style={{ marginLeft: '.5rem' }}
                     >
                       삭제

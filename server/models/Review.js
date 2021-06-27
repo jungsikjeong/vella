@@ -6,6 +6,15 @@ const ReviewSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'user',
   },
+  productTitle: {
+    type: String,
+  },
+  productPrice: {
+    type: Number,
+  },
+  productId: {
+    type: String,
+  },
   title: {
     type: String,
     required: true,
@@ -22,12 +31,7 @@ const ReviewSchema = new Schema({
     type: Number,
     default: 0,
   },
-  posts: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'post',
-    },
-  ],
+
   comments: [
     {
       user: {
