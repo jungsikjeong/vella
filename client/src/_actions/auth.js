@@ -74,7 +74,7 @@ export const register =
   };
 
 // Login User
-export const login = (email, password) => async (dispatch) => {
+export const login = (email, password, history) => async (dispatch) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -92,6 +92,8 @@ export const login = (email, password) => async (dispatch) => {
     });
 
     dispatch(loadUser());
+    alert('로그인 되었습니다.');
+    history.goBack();
   } catch (err) {
     console.error(err);
     const errors = err.response.data.errors;

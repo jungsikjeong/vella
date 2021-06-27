@@ -111,8 +111,9 @@ const Button = styled.button`
   }
 `;
 
-const Login = () => {
+const Login = ({ history }) => {
   const dispatch = useDispatch();
+
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const [formData, setFormData] = useState({
@@ -128,7 +129,7 @@ const Login = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(login(email, password));
+    dispatch(login(email, password, history));
   };
 
   if (isAuthenticated) {
