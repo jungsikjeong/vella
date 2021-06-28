@@ -28,12 +28,6 @@ const AdminHeader = ({ location: { pathname } }) => {
               <Menu.Item key='setting:1'>상품 업로드</Menu.Item>
             </Link>
           </MenuItemGroup>
-          <MenuItemGroup title='고객관리'>
-            <Menu.Item key='setting:3'>
-              <Link to='/admin/reviews'>리뷰관리</Link>
-            </Menu.Item>
-            {/* <Menu.Item key='setting:4'>고객정보</Menu.Item> */}
-          </MenuItemGroup>
         </SubMenu>
       </Menu>
     </Container>

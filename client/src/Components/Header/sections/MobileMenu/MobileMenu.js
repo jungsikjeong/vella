@@ -123,11 +123,6 @@ const MobileMenu = ({ MenuToggle, MenuToggleHandler, onLogout, user }) => {
             </SLink>
           </li>
           <li>
-            <SLink to={`/my/profile/${user._id}`} onClick={MenuToggleHandler}>
-              My Profile
-            </SLink>
-          </li>
-          <li>
             <SLink to={`/cart/${user._id}`} onClick={MenuToggleHandler}>
               {user.cart.length > 0 ? `Cart(${user.cart.length})` : 'Cart'}
             </SLink>

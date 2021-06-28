@@ -121,9 +121,9 @@ export const removeReview = (history, id) => async (dispatch) => {
 // 관리자- 리뷰 삭제
 export const removeReviews = (ids) => async (dispatch) => {
   try {
-    await axios.delete(`/api/reviews/delete?id=${ids.selectedRowKeys}`);
+    await axios.delete(`/api/reviews/deletes?id=${ids.selectedRowKeys}`);
 
-    // dispatch(getAllReviews());
+    dispatch(getAllReviews());
     alert('상품 삭제 완료');
   } catch (err) {
     console.error(err);

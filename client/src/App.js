@@ -38,9 +38,7 @@ import ReviewPost from './Components/ReviewPost/ReviewPost';
 import ReviewListPage from './Components/Reviews/Reviews';
 import DetailReview from './Components/DetailReview/DetailReview';
 import ReviewEdit from './Components/ReviewEdit/ReviewEdit';
-import MyProfile from './Components/MyProfile/MyProfile';
 import SearchResult from './Components/SearchResult/SearchResult';
-import AdminReviews from './Components/Admin/Sections/AdminReviews/AdminReviews';
 
 if (localStorage.token) {
   //  글로벌 axios 기본(defaults) 설정
@@ -83,7 +81,6 @@ const App = () => {
               <Route exact path='/review/edit/:id' component={ReviewEdit} />
               <Route exact path='/cart/:id' component={Cart} />
               <Route exact path='/search' component={SearchResult} />
-              <Route exact path='/my/profile/:id' component={MyProfile} />
               <Route exact path='/admin' component={AdminLogin} />
               <Route exact path='/admin/home' component={Auth(Admin, true)} />
               <Route
@@ -95,11 +92,6 @@ const App = () => {
                 exact
                 path='/admin/product/edit/:id'
                 component={Auth(AdminEdit, true)}
-              />
-              <Route
-                exact
-                path='/admin/reviews'
-                component={Auth(AdminReviews, true)}
               />
 
               {/* 경로 외에 곳으로 갔을때 */}

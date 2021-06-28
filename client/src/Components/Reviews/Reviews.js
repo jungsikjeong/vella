@@ -4,11 +4,12 @@ import { Pagination } from 'antd';
 import Responsive from '../Common/Responsive';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllReviews } from '../../_actions/review';
+import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { useMediaQuery } from 'react-responsive';
 
 import Loading from '../Common/Loading';
 import Footer from '../Footer/Footer';
-import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 
 const Container = styled(Responsive)`
   text-align: center;
@@ -28,7 +29,7 @@ const Table = styled.table`
   margin: 0 auto;
   thead {
     th {
-      padding: 0.3rem 0 0.4rem;
+      padding: 0.3rem 0.5rem 0.4rem;
     }
   }
 `;
@@ -43,11 +44,18 @@ const Tbody = styled.tbody`
   td {
     vertical-align: middle;
     padding: 0.3rem 0 0.4rem;
+    text-overflow: ellipsis;
+
+    @media (min-width: 800px) {
+    }
   }
 
   img {
     width: 46px;
     text-align: center;
+    @media (min-width: 800px) {
+      width: 100%;
+    }
   }
 `;
 
@@ -104,6 +112,10 @@ const ReviewListPage = () => {
   }));
   let i = 0;
 
+  const isMobile = useMediaQuery({
+    query: '(max-width:800px)',
+  });
+
   useEffect(() => {
     dispatch(getAllReviews());
   }, [dispatch]);
@@ -128,7 +140,15 @@ const ReviewListPage = () => {
             </Link>
           </td>
           <td>
-            <Link to={`/review/${review._id}`}>{review.title}</Link>
+            {isMobile ? (
+              <Link to={`/review/${review._id}`}>
+                {review.title.length > 7
+                  ? `${review.title.substring(0, 6)}..`
+                  : review.title}
+              </Link>
+            ) : (
+              <Link to={`/review/${review._id}`}>{review.title}</Link>
+            )}
           </td>
           <td>{review.user.nickname}</td>
           <td>{review.date.substring(0, 10)}</td>
@@ -151,12 +171,12 @@ const ReviewListPage = () => {
           <>
             <Table>
               <colgroup>
-                <col style={{ width: '70px' }}></col>
+                <col style={{ width: '30px' }}></col>
                 <col style={{ width: '80px' }}></col>
                 <col style={{ width: 'auto' }}></col>
-                <col style={{ width: '100px' }}></col>
-                <col style={{ width: '100px' }}></col>
+                <col style={{ width: '50px' }}></col>
                 <col style={{ width: '80px' }}></col>
+                <col style={{ width: '30px' }}></col>
               </colgroup>
 
               <thead>

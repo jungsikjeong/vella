@@ -105,7 +105,7 @@ router.get('/', async (req, res) => {
     if (!reviews || reviews.length === 0) {
       return res.status(404).json({ msg: '등록된 리뷰 없음' });
     }
-    console.log(reviews);
+
     res.json(reviews);
 
     // let reviews;
@@ -170,7 +170,7 @@ router.post('/:id', async (req, res) => {
   }
 });
 
-// @route   DELETE api/reviews/:id
+// @route   DELETE api/reviews/delete
 // @desc    해당 리뷰 지우기
 // @access  Private
 router.delete('/delete', auth, async (req, res) => {

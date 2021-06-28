@@ -72,14 +72,12 @@ const Account = ({ DropdownOpen3, user }) => {
       {isAuthenticated && user ? (
         <SubMenuList
           className={DropdownOpen3 && 'DropdownOpen3'}
-          style={{ paddingTop: '5rem' }}
+          // style={{ paddingTop: '5rem' }}
         >
           <SubMenuItem onClick={onLogout}>
             <SLink to='#'>Logout</SLink>
           </SubMenuItem>
-          <SubMenuItem>
-            <SLink to={`/my/profile/${user._id}`}>Profile</SLink>
-          </SubMenuItem>
+
           <SubMenuItem>
             <SLink to={`/cart/${user._id}`}>
               {user.cart && user.cart.length > 0
